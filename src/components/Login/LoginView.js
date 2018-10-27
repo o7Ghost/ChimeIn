@@ -22,6 +22,9 @@ const LogInView = ({ onSubmit }) => {
                     />
                 </label>
                 <button type="submit">Log in</button>
+                <br/>
+                <Link to="/reset">Forget password?Need to reset password?</Link>
+                <br/>
                 <Link to="/signUp">Need an account?</Link>
             </form>
         </div>
