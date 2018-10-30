@@ -3,6 +3,9 @@ import LogInView from "./LoginView";
 import { withRouter } from "react-router";
 import { Route, Redirect, Link } from "react-router-dom";
 import firebase from 'firebase';
+
+
+
 class LogInContainer extends Component {
     constructor(props) {
         super(props);

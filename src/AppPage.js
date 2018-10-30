@@ -5,6 +5,15 @@ import {DisplayData} from './components/DisplayData.js';
 import firebase from 'firebase';
 import {Route, Redirect, Link} from 'react-router-dom';
 import Login from './components/Login/LoginContainer' ;
+import Dashboard from './components/Dashboard/Dashboard.js';
+import { createMuiTheme } from '@material-ui/core/styles';
+import purple from '@material-ui/core/colors/blue';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+  },
+});
 class AppPage extends Component {
     constructor(props) {
         super(props);
@@ -34,17 +43,10 @@ class AppPage extends Component {
         else {
             console.log("login already!");
             return (
-                <div>
-                    <main>
-                        <Link to="/login">Need to switch account?</Link>
-                        <br/>
-                        <Link to="/signUp">Need an account?</Link>
-                        <br/>
-                        <Link to="/login" onClick={this.signout}>Sign out</Link>
-                    </main>
-                    <TeamMembers db={firebase}/>
-                    <DisplayData db={firebase}/>
-                </div>
+
+                 <div>
+                <Dashboard />
+                </div> 
             )
         }
   }
