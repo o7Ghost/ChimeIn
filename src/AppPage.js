@@ -24,8 +24,9 @@ class AppPage extends Component {
     signout(){
         firebase.auth().signOut();
     }
-  render() {
-        if (!this.props || !this.props.authenticated){
+    render() {
+        // if (!this.props || !this.props.authenticated){
+        if( firebase.auth().currentUser===null){
             console.log("Not login yet!!!!");
             return(
                 <Redirect to="/login" />
@@ -41,13 +42,16 @@ class AppPage extends Component {
                         <Link to="/signUp">Need an account?</Link>
                         <br/>
                         <Link to="/login" onClick={this.signout}>Sign out</Link>
+                        <br/>
+                        <Link to="/dashboard">Ready to post a question?</Link>
+                        <br/>
                     </main>
                     <TeamMembers db={firebase}/>
                     <DisplayData db={firebase}/>
                 </div>
             )
         }
-  }
+    }
 }
 
 export default AppPage;
