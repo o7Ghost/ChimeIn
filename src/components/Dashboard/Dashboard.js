@@ -23,7 +23,7 @@ import Tabs from './Tabs.js';
 import {TeamMembers} from "../TeamMembers";
 import {DisplayData} from '../DisplayData.js';
 import { Link } from 'react-router-dom'
-
+import TextField from './TextField.js';
 
 const drawerWidth = 240;
 
@@ -208,9 +208,11 @@ class Dashboard extends React.Component {
             <div>
               <AlertButtons />
             </div>
+
             <DisplayData db={firebase} />
             <TeamMembers db={firebase} />
-            
+            <TextField db={firebase} />
+
           </main>
         </div>
       </React.Fragment>
