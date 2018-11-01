@@ -61,7 +61,6 @@ class Index extends Component {
                     <Route exact path="/reset" component={Reset} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={SignUp} />
-                    <TextField db={firebase}/>
                 </div>
             </HashRouter >
         )
