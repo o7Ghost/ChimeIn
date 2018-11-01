@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import {Post} from "./Post.js";
 import { Route, Redirect, Link } from "react-router-dom";
 import firebase from 'firebase';
+import {TextField} from "./TextField.js";
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -49,7 +50,7 @@ class Dashboard extends Component {
                     <p>Welcome, {this.state.currentUser}! Ready to post a question ? </p>
 
                     <Post db={firebase} currentUser={this.state.currentUser}/>
-
+                    <TextField db={firebase} />
 
                 </div>
             )
