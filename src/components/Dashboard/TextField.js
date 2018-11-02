@@ -18,18 +18,37 @@ const styles = theme => ({
 });
 
 
-class OutlinedTextFields extends React.Component {
+class TextFields extends React.Component {
+  constructor(props) {
+    super(props);
 
+        this.state = {
+            Question: ''
+        };
 
+      this.firebaseRef = this.props.db.database().ref("UserQuestions");
+    }
+    
+    componentWillUnmount() {
+        this.firebaseRef.off();
+    }
+    //a method to push to firebase and then clean user input
+    pushToFirebase(event) {
+        const {Question} = this.state;
+        event.preventDefault();
+        this.firebaseRef.child(Question).set({Questions: this.state.Question});
+        this.setState({Question: ''});
+    }
+/*
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
   };
+*/
 
   render() {
     const { classes } = this.props;
-
     return (
       <form className={classes.container} noValidate autoComplete="off">
         
@@ -42,19 +61,22 @@ class OutlinedTextFields extends React.Component {
           margin="normal"
           variant="outlined"
           fullWidth
-        />
+          onChange = { e => this.setState({Question: e.target.value})} />
        
-       <Button variant="outlined" href="#" className={classes.button} >
+       <Button variant="outlined" href="#" className={classes.button}
+              onClick={this.pushToFirebase.bind(this)}>
         Submit
       </Button>
       </form>
       
     );
   }
+  
 }
 
-OutlinedTextFields.propTypes = {
+TextFields.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(OutlinedTextFields);
+
+export default withStyles(styles)(TextFields);

@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-<<<<<<< HEAD
-//import App from './App';
-import * as serviceWorker from './serviceWorker';
-import '../src/bootstrap.min.css'
-import App from './drawers';
-=======
 import AppPage from './AppPage';
 import SignUp from './components/SignUp/SignUpContainer';
 import Login from './components/Login/LoginContainer' ;
 import Reset from './components/Reset/ResetContainer' ;
+import TextField from './components/Dashboard/TextField';
 import PrivateRoute from './components/PrivateRoute';
 import * as serviceWorker from './serviceWorker';
 import {HashRouter,Route,Link} from 'react-router-dom';
 import firebase from 'firebase';
->>>>>>> zik
 
 class Index extends Component {
     constructor(props) {

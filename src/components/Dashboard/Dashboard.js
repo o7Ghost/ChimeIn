@@ -24,7 +24,6 @@ import {TeamMembers} from "../TeamMembers";
 import {DisplayData} from '../DisplayData.js';
 import { Link } from 'react-router-dom'
 
-
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -208,9 +207,10 @@ class Dashboard extends React.Component {
             <div>
               <AlertButtons />
             </div>
+
             <DisplayData db={firebase} />
             <TeamMembers db={firebase} />
-            
+
           </main>
         </div>
       </React.Fragment>
