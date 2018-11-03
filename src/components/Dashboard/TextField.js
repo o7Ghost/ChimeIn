@@ -36,7 +36,7 @@ class TextFields extends React.Component {
     pushToFirebase(event) {
         const {Question} = this.state;
         event.preventDefault();
-        this.firebaseRef.child(Question).set({Questions: this.state.Question});
+        this.firebaseRef.child(Question).set({Question: this.state.Question});
         this.setState({Question: ''});
     }
 /*

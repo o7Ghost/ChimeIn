@@ -90,9 +90,8 @@ class CustomizedTabs extends React.Component {
             label="Answered"
           />
         </Tabs>
-        <Panels className={classes.panels} />
-
-                    <div  >
+        <Panels db={firebase}/>
+                    <div>
                     <TextField db={firebase}/>
                     </div>
       </div>
