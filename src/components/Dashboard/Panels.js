@@ -66,12 +66,20 @@ class SimpleExpansionPanel extends React.Component {
             });
         this.setState({questionItems});
         });
-
     }
 
     componentWillUnmount() {
       this.firebaseRef.off();
     }
+
+
+   handleRemove(title){
+     this.firebaseRef.child(title).removeValue();
+   }
+
+   handleUpvote(title, currentLike){
+     this.firebaseRef.child(title).update({upvoteCount:currentLike+1});
+   }
 
   render() {
 
@@ -94,15 +102,16 @@ class SimpleExpansionPanel extends React.Component {
           <Divider />
 
           <ExpansionPanelActions>
-            <Button size="small" color="secondary">
+            <Button size="small" color="secondary" >
               Remove
             </Button>
             <Button size="small" color="primary">
               Answer
             </Button>
-            <Button size="small" color="primary">
-              Upvote
+            <Button size="small" color="primary" onClick={() => this.handleUpvote(items.Question,items.upvoteCount)} >
+              Upvote: {items.upvoteCount}
             </Button>
+            
           </ExpansionPanelActions>
           </ExpansionPanel>
         </div>
