@@ -7,12 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import Panels from './Panels.js';
 import TextField from './TextField.js';
 import firebase from 'firebase';
-import {Post} from "./Post.js";
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+    height: '68vh',
+    overflow: 'auto',
   },
   tabsRoot: {
     borderBottom: '1px solid #e8e8e8',
@@ -91,13 +92,8 @@ class CustomizedTabs extends React.Component {
             label="Answered"
           />
         </Tabs>
-        {/* <Panels className={classes.panels} /> */}
-
-        <Post db={firebase} currentUser={this.state.currentUser}/>
-
-        <div  >
-          <TextField db={firebase} />
-        </div>
+        <Panels db={firebase}/>
+                    
       </div>
     );
   }

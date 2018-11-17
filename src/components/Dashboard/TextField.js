@@ -23,7 +23,8 @@ class TextFields extends React.Component {
     super(props);
 
         this.state = {
-            Question: ''
+            Question: '',
+            upvoteCount: 0
         };
 
       this.firebaseRef = this.props.db.database().ref("UserQuestions");
@@ -34,10 +35,11 @@ class TextFields extends React.Component {
     }
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
-        const {Question} = this.state;
+        console.log(this.state.Question)
+        const {Question, upvoteCount} = this.state;
         event.preventDefault();
-        this.firebaseRef.child(Question).set({Questions: this.state.Question});
-        this.setState({Question: ''});
+        this.firebaseRef.child(Question).set({Question: this.state.Question, upvoteCount: this.state.upvoteCount});
+        this.setState({Question: '', upvoteCount: 0});
     }
 /*
   handleChange = name => event => {
@@ -48,12 +50,15 @@ class TextFields extends React.Component {
 */
 
   render() {
+    {var s = '\n';
+    console.log(s.charCodeAt(0));}
+    
     const { classes } = this.props;
     return (
       <form className={classes.container} noValidate autoComplete="off">
         
         <TextField
-          id="outlined-textarea"
+          id="outlined-multiline-flexible"
           label="Type Your Question"
           placeholder="Placeholder"
           multiline
@@ -61,7 +66,7 @@ class TextFields extends React.Component {
           margin="normal"
           variant="outlined"
           fullWidth
-          onChange = { e => this.setState({Question: e.target.value})} />
+          onChange = {e => this.setState({Question: (e.target.value).replace(/\n/g, s.charCodeAt(0))})} />
        
        <Button variant="outlined" href="#" className={classes.button}
               onClick={this.pushToFirebase.bind(this)}>
