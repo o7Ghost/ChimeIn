@@ -74,7 +74,7 @@ class SimpleExpansionPanel extends React.Component {
 
 
    handleRemove(title){
-     this.firebaseRef.child(title).removeValue();
+     this.firebaseRef.child(title).remove();
    }
 
    handleUpvote(title, currentLike){
@@ -85,10 +85,9 @@ class SimpleExpansionPanel extends React.Component {
 
     const records = this.state.questionItems.map(items =>
         <div>
-
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{items.Question}</Typography>
+                <Typography>{items.Question.replace(/_b/g, '\n')}</Typography>
             </ExpansionPanelSummary>
 
 
@@ -102,7 +101,7 @@ class SimpleExpansionPanel extends React.Component {
           <Divider />
 
           <ExpansionPanelActions>
-            <Button size="small" color="secondary" >
+            <Button size="small" color="secondary" onClick={()=> this.handleRemove(items.Question)}>
               Remove
             </Button>
             <Button size="small" color="primary">
