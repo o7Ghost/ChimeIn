@@ -12,13 +12,13 @@ const styles = theme => ({
 
         display: 'flex',
         flexWrap: 'wrap',
-        width: '100vw',
+        width: '100%',
     },
     textField: {
         width: '70vw',
     },
     button: {
-        //marginRight:0,
+       
     }
 });
 
