@@ -38,7 +38,9 @@ class TextFields extends React.Component {
         console.log(this.state.Question)
         const {Question, upvoteCount} = this.state;
         event.preventDefault();
-        this.firebaseRef.child(Question).set({Question: this.state.Question, upvoteCount: this.state.upvoteCount});
+        if(Question != '') {
+          this.firebaseRef.child(Question).set({Question: this.state.Question, upvoteCount: this.state.upvoteCount});
+        }
         this.setState({Question: '', upvoteCount: 0});
     }
 /*
@@ -57,7 +59,7 @@ class TextFields extends React.Component {
     return (
       <form className={classes.container} noValidate autoComplete="off">
         
-        <TextField
+        <TextField value = { this.state.Question.replace(/_b/g, '\n') }
           id="outlined-multiline-flexible"
           label="Type Your Question"
           placeholder="Placeholder"
@@ -66,9 +68,9 @@ class TextFields extends React.Component {
           margin="normal"
           variant="outlined"
           fullWidth
-          onChange = {e => this.setState({Question: (e.target.value).replace(/\n/g, s.charCodeAt(0))})} />
+          onChange = {e => this.setState({Question: (e.target.value).replace(/\n/g, '_b')})} />
        
-       <Button variant="outlined" href="#" className={classes.button}
+       <Button variant="outlined" id="submitButton" href="#" className={classes.button}
               onClick={this.pushToFirebase.bind(this)}>
         Submit
       </Button>

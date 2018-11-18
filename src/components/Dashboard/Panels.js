@@ -11,10 +11,13 @@ import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
+import AnswerField from './AnswerField.js';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '80%',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -48,77 +51,102 @@ const styles = theme => ({
 });
 
 class SimpleExpansionPanel extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            questionItems: []
-        };
-
-
-        this.firebaseRef = this.props.db.database().ref("UserQuestions");
-        this.firebaseRef.on('value', dataSnapshot => {
-            let questionItems = [];
-            dataSnapshot.forEach(childSnapshot => {
-            let questionItem = childSnapshot.val();
-            questionItem['.key'] = childSnapshot.key;
-            questionItems.push(questionItem);
-            });
-        this.setState({questionItems});
-        });
-    }
-
-    componentWillUnmount() {
-      this.firebaseRef.off();
-    }
+    this.state = {
+      questionItems: []
+    };
 
 
-   handleRemove(title){
-     this.firebaseRef.child(title).removeValue();
-   }
+    this.firebaseRef = this.props.db.database().ref("UserQuestions");
+    this.firebaseRef.on('value', dataSnapshot => {
+      let questionItems = [];
+      dataSnapshot.forEach(childSnapshot => {
+        let questionItem = childSnapshot.val();
+        questionItem['.key'] = childSnapshot.key;
+        questionItems.push(questionItem);
+      });
+      this.setState({ questionItems });
+    });
+  }
 
-   handleUpvote(title, currentLike){
-     this.firebaseRef.child(title).update({upvoteCount:currentLike+1});
-   }
+  componentWillUnmount() {
+    this.firebaseRef.off();
+  }
+
+
+  handleRemove(title) {
+    this.firebaseRef.child(title).remove();
+  }
+
+  handleUpvote(title, currentLike) {
+    this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1 });
+  }
 
   render() {
 
     const records = this.state.questionItems.map(items =>
-        <div>
+      <div>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>{items.Question.replace(/_b/g, '\n')}</Typography>
+          </ExpansionPanelSummary>
 
-            <ExpansionPanel>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{items.Question}</Typography>
-            </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
 
-
-          <ExpansionPanelDetails>      
-            <Typography>
-              Answer : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography> 
+            <Typography>Answer: This is an answer</Typography>
+          </ExpansionPanelDetails>
+          <ExpansionPanelDetails>
+          <form noValidate autoComplete="off">
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                >
+                    <Grid>
+                    <TextField
+                        id="outlined-multiline-flexible"
+                        label="Type Your Answer"
+                        placeholder="Placeholder"
+                        multiline
+                        margin="normal"
+                        variant="outlined"
+                        fullWidth
+                        
+                    />
+                    </Grid>
+                    <Grid>
+                    <Button size="small" color="primary">
+                        Answer
+                    </Button>
+                    </Grid>
+                    
+                </Grid>
+                
+                
+            </form>
           </ExpansionPanelDetails>
 
           <Divider />
 
           <ExpansionPanelActions>
-            <Button size="small" color="secondary" >
+            <Button size="small" color="secondary" onClick={() => this.handleRemove(items.Question)}>
               Remove
             </Button>
-            <Button size="small" color="primary">
-              Answer
-            </Button>
-            <Button size="small" color="primary" onClick={() => this.handleUpvote(items.Question,items.upvoteCount)} >
+
+            <Button size="small" color="primary" onClick={() => this.handleUpvote(items.Question, items.upvoteCount)} >
               Upvote: {items.upvoteCount}
             </Button>
-            
+
           </ExpansionPanelActions>
-          </ExpansionPanel>
-        </div>
+        </ExpansionPanel>
+      </div>
     );
 
     return (
-     <div>
+      <div>
         {records}
       </div>
     );
