@@ -59,7 +59,7 @@ class TextFields extends React.Component {
     return (
       <form className={classes.container} noValidate autoComplete="off">
         
-        <TextField value = { this.state.Question }
+        <TextField value = { this.state.Question.replace(/_b/g, '\n') }
           id="outlined-multiline-flexible"
           label="Type Your Question"
           placeholder="Placeholder"

@@ -12,6 +12,8 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+    height: '68vh',
+    overflow: 'auto',
   },
   tabsRoot: {
     borderBottom: '1px solid #e8e8e8',
@@ -91,9 +93,7 @@ class CustomizedTabs extends React.Component {
           />
         </Tabs>
         <Panels db={firebase}/>
-                    <div>
-                    <TextField db={firebase}/>
-                    </div>
+                    
       </div>
     );
   }

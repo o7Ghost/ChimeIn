@@ -11,6 +11,7 @@ import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
+import AnswerField from './AnswerField.js';
 
 const styles = theme => ({
   root: {
@@ -92,10 +93,7 @@ class SimpleExpansionPanel extends React.Component {
 
 
           <ExpansionPanelDetails>      
-            <Typography>
-              Answer : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography> 
+            <AnswerField /> 
           </ExpansionPanelDetails>
 
           <Divider />
@@ -104,9 +102,7 @@ class SimpleExpansionPanel extends React.Component {
             <Button size="small" color="secondary" onClick={()=> this.handleRemove(items.Question)}>
               Remove
             </Button>
-            <Button size="small" color="primary">
-              Answer
-            </Button>
+          
             <Button size="small" color="primary" onClick={() => this.handleUpvote(items.Question,items.upvoteCount)} >
               Upvote: {items.upvoteCount}
             </Button>
