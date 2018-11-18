@@ -15,15 +15,29 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems, thirdListItems } from './listItems.js';
-import OtherActions from './OtherActions.js';
+import AddClass from './AddClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
 import Button from '@material-ui/core/Button';
 import Tabs from './Tabs.js';
-import {TeamMembers} from "../TeamMembers";
-import {DisplayData} from '../DisplayData.js';
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
+import blue from '@material-ui/core/colors/blue';
+
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const themeDrawer = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
+});
+
+const themeAppBar = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: blue,
+  },
+});
 
 const drawerWidth = 240;
 
@@ -82,9 +96,9 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 7,
+    width: theme.spacing.unit * 0,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
+      width: 0,
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -147,10 +161,13 @@ class Dashboard extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
+        <MuiThemeProvider theme={themeAppBar}>
           <AppBar
+     
             position="absolute"
             className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
           >
+          
             <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
               <IconButton
                 color="inherit"
@@ -177,7 +194,11 @@ class Dashboard extends React.Component {
               <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button>
 
             </Toolbar>
+         
           </AppBar>
+          </MuiThemeProvider>
+
+          <MuiThemeProvider theme={themeDrawer}>
           <Drawer
             variant="permanent"
             classes={{
@@ -197,9 +218,10 @@ class Dashboard extends React.Component {
             <Divider />
             <List>{thirdListItems}</List>
             <div className={classes.others}>
-              <OtherActions />
+              <AddClass db={firebase}/>
             </div>
           </Drawer>
+          </MuiThemeProvider>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
