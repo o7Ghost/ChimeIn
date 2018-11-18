@@ -15,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems, thirdListItems } from './listItems.js';
-import OtherActions from './OtherActions.js';
+import AddClass from './AddClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
 import Button from '@material-ui/core/Button';
@@ -197,7 +197,7 @@ class Dashboard extends React.Component {
             <Divider />
             <List>{thirdListItems}</List>
             <div className={classes.others}>
-              <OtherActions />
+              <AddClass db={firebase}/>
             </div>
           </Drawer>
           <main className={classes.content}>
