@@ -12,12 +12,10 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
 import AnswerField from './AnswerField.js';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   root: {
-    width: '80%',
+    width: '100%',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -95,38 +93,11 @@ class SimpleExpansionPanel extends React.Component {
 
           <ExpansionPanelDetails>
 
-            <Typography>Answer: This is an answer</Typography>
+            <Typography>Answer:This is an answer</Typography>
           </ExpansionPanelDetails>
           <ExpansionPanelDetails>
-          <form noValidate autoComplete="off">
-                <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="center"
-                >
-                    <Grid>
-                    <TextField
-                        id="outlined-multiline-flexible"
-                        label="Type Your Answer"
-                        placeholder="Placeholder"
-                        multiline
-                        margin="normal"
-                        variant="outlined"
-                        fullWidth
-                        
-                    />
-                    </Grid>
-                    <Grid>
-                    <Button size="small" color="primary">
-                        Answer
-                    </Button>
-                    </Grid>
-                    
-                </Grid>
-                
-                
-            </form>
+
+            <AnswerField />
           </ExpansionPanelDetails>
 
           <Divider />
