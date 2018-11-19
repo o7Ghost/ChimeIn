@@ -14,6 +14,15 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import blue from '@material-ui/core/colors/blue';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const themePaper = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: blue,
+  },
+});
 
 const styles = theme => ({
   main: {
@@ -60,6 +69,7 @@ function LoginView(props) {
 
 
   return (
+    <MuiThemeProvider theme={themePaper}>
     <main className={classes.main}>
       <CssBaseline />
       <Paper className={classes.paper}>
@@ -67,7 +77,7 @@ function LoginView(props) {
           <LockIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Log In
         </Typography>
         <form className={classes.form} onSubmit={onSubmit}>
           <FormControl margin="normal" required fullWidth>
@@ -105,6 +115,7 @@ function LoginView(props) {
       </Grid>
       </div>
     </main>
+    </MuiThemeProvider>
   );
 }
 
