@@ -217,6 +217,10 @@ class Dashboard extends React.Component {
             <List>{secondaryListItems}</List>
             <Divider />
             <List>{thirdListItems}</List>
+            <Divider />
+            <Divider />
+            <Divider />
+            <Divider />
             <div className={classes.others}>
               <AddClass db={firebase}/>
             </div>
