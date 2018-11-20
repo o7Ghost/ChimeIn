@@ -63,6 +63,12 @@ class AddClass extends React.Component {
                         <DialogContentText>
                             Enter the Course code in the following format to add course:
                         </DialogContentText>
+                        <DialogContentText>
+                            ClassName + 6-Digit-ID (Don't forget the plus sign)
+                        </DialogContentText>
+                        <DialogContentText>
+                            For example: CSE30+ABCDEF
+                        </DialogContentText>
                         <TextField
                             autoFocus
                             margin="dense"

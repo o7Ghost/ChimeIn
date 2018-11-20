@@ -12,6 +12,22 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Button from '@material-ui/core/Button';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 
+function compare(a, b) {
+    var regex = new RegExp('([0-9]+)|([a-zA-Z]+)','g');
+    var splittedArrayA = a['.key'].match(regex);
+    var splittedArrayB = b['.key'].match(regex);
+
+    var textA = splittedArrayA[0];
+    var numA = splittedArrayA[1];
+    var textB = splittedArrayB[0];
+    var numB = splittedArrayB[1];
+
+    /*if(textA.localeCompare(textB) != 0) {
+        return textA - textB;
+    }*/
+    return numA - numB;
+}
+
 export class SideBar extends React.Component {
     constructor(props) {
         super(props);
@@ -38,6 +54,7 @@ export class SideBar extends React.Component {
                 temp.push(classItem);
                 // TAClassTemp.push(classItem);
             });
+            temp.sort(compare);
             this.setState({TAClass: temp } );
         });
 
@@ -52,8 +69,12 @@ export class SideBar extends React.Component {
                 console.log(  typeof classItem  );
                 classItem['.key'] = classElem.key;
                 temp2.push(classItem);
+                console.log("AAA" + classItem['.key']);
                 // TAClassTemp.push(classItem);
             });
+
+            // Sort the student class
+            temp2.sort(compare);
             this.setState({StudentClass: temp2 } );
         });
 
