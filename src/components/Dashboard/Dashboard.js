@@ -212,10 +212,6 @@ class Dashboard extends React.Component {
               </IconButton>
             </div>
             <SideBar db = {firebase}/>
-            <Divider />
-            <Divider />
-            <Divider />
-            <Divider />
             <div className={classes.others}>
               <AddClass db={firebase}/>
             </div>
