@@ -14,7 +14,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems, thirdListItems } from './listItems.js';
+import {SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
@@ -211,12 +211,7 @@ class Dashboard extends React.Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
-            <Divider />
-            <List>{mainListItems}</List>
-            <Divider />
-            <List>{secondaryListItems}</List>
-            <Divider />
-            <List>{thirdListItems}</List>
+            <SideBar db = {firebase}/>
             <Divider />
             <Divider />
             <Divider />
