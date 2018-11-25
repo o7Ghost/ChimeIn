@@ -35,9 +35,9 @@ class TextFields extends React.Component {
         const {Question, upvoteCount} = this.props.value;
         event.preventDefault();
         if(Question != '') {
-          this.firebaseRef.child(Question).set({Question: this.props.value.Question});
+          this.firebaseRef.child(Question).set({Question: this.props.value.Question, upvoteCount: this.props.value.upvoteCount});
         }
-        this.props.stateChange({Question: ''});
+        this.props.stateChange({Question: '', upvoteCount: 0});
     }
 /*
   handleChange = name => event => {
