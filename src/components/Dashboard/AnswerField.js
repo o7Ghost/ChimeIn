@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
     container: {
-
         display: 'flex',
         flexWrap: 'wrap',
         width: '100%',
@@ -26,13 +25,6 @@ const styles = theme => ({
 class TextFields extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            Question: '',
-            upvoteCount: 0
-        };
-
-
     }
 
     componentWillUnmount() {
@@ -52,8 +44,8 @@ class TextFields extends React.Component {
 
     render() {
         {
-            var s = '\n';
-            console.log(s.charCodeAt(0));
+            //var s = '\n';
+            //console.log(s.charCodeAt(0));
         }
 
         const { classes } = this.props;

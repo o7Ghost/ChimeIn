@@ -22,10 +22,6 @@ class TextFields extends React.Component {
   constructor(props) {
     super(props);
 
-        this.state = {
-            Question: '',
-            upvoteCount: 0
-        };
 
       this.firebaseRef = this.props.db.database().ref("UserQuestions");
     }
@@ -35,13 +31,13 @@ class TextFields extends React.Component {
     }
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
-        console.log(this.state.Question)
-        const {Question, upvoteCount} = this.state;
+        console.log(this.props.value.Question)
+        const {Question, upvoteCount} = this.props.value;
         event.preventDefault();
         if(Question != '') {
-          this.firebaseRef.child(Question).set({Question: this.state.Question, upvoteCount: this.state.upvoteCount});
+          this.firebaseRef.child(Question).set({Question: this.props.value.Question});
         }
-        this.setState({Question: '', upvoteCount: 0});
+        this.props.stateChange({Question: ''});
     }
 /*
   handleChange = name => event => {
@@ -50,7 +46,8 @@ class TextFields extends React.Component {
     });
   };
 */
-
+//, upvoteCount: this.props.value.upvoteCount
+ //value= { this.props.value.Question.replace(/_b/g, '\n') }
   render() {
     {var s = '\n';
     console.log(s.charCodeAt(0));}
@@ -59,7 +56,7 @@ class TextFields extends React.Component {
     return (
       <form className={classes.container} noValidate autoComplete="off">
         
-        <TextField value = { this.state.Question.replace(/_b/g, '\n') }
+        <TextField
           id="outlined-multiline-flexible"
           label="Type Your Question"
           placeholder="Placeholder"
@@ -68,7 +65,8 @@ class TextFields extends React.Component {
           margin="normal"
           variant="outlined"
           fullWidth
-          onChange = {e => this.setState({Question: (e.target.value).replace(/\n/g, '_b')})} />
+          onChange = {e => this.props.stateChange((e.target.value).replace(/\n/g, '_b'))} 
+	       onKeyPress={this._handleKeyPress}/>
        
        <Button variant="outlined" id="submitButton" href="#" className={classes.button}
               onClick={this.pushToFirebase.bind(this)}>
@@ -84,6 +82,5 @@ class TextFields extends React.Component {
 TextFields.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 
 export default withStyles(styles)(TextFields);
