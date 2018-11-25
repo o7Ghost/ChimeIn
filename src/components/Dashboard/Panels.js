@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
 import AnswerField from './AnswerField.js';
+import firebase from 'firebase';
 
 const styles = theme => ({
   root: {
@@ -93,11 +94,11 @@ class SimpleExpansionPanel extends React.Component {
 
           <ExpansionPanelDetails>
 
-            <Typography>Answer:This is an answer</Typography>
+            <Typography>{items.Answer}</Typography>
           </ExpansionPanelDetails>
           <ExpansionPanelDetails>
 
-            <AnswerField />
+            <AnswerField Question = {items.Question} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/>
           </ExpansionPanelDetails>
 
           <Divider />

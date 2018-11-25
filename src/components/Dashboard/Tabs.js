@@ -92,7 +92,7 @@ class CustomizedTabs extends React.Component {
             label="Answered"
           />
         </Tabs>
-        <Panels db={firebase}/>
+        <Panels  value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/>
                     
       </div>
     );

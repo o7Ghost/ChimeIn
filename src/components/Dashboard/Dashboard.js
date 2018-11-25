@@ -145,11 +145,16 @@ class Dashboard extends React.Component {
     };
 
     this.handler = this.changeQState.bind(this)
+    this.handlerA = this.changeAState.bind(this)
   }
 
 
   changeQState(n) {
     this.setState({Question: n})
+  }
+
+  changeAState(n) {
+    this.setState({Answer: n})
   }
 
   signout() {
@@ -243,7 +248,7 @@ class Dashboard extends React.Component {
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
 
-            <Tabs />
+            <Tabs value={this.state} stateChange = {this.handlerA}/>
             
                     <TextField value={this.state} db={firebase} stateChange = {this.handler}/>
                     

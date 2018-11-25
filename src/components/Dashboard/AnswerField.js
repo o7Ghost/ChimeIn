@@ -22,17 +22,26 @@ const styles = theme => ({
 });
 
 
-class TextFields extends React.Component {
+class AnswerField extends React.Component {
     constructor(props) {
         super(props);
+
+        this.firebaseRef = this.props.db.database().ref("UserQuestions");
     }
 
     componentWillUnmount() {
-
+        this.firebaseRef.off();
     }
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
-
+        console.log(this.props.value.Answer)
+        console.log(this.props.Ans)
+        const {Answer} = this.props.value;
+        event.preventDefault();
+        if(Answer != '') {
+          this.firebaseRef.child(this.props.Question).update({ Answer: this.props.value.Answer });
+        }
+        this.props.stateChange({Answer: ''});
     }
     /*
       handleChange = name => event => {
@@ -67,10 +76,11 @@ class TextFields extends React.Component {
                         margin="normal"
                         variant="outlined"
                         fullWidth
+                        onChange = {e => this.props.stateChange((e.target.value).replace(/\n/g, '_b'))}
                     />
                     </Grid>
                     <Grid>
-                    <Button className={classes.button} size="small" color="primary">
+                    <Button className={classes.button} size="small" color="primary" onClick={this.pushToFirebase.bind(this)}>
                         Answer
                     </Button>
                     </Grid>
@@ -87,9 +97,9 @@ class TextFields extends React.Component {
 
 }
 
-TextFields.propTypes = {
+AnswerField.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
 
-export default withStyles(styles)(TextFields);
+export default withStyles(styles)(AnswerField);

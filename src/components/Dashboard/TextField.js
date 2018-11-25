@@ -32,12 +32,12 @@ class TextFields extends React.Component {
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
         console.log(this.props.value.Question)
-        const {Question, upvoteCount} = this.props.value;
+        const {Question, upvoteCount, Answer} = this.props.value;
         event.preventDefault();
         if(Question != '') {
-          this.firebaseRef.child(Question).set({Question: this.props.value.Question, upvoteCount: this.props.value.upvoteCount});
+          this.firebaseRef.child(Question).set({Question: this.props.value.Question, upvoteCount: this.props.value.upvoteCount, Answer: this.props.value.Answer});
         }
-        this.props.stateChange({Question: '', upvoteCount: 0});
+        this.props.stateChange({Question: '', upvoteCount: 0, Answer: ''});
     }
 /*
   handleChange = name => event => {
