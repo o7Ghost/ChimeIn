@@ -139,18 +139,19 @@ class Dashboard extends React.Component {
     }
 
     this.state = {
+      UID: '',
       Question: '',
       upvoteCount: 0,
-      Answer: ''
+      Answer: '',
+      timestamp: ''
     };
 
     this.handler = this.changeQState.bind(this)
     this.handlerA = this.changeAState.bind(this)
   }
 
-
-  changeQState(n) {
-    this.setState({Question: n})
+  changeQState(Q) {
+    this.setState({Question: Q})
   }
 
   changeAState(n) {
@@ -250,7 +251,7 @@ class Dashboard extends React.Component {
 
             <Tabs value={this.state} stateChange = {this.handlerA}/>
             
-                    <TextField value={this.state} db={firebase} stateChange = {this.handler}/>
+                    <TextField value={this.state} db={firebase} stateChange = {this.handler} />
                     
             <div>
               <AlertButtons />

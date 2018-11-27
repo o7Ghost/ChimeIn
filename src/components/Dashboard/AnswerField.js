@@ -27,14 +27,25 @@ class AnswerField extends React.Component {
         super(props);
         this.firebaseRef = this.props.db.database().ref("UserQuestions");
     }
+
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
         console.log(this.props.value.Answer)
         console.log(this.props.Ans)
+        var firebaseRef = this.props.db.database().ref("UserQuestions");
+        var questionRef = firebaseRef.child(this.props.Question);
+        let answerA = []
+        questionRef.on('value',(snapshot) =>{
+            const question = snapshot.val();
+            if(question.Answer){
+                answerA = question.Answer;
+            }
+        })
+        answerA.push(this.props.value.Answer);
         const {Answer} = this.props.value;
         event.preventDefault();
         if(Answer != '') {
-          this.firebaseRef.child(this.props.Question).update({ Answer: this.props.value.Answer });
+          questionRef.update({ Answer: answerA });
         }
         this.props.stateChange('');
     }

@@ -86,7 +86,9 @@ class SimpleExpansionPanel extends React.Component {
   render() {
 
     const records = this.state.questionItems.map(items =>
+    
       <div>
+        {console.log(items)}
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>{items.Question.replace(/_b/g, '\n')}</Typography>
@@ -98,17 +100,17 @@ class SimpleExpansionPanel extends React.Component {
           </ExpansionPanelDetails>
           <ExpansionPanelDetails>
 
-            <AnswerField Question = {items.Question} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/>
+            <AnswerField Question = {items.UID + "+" + items.timestamp} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/>
           </ExpansionPanelDetails>
 
           <Divider />
 
           <ExpansionPanelActions>
-            <Button size="small" color="secondary" onClick={() => this.handleRemove(items.Question)}>
+            <Button size="small" color="secondary" onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
               Remove
             </Button>
 
-            <Button size="small" color="primary" onClick={() => this.handleUpvote(items.Question, items.upvoteCount)} >
+            <Button size="small" color="primary" onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp , items.upvoteCount)} >
               Upvote: {items.upvoteCount}
             </Button>
 
