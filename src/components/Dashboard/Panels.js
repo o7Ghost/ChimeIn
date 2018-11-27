@@ -84,7 +84,6 @@ class SimpleExpansionPanel extends React.Component {
   }
 
   render() {
-
     const records = this.state.questionItems.map(items =>
     
       <div>
@@ -95,9 +94,13 @@ class SimpleExpansionPanel extends React.Component {
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>
-
-            <Typography>{items.Answer}</Typography>
+          <ul>
+           {items.Answer.map(temp =>
+             <Typography>{temp}</Typography>
+           )}
+           </ul>
           </ExpansionPanelDetails>
+
           <ExpansionPanelDetails>
 
             <AnswerField Question = {items.UID + "+" + items.timestamp} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/>
