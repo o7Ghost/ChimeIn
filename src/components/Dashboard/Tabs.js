@@ -8,6 +8,20 @@ import Panels from './Panels.js';
 import TextField from './TextField.js';
 import firebase from 'firebase';
 
+
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -93,7 +107,12 @@ class CustomizedTabs extends React.Component {
                         label="Answered"
                     />
                 </Tabs>
-                <Panels curClass ={this.props.curClass}  value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/>
+
+                {value === 0 && <TabContainer> <Panels curClass ={this.props.curClass}  value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
+                {value === 1 && <TabContainer>Item Two</TabContainer>}
+                {value === 2 && <TabContainer>Item Three</TabContainer>}
+
+                
 
             </div>
         );
