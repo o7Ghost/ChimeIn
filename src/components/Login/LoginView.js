@@ -16,6 +16,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import blue from '@material-ui/core/colors/blue';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Image from '../../image/background.jpeg';
 
 const themePaper = createMuiTheme({
   palette: {
@@ -25,6 +26,22 @@ const themePaper = createMuiTheme({
 });
 
 const styles = theme => ({
+    "@global": {
+        body: {
+            backgroundImage: 'url(' + Image + ')',
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            backgroundSize: "cover",
+            backgroundAttachment: "fixed",
+            height: "100%"
+        },
+        html: {
+            height: "100%"
+        },
+        "#componentWithId": {
+            height: "100%"
+        }
+    },
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.

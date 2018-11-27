@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
+import Image from '../../image/background.jpeg';
 
 
 const themePaper = createMuiTheme({
@@ -23,6 +24,22 @@ const themePaper = createMuiTheme({
 });
 
 const styles = theme => ({
+    "@global": {
+        body: {
+            backgroundImage: 'url(' + Image + ')',
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            backgroundSize: "cover",
+            backgroundAttachment: "fixed",
+            height: "100%"
+        },
+        html: {
+            height: "100%"
+        },
+        "#componentWithId": {
+            height: "100%"
+        }
+    },
     main: {
         width: 'auto',
         display: 'block', // Fix IE 11 issue.
