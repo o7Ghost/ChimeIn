@@ -67,7 +67,7 @@ class TextFields extends React.Component {
         const { classes } = this.props;
         return (
             <form className={classes.container} noValidate autoComplete="off">
-                <TextField value = { this.props.value.Question.replace(/_b/g, '\n')}
+                <TextField value = { this.props.value.Question}
                            id="outlined-multiline-flexible"
                            label="Type Your Question"
                            placeholder="Placeholder"
@@ -76,7 +76,7 @@ class TextFields extends React.Component {
                            margin="normal"
                            variant="outlined"
                            fullWidth
-                           onChange = {e => this.props.stateChange((e.target.value).replace(/\n/g, '_b'))}
+                           onChange = {e => this.props.stateChange((e.target.value))}
                            onKeyPress={this._handleKeyPress}/>
 
                 <Button variant="outlined" id="submitButton" href="#" className={classes.button}

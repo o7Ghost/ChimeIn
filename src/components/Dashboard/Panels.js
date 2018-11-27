@@ -123,7 +123,7 @@ class SimpleExpansionPanel extends React.Component {
                 <div>
                     <ExpansionPanel>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            <Typography>{items.Question.replace(/_b/g, '\n')}</Typography>
+                            <Typography>{items.Question}</Typography>
                         </ExpansionPanelSummary>
 
 

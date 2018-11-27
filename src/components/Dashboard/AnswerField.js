@@ -78,7 +78,7 @@ class AnswerField extends React.Component {
                     alignItems="center"
                 >
                     <Grid>
-                    <TextField value = { this.props.value.Answer.replace(/_b/g, '\n') }
+                    <TextField value = { this.props.value.Answer }
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
                         placeholder="Placeholder"
@@ -87,7 +87,7 @@ class AnswerField extends React.Component {
                         margin="normal"
                         variant="outlined"
                         fullWidth
-                        onChange = {e => this.props.stateChange((e.target.value).replace(/\n/g, '_b'))}
+                        onChange = {e => this.props.stateChange((e.target.value))}
                     />
                     </Grid>
                     <Grid>
