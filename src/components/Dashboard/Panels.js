@@ -85,7 +85,7 @@ class SimpleExpansionPanel extends React.Component {
 
   render() {
     const records = this.state.questionItems.map(items =>
-    
+
       <div>
         {console.log(items)}
         <ExpansionPanel>
@@ -93,12 +93,12 @@ class SimpleExpansionPanel extends React.Component {
             <Typography>{items.Question.replace(/_b/g, '\n')}</Typography>
           </ExpansionPanelSummary>
 
+
           <ExpansionPanelDetails>
-          <ul>
-           {items.Answer.map(temp =>
-             <Typography>{temp}</Typography>
-           )}
-           </ul>
+          <div>
+            {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
+           
+           </div>
           </ExpansionPanelDetails>
 
           <ExpansionPanelDetails>

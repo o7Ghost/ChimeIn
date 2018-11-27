@@ -40,7 +40,7 @@ class TextFields extends React.Component {
 
         if(Question != '') {
           this.firebaseRef.child( cID + "+" + time).set({UID: cID, 
-            Question: Question, upvoteCount: upvoteCount, timestamp: time});
+            Question: Question, upvoteCount: upvoteCount, Answer: Answer, timestamp: time});
         }
         
         this.props.stateChange('');
