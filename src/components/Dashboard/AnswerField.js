@@ -37,7 +37,7 @@ class AnswerField extends React.Component {
         let answerA = []
         questionRef.on('value',(snapshot) =>{
             const question = snapshot.val();
-            if(question.Answer){
+            if(question != null && question.Answer ){
                 answerA = question.Answer;
             }
         })
