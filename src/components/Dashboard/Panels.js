@@ -75,8 +75,7 @@ class SimpleExpansionPanel extends React.Component {
   }
 
 
-  handleRemove(title,Answer) {
-    this.firebaseRef.child(title).remove(Answer);
+  handleRemove(title) {
     this.firebaseRef.child(title).remove();
   }
 
@@ -105,7 +104,7 @@ class SimpleExpansionPanel extends React.Component {
           <Divider />
 
           <ExpansionPanelActions>
-            <Button size="small" color="secondary" onClick={() => this.handleRemove(items.Question,items.Answer)}>
+            <Button size="small" color="secondary" onClick={() => this.handleRemove(items.Question)}>
               Remove
             </Button>
 

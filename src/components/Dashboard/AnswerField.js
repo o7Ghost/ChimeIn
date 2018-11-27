@@ -25,6 +25,7 @@ const styles = theme => ({
 class AnswerField extends React.Component {
     constructor(props) {
         super(props);
+        this.firebaseRef = this.props.db.database().ref("UserQuestions");
     }
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
