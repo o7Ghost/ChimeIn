@@ -14,7 +14,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems, thirdListItems } from './listItems.js';
+import {SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
@@ -137,19 +137,25 @@ class Dashboard extends React.Component {
     if (!firebase || !firebase.apps.length) {
       firebase.initializeApp(config);
     }
+   this.state =  {
+       currentClass: 'CSE120FA2018A2',
+             UID: '',
+                Question: '',
+          	      upvoteCount: 0,
+                Answer: '',
+                timestamp: ''
+   }
+   this.handler = this.changeQState.bind(this);
+      this.handlerA = this.changeAState.bind(this);
 
-    this.state = {
-      UID: '',
-      Question: '',
-      upvoteCount: 0,
-      Answer: '',
-      timestamp: ''
-    };
-
-    this.handler = this.changeQState.bind(this)
-    this.handlerA = this.changeAState.bind(this)
+    this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
-
+  changeCurrentClass( classID ){
+    this.setState({
+          currentClass: classID,
+        });
+      console.log("current Class:",classID);
+  }
   changeQState(Q) {
     this.setState({Question: Q})
   }
@@ -158,13 +164,13 @@ class Dashboard extends React.Component {
     this.setState({Answer: n})
   }
 
+
   signout() {
     firebase.auth().signOut();
   }
   state = {
     open: true,
   };
-
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -197,6 +203,7 @@ class Dashboard extends React.Component {
                   this.state.open && classes.menuButtonHidden,
                 )}
               >
+
                 <MenuIcon />
               </IconButton>
               <Typography
@@ -230,16 +237,7 @@ class Dashboard extends React.Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
-            <Divider />
-            <List>{mainListItems}</List>
-            <Divider />
-            <List>{secondaryListItems}</List>
-            <Divider />
-            <List>{thirdListItems}</List>
-            <Divider />
-            <Divider />
-            <Divider />
-            <Divider />
+            <SideBar onClick ={this.changeCurrentClass} currClass = { this.state.currentClass} db = {firebase}/>
             <div className={classes.others}>
               <AddClass db={firebase}/>
             </div>
@@ -249,10 +247,10 @@ class Dashboard extends React.Component {
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
 
-            <Tabs value={this.state} stateChange = {this.handlerA}/>
-            
-                    <TextField value={this.state} db={firebase} stateChange = {this.handler} />
-                    
+              <Tabs curClass = {this.state.currentClass} value={this.state} stateChange = {this.handlerA} />
+              <TextField  curClass = {this.state.currentClass} value={this.state} db={firebase} stateChange = {this.handler} />
+
+
             <div>
               <AlertButtons />
             </div>

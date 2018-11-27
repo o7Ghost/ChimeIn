@@ -25,17 +25,22 @@ const styles = theme => ({
 class AnswerField extends React.Component {
     constructor(props) {
         super(props);
-        this.firebaseRef = this.props.db.database().ref("UserQuestions");
+        
     }
 
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
         console.log(this.props.value.Answer)
         console.log(this.props.Ans)
-        var firebaseRef = this.props.db.database().ref("UserQuestions");
-        var questionRef = firebaseRef.child(this.props.Question);
+
+        var firebaseRef = this.props.db.database().ref("ClassFinal");
+        var classRef = firebaseRef.child(this.props.curClass);
+        var questionRef = classRef.child("questions");
+        var answerRef = questionRef.child(this.props.Question);
+
+
         let answerA = []
-        questionRef.on('value',(snapshot) =>{
+        answerRef.on('value',(snapshot) =>{
             const question = snapshot.val();
             if(question != null && question.Answer ){
                 answerA = question.Answer;
@@ -45,7 +50,7 @@ class AnswerField extends React.Component {
         const {Answer} = this.props.value;
         event.preventDefault();
         if(Answer != '') {
-          questionRef.update({ Answer: answerA });
+          answerRef.update({ Answer: answerA });
         }
         this.props.stateChange('');
     }

@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import AddIcon from '@material-ui/icons/LibraryAdd';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -47,7 +47,7 @@ class AddClass extends React.Component {
                 <ListSubheader inset>Course Management</ListSubheader>
                 <ListItem button>
                     <ListItemIcon>
-                        <AssignmentIcon />
+                        <AddIcon />
                     </ListItemIcon>
                     <ListItemText primary="Add Class" onClick={this.handleClickOpen} />
                 </ListItem>
