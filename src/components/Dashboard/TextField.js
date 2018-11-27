@@ -37,7 +37,7 @@ class TextFields extends React.Component {
         if(Question != '') {
           this.firebaseRef.child(Question).set({Question: this.props.value.Question, upvoteCount: this.props.value.upvoteCount, Answer: this.props.value.Answer});
         }
-        this.props.stateChange({Question: '', upvoteCount: 0, Answer: ''});
+        this.props.stateChange('');
     }
 /*
   handleChange = name => event => {
@@ -55,8 +55,7 @@ class TextFields extends React.Component {
     const { classes } = this.props;
     return (
       <form className={classes.container} noValidate autoComplete="off">
-        
-        <TextField
+        <TextField value = { this.props.value.Question.replace(/_b/g, '\n')}
           id="outlined-multiline-flexible"
           label="Type Your Question"
           placeholder="Placeholder"

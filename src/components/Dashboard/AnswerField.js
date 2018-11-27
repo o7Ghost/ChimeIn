@@ -36,7 +36,7 @@ class AnswerField extends React.Component {
         if(Answer != '') {
           this.firebaseRef.child(this.props.Question).update({ Answer: this.props.value.Answer });
         }
-        this.props.stateChange({Answer: ''});
+        this.props.stateChange('');
     }
     /*
       handleChange = name => event => {
@@ -62,7 +62,7 @@ class AnswerField extends React.Component {
                     alignItems="center"
                 >
                     <Grid>
-                    <TextField
+                    <TextField value = { this.props.value.Answer.replace(/_b/g, '\n') }
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
                         placeholder="Placeholder"
