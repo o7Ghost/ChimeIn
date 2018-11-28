@@ -16,6 +16,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import {SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
+import AddTA from './AddTA.js';
+import DropClass from './DropClass.js';
+import CreateClass from './CreateClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
 import Button from '@material-ui/core/Button';
@@ -138,7 +141,7 @@ class Dashboard extends React.Component {
       firebase.initializeApp(config);
     }
    this.state =  {
-       currentClass: 'CSE120FA2018A2',
+       currentClass: 'default',
              UID: '',
                 Question: '',
           	      upvoteCount: 0,
@@ -241,18 +244,32 @@ class Dashboard extends React.Component {
             <div className={classes.others}>
               <AddClass db={firebase}/>
             </div>
+            <div className={classes.others}>
+                <DropClass db={firebase}/>
+            </div>
+            <div className={classes.others}>
+                <CreateClass db={firebase}/>
+            </div>
+              <div className={classes.others}>
+                  <AddTA db={firebase}/>
+              </div>
           </Drawer>
           </MuiThemeProvider>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
-
-              <Tabs curClass = {this.state.currentClass} value={this.state} stateChange = {this.handlerA} />
-              <TextField  curClass = {this.state.currentClass} value={this.state} db={firebase} stateChange = {this.handler} />
-
+              {
+                  this.state.currentClass == 'default' ?
+                      null : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA}/>
+              }
+              {
+                this.state.currentClass == 'default' ?
+                  null :
+                <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler}/>
+              }
 
             <div>
-              <AlertButtons />
+                {this.state.currentClass == 'default' ? null : <AlertButtons />}
             </div>
 
 
