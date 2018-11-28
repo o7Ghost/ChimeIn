@@ -106,6 +106,7 @@ class AddClass extends React.Component {
                 classRef.update({className:this.state.className});
                 alert("Success!");
             }
+            this.handleClose();
         });
 
 
