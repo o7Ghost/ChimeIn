@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Route, Redirect, Link } from "react-router-dom";
 import firebase from 'firebase';
+<<<<<<< HEAD
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from "@material-ui/core";
 import blue from '@material-ui/core/colors/blue';
@@ -66,6 +67,11 @@ class ResetContainer extends Component {
         super(props);
         console.log(props)
         const { classes } = props;
+=======
+class ResetContainer extends Component {
+    constructor(props) {
+        super(props);
+>>>>>>> master
         var config = {
             apiKey: "AIzaSyDAxqzZLvyW64VLMhvxTxQjMubdntruWE0",
             authDomain: "cse110firebase-498ba.firebaseapp.com",
@@ -78,6 +84,7 @@ class ResetContainer extends Component {
             firebase.initializeApp(config);
         }
         this.state = {
+<<<<<<< HEAD
             email: ""
         };
     }
@@ -89,10 +96,24 @@ class ResetContainer extends Component {
             alert(error);
         }
         alert("If the email:" + this.state.email + " is registered, an email for resetting password has been sent");
+=======
+            email:""
+        };
+    }
+    handleReset (event){
+        event.preventDefault();
+        try{
+            firebase.auth().sendPasswordResetEmail(this.state.email);
+        }catch(error){
+            alert(error);
+        }
+        alert("If the email:"+this.state.email+ " is registered, an email for resetting password has been sent");
+>>>>>>> master
         this.props.history.push("/login");
     };
 
     render() {
+<<<<<<< HEAD
         const { classes } = this.props.classes
         return (
             <div>
@@ -133,9 +154,22 @@ class ResetContainer extends Component {
                     </main>
                 </MuiThemeProvider>
 
+=======
+        return(
+            <div>
+                <h1>Reset password</h1>
+                <label>Email</label>
+                <input onChange= {e => this.setState({email: e.target.value})}/>
+                <br />
+                <button onClick={this.handleReset.bind(this)}>Reset password</button>
+>>>>>>> master
             </div>
         );
     }
 }
 
+<<<<<<< HEAD
 export default withStyles(styles)(withRouter(ResetContainer));
+=======
+export default withRouter(ResetContainer);
+>>>>>>> master

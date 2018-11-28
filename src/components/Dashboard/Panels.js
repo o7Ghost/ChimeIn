@@ -11,7 +11,10 @@ import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
+<<<<<<< HEAD
 import AnswerField from './AnswerField.js';
+=======
+>>>>>>> master
 
 const styles = theme => ({
   root: {
@@ -48,6 +51,7 @@ const styles = theme => ({
   },
 });
 
+<<<<<<< HEAD
 class SimpleExpansionPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -122,6 +126,123 @@ class SimpleExpansionPanel extends React.Component {
       </div>
     );
   }
+=======
+function SimpleExpansionPanel(props) {
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+         
+            <Typography className={classes.heading}>This is a question. Lorem ipsum dolor sit amet?</Typography>
+          
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>      
+          <Typography>
+            Answer : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography> 
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small" color="secondary">
+            Remove
+            </Button>
+          <Button size="small" color="primary">
+            Answer
+          </Button>
+          <Button size="small" color="primary">
+            Upvote
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+
+
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Location</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>      
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography> 
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small" color="secondary">
+            Remove
+            </Button>
+          <Button size="small" color="primary">
+            Answer
+          </Button>
+          <Button size="small" color="primary">
+            Upvote
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+
+
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Location</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>      
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography> 
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small" color="secondary">
+            Remove
+            </Button>
+          <Button size="small" color="primary">
+            Answer
+          </Button>
+          <Button size="small" color="primary">
+            Upvote
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+
+
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Location</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>      
+          <Typography>
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography> 
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small" color="secondary">
+            Remove
+            </Button>
+          <Button size="small" color="primary">
+            Answer
+          </Button>
+          <Button size="small" color="primary">
+            Upvote
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+      
+      
+    </div>
+  );
+>>>>>>> master
 }
 
 SimpleExpansionPanel.propTypes = {

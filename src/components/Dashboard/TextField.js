@@ -18,6 +18,7 @@ const styles = theme => ({
 });
 
 
+<<<<<<< HEAD
 class TextFields extends React.Component {
   constructor(props) {
     super(props);
@@ -44,11 +45,17 @@ class TextFields extends React.Component {
         this.setState({Question: '', upvoteCount: 0});
     }
 /*
+=======
+class OutlinedTextFields extends React.Component {
+
+
+>>>>>>> master
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
   };
+<<<<<<< HEAD
 */
 
     _handleKeyPress = (e) => {
@@ -69,6 +76,17 @@ class TextFields extends React.Component {
         
         <TextField value = { this.state.Question.replace(/_b/g, '\n') }
           id="outlined-multiline-flexible"
+=======
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <form className={classes.container} noValidate autoComplete="off">
+        
+        <TextField
+          id="outlined-textarea"
+>>>>>>> master
           label="Type Your Question"
           placeholder="Placeholder"
           multiline
@@ -76,17 +94,24 @@ class TextFields extends React.Component {
           margin="normal"
           variant="outlined"
           fullWidth
+<<<<<<< HEAD
           onChange = {e => this.setState({Question: (e.target.value).replace(/\n/g, '_b')})}
                    onKeyPress={this._handleKeyPress}
         />
        <Button variant="outlined" id="submitButton" href="#" className={classes.button}
               onClick={this.pushToFirebase.bind(this)}>
+=======
+        />
+       
+       <Button variant="outlined" href="#" className={classes.button} >
+>>>>>>> master
         Submit
       </Button>
       </form>
       
     );
   }
+<<<<<<< HEAD
   
 }
 
@@ -96,3 +121,12 @@ TextFields.propTypes = {
 
 
 export default withStyles(styles)(TextFields);
+=======
+}
+
+OutlinedTextFields.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(OutlinedTextFields);
+>>>>>>> master

@@ -14,12 +14,18 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+<<<<<<< HEAD
 import {SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
+=======
+import { mainListItems, secondaryListItems, thirdListItems } from './listItems.js';
+import OtherActions from './OtherActions.js';
+>>>>>>> master
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
 import Button from '@material-ui/core/Button';
 import Tabs from './Tabs.js';
+<<<<<<< HEAD
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
 import blue from '@material-ui/core/colors/blue';
@@ -38,6 +44,12 @@ const themeAppBar = createMuiTheme({
     secondary: blue,
   },
 });
+=======
+import {TeamMembers} from "../TeamMembers";
+import {DisplayData} from '../DisplayData.js';
+import { Link } from 'react-router-dom'
+
+>>>>>>> master
 
 const drawerWidth = 240;
 
@@ -96,9 +108,15 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+<<<<<<< HEAD
     width: theme.spacing.unit * 0,
     [theme.breakpoints.up('sm')]: {
       width: 0,
+=======
+    width: theme.spacing.unit * 7,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9,
+>>>>>>> master
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -161,6 +179,7 @@ class Dashboard extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
+<<<<<<< HEAD
         <MuiThemeProvider theme={themeAppBar}>
           <AppBar
      
@@ -168,6 +187,12 @@ class Dashboard extends React.Component {
             className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
           >
           
+=======
+          <AppBar
+            position="absolute"
+            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+          >
+>>>>>>> master
             <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
               <IconButton
                 color="inherit"
@@ -194,11 +219,15 @@ class Dashboard extends React.Component {
               <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button>
 
             </Toolbar>
+<<<<<<< HEAD
          
           </AppBar>
           </MuiThemeProvider>
 
           <MuiThemeProvider theme={themeDrawer}>
+=======
+          </AppBar>
+>>>>>>> master
           <Drawer
             variant="permanent"
             classes={{
@@ -211,17 +240,31 @@ class Dashboard extends React.Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
+<<<<<<< HEAD
             <SideBar db = {firebase}/>
             <div className={classes.others}>
               <AddClass db={firebase}/>
             </div>
           </Drawer>
           </MuiThemeProvider>
+=======
+            <Divider />
+            <List>{mainListItems}</List>
+            <Divider />
+            <List>{secondaryListItems}</List>
+            <Divider />
+            <List>{thirdListItems}</List>
+            <div className={classes.others}>
+              <OtherActions />
+            </div>
+          </Drawer>
+>>>>>>> master
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
 
             <Tabs />
+<<<<<<< HEAD
             
                     <TextField db={firebase}/>
                     
@@ -230,6 +273,14 @@ class Dashboard extends React.Component {
             </div>
 
 
+=======
+            <div>
+              <AlertButtons />
+            </div>
+            <DisplayData db={firebase} />
+            <TeamMembers db={firebase} />
+            
+>>>>>>> master
           </main>
         </div>
       </React.Fragment>
