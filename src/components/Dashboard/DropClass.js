@@ -58,6 +58,7 @@ class DropClass extends React.Component {
         }
         alert("The class:"+this.state.className+" has been dropped if you have added it before.");
         // check if the there is actually this class entered by user. by using .on and snapshot
+        this.handleClose();
     };
 
     _handleKeyPress = (e) => {
