@@ -5,11 +5,11 @@ import AppPage from './AppPage';
 import SignUp from './components/SignUp/SignUpContainer';
 import Login from './components/Login/LoginContainer' ;
 import Reset from './components/Reset/ResetContainer' ;
+import TextField from './components/Dashboard/TextField';
 import PrivateRoute from './components/PrivateRoute';
 import * as serviceWorker from './serviceWorker';
 import {HashRouter,Route,Link} from 'react-router-dom';
 import firebase from 'firebase';
-import Dashboard from "./components/Posts/Dashboard";
 
 class Index extends Component {
     constructor(props) {
@@ -61,7 +61,6 @@ class Index extends Component {
                     <Route exact path="/reset" component={Reset} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={SignUp} />
-                    <Route exact path="/dashboard" component={Dashboard} />
                 </div>
             </HashRouter >
         )

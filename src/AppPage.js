@@ -5,6 +5,15 @@ import {DisplayData} from './components/DisplayData.js';
 import firebase from 'firebase';
 import {Route, Redirect, Link} from 'react-router-dom';
 import Login from './components/Login/LoginContainer' ;
+import Dashboard from './components/Dashboard/Dashboard.js';
+import { createMuiTheme } from '@material-ui/core/styles';
+import purple from '@material-ui/core/colors/blue';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+  },
+});
 class AppPage extends Component {
     constructor(props) {
         super(props);
@@ -24,9 +33,8 @@ class AppPage extends Component {
     signout(){
         firebase.auth().signOut();
     }
-    render() {
-        // if (!this.props || !this.props.authenticated){
-        if( firebase.auth().currentUser===null){
+  render() {
+        if (!this.props || !this.props.authenticated){
             console.log("Not login yet!!!!");
             return(
                 <Redirect to="/login" />
@@ -35,23 +43,13 @@ class AppPage extends Component {
         else {
             console.log("login already!");
             return (
-                <div>
-                    <main>
-                        <Link to="/login">Need to switch account?</Link>
-                        <br/>
-                        <Link to="/signUp">Need an account?</Link>
-                        <br/>
-                        <Link to="/login" onClick={this.signout}>Sign out</Link>
-                        <br/>
-                        <Link to="/dashboard">Ready to post a question?</Link>
-                        <br/>
-                    </main>
-                    <TeamMembers db={firebase}/>
-                    <DisplayData db={firebase}/>
-                </div>
+
+                 <div>
+                <Dashboard />
+                </div> 
             )
         }
-    }
+  }
 }
 
 export default AppPage;

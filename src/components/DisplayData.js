@@ -30,6 +30,7 @@ export class DisplayData extends Component {
                 <td style={{width: '200px', textAlign: 'center'}}>{items.age}</td>
             </tr>
         );
+
         return (
             <div style={{paddingTop: '20px'}}>
                 <table style={{border: '1px solid black'}}>
