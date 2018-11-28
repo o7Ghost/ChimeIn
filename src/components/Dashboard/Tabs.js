@@ -71,13 +71,21 @@ const styles = theme => ({
 });
 
 class CustomizedTabs extends React.Component {
-    state = {
-        value: 0,
-    };
+    constructor(props) {
+        super(props);
 
-    handleChange = (event, value) => {
-        this.setState({ value });
-        console.log("in Tab",this.props.curClass);
+        this.state = {
+            key: 0
+        };
+
+        this.handleSelect = this.handleSelect.bind(this)
+    }
+
+
+    handleSelect(key) {
+        alert(`selected ${key}`);
+        this.setState({ key});
+        console.log("in Tab",key);
     };
 
     render() {
@@ -87,24 +95,31 @@ class CustomizedTabs extends React.Component {
         return (
             <div className={classes.root}>
                 <Tabs
-                    value={value}
-                    onChange={this.handleChange}
+                    activeKey = {this.state.key}
+                    value={this.value}
+                    onSelect={this.handleSelect}
                     classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
                 >
                     <Tab
+                        eventKey={1}
                         disableRipple
                         classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                         label="All"
+                        value ="All"
                     />
                     <Tab
+                        eventKey={2}
                         disableRipple
                         classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                         label="Followed"
+                        value = "Followed"
                     />
                     <Tab
+                        eventKey={3}
                         disableRipple
                         classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                         label="Answered"
+                        value = "Answered"
                     />
                 </Tabs>
 
@@ -112,7 +127,7 @@ class CustomizedTabs extends React.Component {
                 {value === 1 && <TabContainer>Item Two</TabContainer>}
                 {value === 2 && <TabContainer>Item Three</TabContainer>}
 
-                
+
 
             </div>
         );
