@@ -9,7 +9,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-<<<<<<< HEAD
 import Button from '@material-ui/core/Button';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 
@@ -122,66 +121,3 @@ export class SideBar extends React.Component {
         );
     };
 };
-=======
-
-export const mainListItems = (
-  <div>
-    <ListSubheader inset>Student</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-      <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="CSE110" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-      <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="CSE101" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-      <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="CSE105" />
-    </ListItem>
-
- 
-  </div>
-);
-
-export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>TA</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="CSE30" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="CSE12" />
-    </ListItem>
-  </div>
-);
-export const thirdListItems = (
-    <div>
-      <ListSubheader inset>Instructor</ListSubheader>
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="CSE8A" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="CSE190" />
-      </ListItem>
-    </div>
-  );
->>>>>>> master
