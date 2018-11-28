@@ -56,7 +56,7 @@ class SimpleExpansionPanel extends React.Component {
       questionItems: []
     };
 
-
+    console.log("here---->",this.tabselected)
     this.firebaseRef = this.props.db.database().ref("UserQuestions");
     this.firebaseRef.on('value', dataSnapshot => {
       let questionItems = [];
@@ -97,7 +97,7 @@ class SimpleExpansionPanel extends React.Component {
           </ExpansionPanelDetails>
           <ExpansionPanelDetails>
 
-            <AnswerField />
+            {/* <AnswerField /> */}
           </ExpansionPanelDetails>
 
           <Divider />

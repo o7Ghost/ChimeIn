@@ -32,11 +32,12 @@ class AddClass extends React.Component {
             StudentClass: [],
             TAClass: [],
             open: false,
-            addCode: ''
+            addCode: '',
+            className:'',
+            uid: this.props.db.auth().currentUser.uid
         };
 
-
-        this.firebaseRef = this.props.db.database().ref("User").child("M20Fryhk7OSHWcJIDa1Z994h12A3");
+        this.firebaseRef = this.props.db.database().ref("User").child(this.state.uid);
         var TARef = this.firebaseRef.child('TAClass');
         var StudentRef = this.firebaseRef.child('studentClass');
         /*TARef.on('value', snapshot => {
@@ -88,18 +89,28 @@ class AddClass extends React.Component {
 
     handleAdd = () => {
         //this line will create a route to the database, no matter if the database child is exist or not
-        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.addCode);
+        console.log("You entered:"+this.state.className+"+"+this.state.addCode);
+        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
+
+
+        classRef.on('value', (snapshot) => {
+            const classObject = snapshot.val();
+            if(classObject==null){
+                alert("Class not registered!");
+            }
+            else if(!classObject.addCode || classObject.addCode.localeCompare(this.state.addCode)!=0) {
+                alert("Wrong add code!");
+            }else{
+                var userRef = this.props.db.database().ref("User").child(this.state.uid);
+                var classRef = userRef.child("studentClass").child(this.state.className);
+                classRef.update({className:this.state.className});
+                alert("Success!");
+            }
+            this.handleClose();
+        });
+
 
         // check if the there is actually this class entered by user. by using .on and snapshot
-        classRef = classRef.child("addCode");
-        classRef.on('value', snapshot => {
-            if( snapshot.val() == null) {
-                this.setState({ open: false});
-            }
-            else {
-                console.log("SUSUSSUSUSU");
-            }
-        });
     };
 
     _handleKeyPress = (e) => {
@@ -131,17 +142,25 @@ class AddClass extends React.Component {
                             Enter the Course code in the following format to add course:
                         </DialogContentText>
                         <DialogContentText>
-                            ClassName + 6-Digit-ID (Don't forget the plus sign)
+                            ClassName + 6-Digit-ID
                         </DialogContentText>
                         <DialogContentText>
-                            For example: CSE30+ABCDEF
+                            For example: CSE30+A1B2C3
                         </DialogContentText>
                         <TextField
                             autoFocus
                             margin="dense"
                             id="name"
-                            label="Course Code"
-                            type="email"
+                            label="Course Name"
+                            type="text"
+                            fullWidth
+                            onChange = {e => this.setState({className: (e.target.value)})}
+                        />
+                        <TextField
+                            margin="dense"
+                            id="name"
+                            label="6-Digit Add code"
+                            type="text"
                             fullWidth
                             onChange = {e => this.setState({addCode: (e.target.value)})}
                             onKeyPress={this._handleKeyPress}

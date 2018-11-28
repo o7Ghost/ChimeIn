@@ -22,24 +22,37 @@ const styles = theme => ({
 });
 
 
-class TextFields extends React.Component {
+class AnswerField extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            Question: '',
-            upvoteCount: 0
-        };
-
-
+        
     }
 
-    componentWillUnmount() {
-
-    }
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
+        console.log(this.props.value.Answer)
+        console.log(this.props.Ans)
 
+        var firebaseRef = this.props.db.database().ref("ClassFinal");
+        var classRef = firebaseRef.child(this.props.curClass);
+        var questionRef = classRef.child("questions");
+        var answerRef = questionRef.child(this.props.Question);
+
+
+        let answerA = []
+        answerRef.on('value',(snapshot) =>{
+            const question = snapshot.val();
+            if(question != null && question.Answer ){
+                answerA = question.Answer;
+            }
+        })
+        answerA.push(this.props.value.Answer);
+        const {Answer} = this.props.value;
+        event.preventDefault();
+        if(Answer != '') {
+          answerRef.update({ Answer: answerA });
+        }
+        this.props.stateChange('');
     }
     /*
       handleChange = name => event => {
@@ -51,8 +64,8 @@ class TextFields extends React.Component {
 
     render() {
         {
-            var s = '\n';
-            console.log(s.charCodeAt(0));
+            //var s = '\n';
+            //console.log(s.charCodeAt(0));
         }
 
         const { classes } = this.props;
@@ -65,7 +78,7 @@ class TextFields extends React.Component {
                     alignItems="center"
                 >
                     <Grid>
-                    <TextField
+                    <TextField value = { this.props.value.Answer }
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
                         placeholder="Placeholder"
@@ -74,10 +87,11 @@ class TextFields extends React.Component {
                         margin="normal"
                         variant="outlined"
                         fullWidth
+                        onChange = {e => this.props.stateChange((e.target.value))}
                     />
                     </Grid>
                     <Grid>
-                    <Button className={classes.button} size="small" color="primary">
+                    <Button className={classes.button} size="small" color="primary" onClick={this.pushToFirebase.bind(this)}>
                         Answer
                     </Button>
                     </Grid>
@@ -94,9 +108,9 @@ class TextFields extends React.Component {
 
 }
 
-TextFields.propTypes = {
+AnswerField.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
 
-export default withStyles(styles)(TextFields);
+export default withStyles(styles)(AnswerField);
