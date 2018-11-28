@@ -12,73 +12,52 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Button from '@material-ui/core/Button';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 
-function compare(a, b) {
-    var regex = new RegExp('([0-9]+)|([a-zA-Z]+)','g');
-    var splittedArrayA = a['.key'].match(regex);
-    var splittedArrayB = b['.key'].match(regex);
-
-    var textA = splittedArrayA[0];
-    var numA = splittedArrayA[1];
-    var textB = splittedArrayB[0];
-    var numB = splittedArrayB[1];
-
-    /*if(textA.localeCompare(textB) != 0) {
-        return textA - textB;
-    }*/
-    return numA - numB;
-}
-
 export class SideBar extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             StudentClass: [],
-            TAClass: []
+            TAClass: [],
+            selectedIndex: 0,
         };
 
 
-        this.firebaseRef = this.props.db.database().ref("User").child("M20Fryhk7OSHWcJIDa1Z994h12A3");
-        var TARef = this.firebaseRef.child('TAClass');
+        this.firebaseRef = this.props.db.database().ref("UserFinal").child("UID1");
+        var TARef = this.firebaseRef.child('modClass');
+
         var StudentRef = this.firebaseRef.child('studentClass');
         TARef.on('value', snapshot => {
             let temp = [];
-            console.log( Object.entries(snapshot) );
             snapshot.forEach(classElem => {
-
+                console.log("----");
+                console.log(classElem.val().toString());
                 let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
                 temp.push(classItem);
-                // TAClassTemp.push(classItem);
             });
-            temp.sort(compare);
+            console.log(temp);
             this.setState({TAClass: temp } );
         });
 
         StudentRef.on('value', snapshot => {
             let temp2 = [];
-            console.log( Object.entries(snapshot) );
             snapshot.forEach(classElem => {
-
                 let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp2.push(classItem);
-                console.log("AAA" + classItem['.key']);
-                // TAClassTemp.push(classItem);
+                console.log( classElem.val() );
+                console.log( classItem['className']);
+                temp2.push(classItem['className']);
             });
-
-            // Sort the student class
-            temp2.sort(compare);
             this.setState({StudentClass: temp2 } );
         });
-
+        this.handleChange = this.handleChange.bind(this);
     }
+    handleChange(e) {
+        const onClickClass =  e['course'];
+        console.log(this);
+        this.props.onClick(onClickClass);
+        this.setState({selectedIndex: onClickClass } );
+    }
+
 
     componentWillUnmount() {
         this.firebaseRef.off();
@@ -88,23 +67,26 @@ export class SideBar extends React.Component {
 
         const StudentClass = this.state.StudentClass.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})} >
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course.className}/>
+                    <ListItemText primary={course} />
                 </ListItem>
             </div>
         );
         const TAClass = this.state.TAClass.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
-                        <AssignmentIcon/>
+                       <AssignmentIcon/>
                     </ListItemIcon>
-
-                    <ListItemText primary={course.className}/>
+                    <ListItemText primary={course} />
                 </ListItem>
             </div>
         );

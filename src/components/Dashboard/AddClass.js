@@ -25,58 +25,9 @@ const styles = theme => ({
 
 
 class AddClass extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            StudentClass: [],
-            TAClass: [],
-            open: false,
-            addCode: ''
-        };
-
-
-        this.firebaseRef = this.props.db.database().ref("User").child("M20Fryhk7OSHWcJIDa1Z994h12A3");
-        var TARef = this.firebaseRef.child('TAClass');
-        var StudentRef = this.firebaseRef.child('studentClass');
-        /*TARef.on('value', snapshot => {
-            let temp = [];
-            console.log( Object.entries(snapshot) );
-            snapshot.forEach(classElem => {
-
-                let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp.push(classItem);
-                // TAClassTemp.push(classItem);
-            });
-            temp.sort(compare);
-            this.setState({TAClass: temp } );
-        });
-
-        StudentRef.on('value', snapshot => {
-            let temp2 = [];
-            console.log( Object.entries(snapshot) );
-            snapshot.forEach(classElem => {
-
-                let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp2.push(classItem);
-                console.log("AAA" + classItem['.key']);
-                // TAClassTemp.push(classItem);
-            });
-
-            // Sort the student class
-            temp2.sort(compare);
-            this.setState({StudentClass: temp2 } );
-        });*/
-
-    }
+    state = {
+        open: false,
+    };
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -87,26 +38,8 @@ class AddClass extends React.Component {
     };
 
     handleAdd = () => {
-        //this line will create a route to the database, no matter if the database child is exist or not
-        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.addCode);
 
-        // check if the there is actually this class entered by user. by using .on and snapshot
-        classRef = classRef.child("addCode");
-        classRef.on('value', snapshot => {
-            if( snapshot.val() == null) {
-                this.setState({ open: false});
-            }
-            else {
-                console.log("SUSUSSUSUSU");
-            }
-        });
     };
-
-    _handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            this.handleAdd();
-        }
-    }
 
     render() {
         return (
@@ -130,12 +63,6 @@ class AddClass extends React.Component {
                         <DialogContentText>
                             Enter the Course code in the following format to add course:
                         </DialogContentText>
-                        <DialogContentText>
-                            ClassName + 6-Digit-ID (Don't forget the plus sign)
-                        </DialogContentText>
-                        <DialogContentText>
-                            For example: CSE30+ABCDEF
-                        </DialogContentText>
                         <TextField
                             autoFocus
                             margin="dense"
@@ -143,15 +70,13 @@ class AddClass extends React.Component {
                             label="Course Code"
                             type="email"
                             fullWidth
-                            onChange = {e => this.setState({addCode: (e.target.value)})}
-                            onKeyPress={this._handleKeyPress}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleAdd.bind(this)} color="primary">
+                        <Button onClick={this.handleAdd} color="primary">
                             add
                         </Button>
                     </DialogActions>

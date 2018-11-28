@@ -137,15 +137,40 @@ class Dashboard extends React.Component {
     if (!firebase || !firebase.apps.length) {
       firebase.initializeApp(config);
     }
+   this.state =  {
+       currentClass: 'CSE120FA2018A2',
+             UID: '',
+                Question: '',
+          	      upvoteCount: 0,
+                Answer: '',
+                timestamp: ''
+   }
+   this.handler = this.changeQState.bind(this);
+      this.handlerA = this.changeAState.bind(this);
 
+    this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
+  changeCurrentClass( classID ){
+    this.setState({
+          currentClass: classID,
+        });
+      console.log("current Class:",classID);
+  }
+  changeQState(Q) {
+    this.setState({Question: Q})
+  }
+
+  changeAState(n) {
+    this.setState({Answer: n})
+  }
+
+
   signout() {
     firebase.auth().signOut();
   }
   state = {
     open: true,
   };
-
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -178,6 +203,7 @@ class Dashboard extends React.Component {
                   this.state.open && classes.menuButtonHidden,
                 )}
               >
+
                 <MenuIcon />
               </IconButton>
               <Typography
@@ -187,7 +213,7 @@ class Dashboard extends React.Component {
                 noWrap
                 className={classes.title}
               >
-                Dashboard
+                  {this.state.currentClass}
               </Typography>
 
               <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button>
@@ -211,7 +237,7 @@ class Dashboard extends React.Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
-            <SideBar db = {firebase}/>
+            <SideBar onClick ={this.changeCurrentClass} currClass = { this.state.currentClass} db = {firebase}/>
             <div className={classes.others}>
               <AddClass db={firebase}/>
             </div>
@@ -221,10 +247,10 @@ class Dashboard extends React.Component {
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
 
-            <Tabs />
-            
-                    <TextField db={firebase}/>
-                    
+              <Tabs curClass = {this.state.currentClass} value={this.state} stateChange = {this.handlerA} />
+              <TextField  curClass = {this.state.currentClass} value={this.state} db={firebase} stateChange = {this.handler} />
+
+
             <div>
               <AlertButtons />
             </div>
