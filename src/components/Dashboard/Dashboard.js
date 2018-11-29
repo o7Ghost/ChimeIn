@@ -240,7 +240,6 @@ class Dashboard extends React.Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
-            <SideBar currClass = {this.state.currentClass} db = {firebase}/>
             <SideBar onClick  ={this.changeCurrentClass} currClass = { this.state.currentClass} db = {firebase}/>
             <div className={classes.others}>
               <AddClass db={firebase}/>
