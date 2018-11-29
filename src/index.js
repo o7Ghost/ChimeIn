@@ -5,6 +5,7 @@ import AppPage from './AppPage';
 import SignUp from './components/SignUp/SignUpContainer';
 import Login from './components/Login/LoginContainer' ;
 import Reset from './components/Reset/ResetContainer' ;
+import TextField from './components/Dashboard/TextField';
 import PrivateRoute from './components/PrivateRoute';
 import * as serviceWorker from './serviceWorker';
 import {HashRouter,Route,Link} from 'react-router-dom';
