@@ -78,7 +78,7 @@ class AnswerField extends React.Component {
                     justify="space-between"
                     alignItems="center"
                 >
-                    <Grid>
+
                     <TextField value = {this.state.answer}
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
@@ -90,7 +90,7 @@ class AnswerField extends React.Component {
                         fullWidth
                         onChange = {e => this.setState({answer: e.target.value})}
                     />
-                    </Grid>
+
                     <Grid>
                     <Button className={classes.button} size="small" color="primary" onClick={this.pushToFirebase.bind(this)}>
                         Answer

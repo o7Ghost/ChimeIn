@@ -55,8 +55,8 @@ class SimpleExpansionPanel extends React.Component {
 
         this.state = {
             questionItems: [],
-            preClass: "",
-            curClass:""
+            curClass:"",
+            curTab: 0
         };
 
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -90,16 +90,11 @@ class SimpleExpansionPanel extends React.Component {
     }
 
     render() {
-        //  cse 110 -> cse 120
-
-        if(this.props.curClass !== this.state.curClass) {
-            this.state.curClass = this.props.curClass;
-
-        }
-        console.log("preClass->", this.state.prevClass );
-        console.log( "curClass->",this.state.curClass);
         // '' -> cse 110
-        if( this.state.prevClass !== this.state.curClass) {
+        if( this.state.curClass !== this.props.curClass || this.state.curTab !==this.props.curTab ) {
+            console.log(this.state.prevClass !== this.state.curClass);
+            this.state.curClass = this.props.curClass;
+            this.state.curTab = this.props.curTab;  //#####
             this.firebaseRef = this.props.db.database().ref("ClassFinal");
             console.log("in panel render", this.state.curClass);
             this.classRef = this.firebaseRef.child(this.state.curClass);
@@ -109,14 +104,15 @@ class SimpleExpansionPanel extends React.Component {
                 let questionItems = [];
                 dataSnapshot.forEach(childSnapshot => {
                     let questionItem = childSnapshot.val();
-                    if(this.props.tabNum == 0){
+                    if(this.state.curTab == 0){
+
                         questionItems.push(questionItem);
                     }
-                    if(this.props.tabNum == 1){
+                    if(this.state.curTab == 1){
 
 
                     }
-                    if(this.props.tabNum == 2){
+                    if(this.state.curTab == 2){
                         if(questionItem.Answer){
                             questionItems.push(questionItem);
                         }
@@ -124,21 +120,18 @@ class SimpleExpansionPanel extends React.Component {
                     questionItem['.key'] = childSnapshot.key;
                     
                 });
-                console.log( "curClass->>>>>>>",this.state.curClass);
-                this.state.prevClass = this.state.curClass;
-
                 this.setState({questionItems});
             });
         }
             const records = this.state.questionItems.map(items =>
 
                 <div>
-                    <ExpansionPanel>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                    <ExpansionPanel style = {  { border:"#000"} }>
+                        <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
                             <Typography>{items.Question}</Typography>
                         </ExpansionPanelSummary>
 
-
+                        <Divider />
                         <ExpansionPanelDetails>
                             <div>
                                 {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
