@@ -145,8 +145,8 @@ class Dashboard extends React.Component {
              UID: '',
                 Question: '',
           	      upvoteCount: 0,
-        
-                timestamp: ''
+                timestamp: '',
+                followers: []
    }
    this.handler = this.changeQState.bind(this);
       this.handlerA = this.changeAState.bind(this);

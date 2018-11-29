@@ -108,10 +108,9 @@ class CustomizedTabs extends React.Component {
                     />
                 </Tabs>
 
-                {value === 0 && <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
-                {value === 1 && <TabContainer><Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
-                {value === 2 && <TabContainer><Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
 
+                <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>
+                
                 
 
             </div>
