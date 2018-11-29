@@ -3,15 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
-    "@material-ui/core": "^3.3.2",
-    "@material-ui/icons": "^3.0.1",
-    "firebase": "^5.5.7",
-=======
     "@material-ui/core": "^3.6.0",
     "@material-ui/icons": "^3.0.1",
     "firebase": "^5.5.9",
->>>>>>> JL
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router": "^4.3.1",
