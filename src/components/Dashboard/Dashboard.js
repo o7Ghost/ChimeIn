@@ -141,11 +141,11 @@ class Dashboard extends React.Component {
       firebase.initializeApp(config);
     }
    this.state =  {
-       currentClass: 'default',
+       currentClass: 'Dashboard',
              UID: '',
                 Question: '',
           	      upvoteCount: 0,
-                Answer: '',
+        
                 timestamp: ''
    }
    this.handler = this.changeQState.bind(this);
@@ -216,7 +216,7 @@ class Dashboard extends React.Component {
                 noWrap
                 className={classes.title}
               >
-                Dashboard
+                  {this.state.currentClass}
               </Typography>
 
               <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button>
@@ -259,17 +259,17 @@ class Dashboard extends React.Component {
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
               {
-                  this.state.currentClass == 'default' ?
+                  this.state.currentClass == 'Dashboard' ?
                       null : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA}/>
               }
               {
-                this.state.currentClass == 'default' ?
+                this.state.currentClass == 'Dashboard' ?
                   null :
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler}/>
               }
 
             <div>
-                {this.state.currentClass == 'default' ? null : <AlertButtons />}
+                {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
             </div>
 
 
