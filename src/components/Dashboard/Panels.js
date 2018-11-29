@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
 import AnswerField from './AnswerField.js';
 import firebase from 'firebase';
+import indigo from '@material-ui/core/colors/indigo'
 
 const styles = theme => ({
     root: {
@@ -109,8 +110,20 @@ class SimpleExpansionPanel extends React.Component {
                 let questionItems = [];
                 dataSnapshot.forEach(childSnapshot => {
                     let questionItem = childSnapshot.val();
+                    if(this.props.tabNum == 0){
+                        questionItems.push(questionItem);
+                    }
+                    if(this.props.tabNum == 1){
+
+
+                    }
+                    if(this.props.tabNum == 2){
+                        if(questionItem.Answer){
+                            questionItems.push(questionItem);
+                        }
+                    }
                     questionItem['.key'] = childSnapshot.key;
-                    questionItems.push(questionItem);
+                    
                 });
                 console.log( "curClass->>>>>>>",this.state.curClass);
                 this.state.prevClass = this.state.curClass;
@@ -124,12 +137,13 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography>{items.Question}</Typography>
+                           
                         </ExpansionPanelSummary>
-
+                        
 
                         <ExpansionPanelDetails>
                             <div>
-                                {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
+                                {items.Answer ? items.Answer.map(temp => <Typography color="primary">{temp}</Typography>) : null}
 
                             </div>
                         </ExpansionPanelDetails>
