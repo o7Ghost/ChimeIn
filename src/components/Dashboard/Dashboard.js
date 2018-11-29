@@ -26,6 +26,10 @@ import Tabs from './Tabs.js';
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
 import blue from '@material-ui/core/colors/blue';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -126,6 +130,10 @@ const styles = theme => ({
 
 });
 
+
+
+
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -182,8 +190,28 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
+  state = {
+      auth: true,
+      anchorEl: null,
+  };
+
+   handleChange = event => {
+      this.setState({ auth: event.target.checked });
+    };
+
+    handleMenu = event => {
+      this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+      this.setState({ anchorEl: null });
+    };
+
+
   render() {
     const { classes } = this.props;
+    const { auth, anchorEl } = this.state;
+    const open = Boolean(anchorEl);
 
     return (
       <React.Fragment>
@@ -219,8 +247,42 @@ class Dashboard extends React.Component {
                 Dashboard
               </Typography>
 
-              <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button>
-              <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button>
+
+
+                {( <div>
+                               <IconButton
+                                 onClick={this.handleMenu}
+                                 color="inherit"
+                               >
+                                 <AccountCircle />
+                               </IconButton>
+                               <Menu
+                                 id="menu-appbar"
+                                 anchorEl={anchorEl}
+                                 anchorOrigin={{
+                                   vertical: 'top',
+                                   horizontal: 'right',
+                                 }}
+                                 transformOrigin={{
+                                   vertical: 'top',
+                                   horizontal: 'right',
+                                 }}
+                                 open={open}
+                                 onClose={this.handleClose}
+                               >
+                                 <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
+                                 <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
+                               </Menu>
+                             </div>
+                           )}
+
+
+
+
+
+
+             {/*   <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button> */}
+             {/*   <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button> */}
 
             </Toolbar>
          
