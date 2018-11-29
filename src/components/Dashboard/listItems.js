@@ -37,7 +37,8 @@ export class SideBar extends React.Component {
             modClassList: [],
             studentClassList: [],
             firebaseRef: null,
-            studentRef: null
+            studentRef: null,
+            selectedIndex: null,
         };
 
 		var uid = this.props.db.auth().currentUser.uid;
@@ -86,6 +87,7 @@ export class SideBar extends React.Component {
         const onClickClass =  e['course'];
         console.log(this);
         this.props.onClick(onClickClass);
+        this.setState({selectedIndex: onClickClass });
     }
 
 
@@ -97,34 +99,40 @@ export class SideBar extends React.Component {
 
         const StudentClass = this.state.studentClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}  onClick={()=>this.handleChange({course})}  />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
         const TAClass = this.state.modClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
                        <AssignmentIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={course}  onClick={()=>this.handleChange({course})}  />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
 		
 		const MyClass = this.state.myClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}/>
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );

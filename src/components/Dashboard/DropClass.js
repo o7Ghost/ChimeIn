@@ -83,7 +83,7 @@ class DropClass extends React.Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">Add Class</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Drop Class</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
                             Enter the Course name to drop course:
