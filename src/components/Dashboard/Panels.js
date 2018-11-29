@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
 import AnswerField from './AnswerField.js';
 import firebase from 'firebase';
+import indigo from '@material-ui/core/colors/indigo'
 
 const styles = theme => ({
     root: {
@@ -165,12 +166,13 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography>{items.Question}</Typography>
+                           
                         </ExpansionPanelSummary>
-
+                        
 
                         <ExpansionPanelDetails>
                             <div>
-                                {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
+                                {items.Answer ? items.Answer.map(temp => <Typography color="primary">{temp}</Typography>) : null}
 
                             </div>
                         </ExpansionPanelDetails>

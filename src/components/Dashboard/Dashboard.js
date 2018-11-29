@@ -14,7 +14,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import {SideBar } from './listItems.js';
+import { SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
 import AddTA from './AddTA.js';
 import DropClass from './DropClass.js';
@@ -26,6 +26,10 @@ import Tabs from './Tabs.js';
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
 import blue from '@material-ui/core/colors/blue';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import WelcomePage from './WelcomePage.js';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -126,6 +130,8 @@ const styles = theme => ({
 
 });
 
+
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -151,20 +157,21 @@ class Dashboard extends React.Component {
    this.handler = this.changeQState.bind(this);
       this.handlerA = this.changeAState.bind(this);
 
+
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
-  changeCurrentClass( classID ){
+  changeCurrentClass(classID) {
     this.setState({
-          currentClass: classID,
-        });
-      console.log("current Class:",classID);
+      currentClass: classID,
+    });
+    console.log("current Class:", classID);
   }
   changeQState(Q) {
-    this.setState({Question: Q})
+    this.setState({ Question: Q })
   }
 
   changeAState(n) {
-    this.setState({Answer: n})
+    this.setState({ Answer: n })
   }
 
 
@@ -182,94 +189,143 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
+  handleChange = event => {
+    this.setState({ auth: event.target.checked });
+  };
+
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     const { classes } = this.props;
+    const { auth, anchorEl } = this.state;
+    const open = Boolean(anchorEl);
 
     return (
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-        <MuiThemeProvider theme={themeAppBar}>
-          <AppBar
-     
-            position="absolute"
-            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-          >
-          
-            <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(
-                  classes.menuButton,
-                  this.state.open && classes.menuButtonHidden,
-                )}
-              >
+          <MuiThemeProvider theme={themeAppBar}>
+            <AppBar
 
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                className={classes.title}
-              >
+              position="absolute"
+              className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+            >
+
+              <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.handleDrawerOpen}
+                  className={classNames(
+                    classes.menuButton,
+                    this.state.open && classes.menuButtonHidden,
+                  )}
+                >
+
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  className={classes.title}
+                >
                   {this.state.currentClass}
-              </Typography>
+                </Typography>
 
-              <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button>
-              <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button>
 
-            </Toolbar>
-         
-          </AppBar>
+
+                {(<div>
+                  <IconButton
+                    onClick={this.handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={this.handleClose}
+                  >
+                    <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
+                    <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
+                  </Menu>
+                </div>
+                )}
+
+
+
+
+
+
+                {/*   <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button> */}
+                {/*   <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button> */}
+
+
+              </Toolbar>
+
+            </AppBar>
           </MuiThemeProvider>
 
           <MuiThemeProvider theme={themeDrawer}>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-            }}
-            open={this.state.open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <SideBar onClick ={this.changeCurrentClass} currClass = { this.state.currentClass} db = {firebase}/>
-            <div className={classes.others}>
-              <AddClass db={firebase}/>
-            </div>
-            <div className={classes.others}>
-                <DropClass db={firebase}/>
-            </div>
-            <div className={classes.others}>
-                <CreateClass db={firebase}/>
-            </div>
-              <div className={classes.others}>
-                  <AddTA db={firebase}/>
+            <Drawer
+              variant="permanent"
+              classes={{
+                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+              }}
+              open={this.state.open}
+            >
+              <div className={classes.toolbarIcon}>
+                <IconButton onClick={this.handleDrawerClose}>
+                  <ChevronLeftIcon />
+                </IconButton>
               </div>
-          </Drawer>
+              <SideBar onClick={this.changeCurrentClass} currClass={this.state.currentClass} db={firebase} />
+              <div className={classes.others}>
+                <AddClass db={firebase} />
+              </div>
+              <div className={classes.others}>
+                <DropClass db={firebase} />
+              </div>
+              <div className={classes.others}>
+                <CreateClass db={firebase} />
+              </div>
+              <div className={classes.others}>
+                <AddTA db={firebase} />
+              </div>
+            </Drawer>
           </MuiThemeProvider>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
-              {
-                  this.state.currentClass == 'Dashboard' ?
-                      null : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA}/>
-              }
-              {
-                this.state.currentClass == 'Dashboard' ?
-                  null :
-                <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler}/>
-              }
+            {
+              this.state.currentClass == 'Dashboard' ?
+                <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
+            }
+            {
+              this.state.currentClass == 'Dashboard' ?
+                null :
+                <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
+            }
 
             <div>
-                {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
+              {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
             </div>
 
 
