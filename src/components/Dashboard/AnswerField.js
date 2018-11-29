@@ -14,7 +14,7 @@ const styles = theme => ({
         width: '100%',
     },
     textField: {
-        width: '70vw',
+        width: '75vw',
     },
     button: {
        
@@ -77,7 +77,7 @@ class AnswerField extends React.Component {
                     justify="space-between"
                     alignItems="center"
                 >
-                    <Grid>
+
                     <TextField value = { this.props.value.Answer }
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
@@ -89,7 +89,7 @@ class AnswerField extends React.Component {
                         fullWidth
                         onChange = {e => this.props.stateChange((e.target.value))}
                     />
-                    </Grid>
+
                     <Grid>
                     <Button className={classes.button} size="small" color="primary" onClick={this.pushToFirebase.bind(this)}>
                         Answer

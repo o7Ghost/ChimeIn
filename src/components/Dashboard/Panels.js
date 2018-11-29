@@ -14,6 +14,7 @@ import classNames from 'classnames';
 import AnswerField from './AnswerField.js';
 import firebase from 'firebase';
 
+
 const styles = theme => ({
     root: {
         width: '100%',
@@ -121,25 +122,31 @@ class SimpleExpansionPanel extends React.Component {
             const records = this.state.questionItems.map(items =>
 
                 <div>
+
                     <ExpansionPanel>
+
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography>{items.Question}</Typography>
                         </ExpansionPanelSummary>
 
 
-                        <ExpansionPanelDetails>
-                            <div>
-                                {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
 
-                            </div>
+                 <div style={{background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'}}>
+
+
+                        <ExpansionPanelDetails>
+
+                                {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
                         </ExpansionPanelDetails>
+
 
                         <ExpansionPanelDetails>
 
                             <AnswerField curClass ={this.props.curClass} Question={items.UID + "+" + items.timestamp} value={this.props.value}
-                                         stateChange={this.props.stateChange} db={firebase}/>
-                        </ExpansionPanelDetails>
+                                         stateChange={this.props.stateChange} db={firebase}     />
 
+
+                        </ExpansionPanelDetails>
                         <Divider/>
 
                         <ExpansionPanelActions>
@@ -154,6 +161,7 @@ class SimpleExpansionPanel extends React.Component {
                             </Button>
 
                         </ExpansionPanelActions>
+                           </div>
                     </ExpansionPanel>
                 </div>
             );

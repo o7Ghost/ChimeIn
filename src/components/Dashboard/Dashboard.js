@@ -179,9 +179,12 @@ class Dashboard extends React.Component {
   signout() {
     firebase.auth().signOut();
   }
+
+
+  // Hamburger Menu Open and Close behavior
   state = {
-    open: true,
-  };
+        open: true,
+      };
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -190,11 +193,8 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
-  state = {
-      auth: true,
-      anchorEl: null,
-  };
 
+   // Icon button click and close behavior
    handleChange = event => {
       this.setState({ auth: event.target.checked });
     };
@@ -219,11 +219,11 @@ class Dashboard extends React.Component {
         <div className={classes.root}>
         <MuiThemeProvider theme={themeAppBar}>
           <AppBar
-     
+
             position="absolute"
             className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
           >
-          
+
             <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
               <IconButton
                 color="inherit"
@@ -274,7 +274,7 @@ class Dashboard extends React.Component {
                                  <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
                                </Menu>
                              </div>
-                           )}
+                  )}
 
 
 
