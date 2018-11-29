@@ -29,6 +29,7 @@ import blue from '@material-ui/core/colors/blue';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import WelcomePage from './WelcomePage.js';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -314,7 +315,7 @@ class Dashboard extends React.Component {
             <div className={classes.toolbar} />
             {
               this.state.currentClass == 'Dashboard' ?
-                null : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
+                <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
             }
             {
               this.state.currentClass == 'Dashboard' ?
