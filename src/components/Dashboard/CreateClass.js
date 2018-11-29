@@ -72,7 +72,7 @@ class CreateClass extends React.Component {
                     classesList.push(this.state.className);
                     console.log(classesList);
                     userRef.update({myClass:classesList});
-                    //alert("Success!");
+                    alert("Success!");
                 }
             });
             this.setState({ open: false });

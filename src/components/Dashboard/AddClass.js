@@ -104,7 +104,7 @@ class AddClass extends React.Component {
                 var userRef = this.props.db.database().ref("User").child(this.state.uid);
                 var classRef = userRef.child("studentClass").child(this.state.className);
                 classRef.update({className:this.state.className});
-                //alert("Success!");
+                alert("Success!");
             }
             this.handleClose();
         });
