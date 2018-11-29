@@ -109,8 +109,20 @@ class SimpleExpansionPanel extends React.Component {
                 let questionItems = [];
                 dataSnapshot.forEach(childSnapshot => {
                     let questionItem = childSnapshot.val();
+                    if(this.props.tabNum == 0){
+                        questionItems.push(questionItem);
+                    }
+                    if(this.props.tabNum == 1){
+
+
+                    }
+                    if(this.props.tabNum == 2){
+                        if(questionItem.Answer){
+                            questionItems.push(questionItem);
+                        }
+                    }
                     questionItem['.key'] = childSnapshot.key;
-                    questionItems.push(questionItem);
+                    
                 });
                 console.log( "curClass->>>>>>>",this.state.curClass);
                 this.state.prevClass = this.state.curClass;
