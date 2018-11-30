@@ -88,7 +88,7 @@ class SimpleExpansionPanel extends React.Component {
         this.refresh()
     }
 
-    handleUpvote(title, currentLike) {
+    handleUpvote(title, currentLike, currentOrder) {
         
         var followerRef = this.firebaseRef.child(title);
 
@@ -102,7 +102,7 @@ class SimpleExpansionPanel extends React.Component {
             if(!followerlist.includes(this.props.db.auth().currentUser.uid)){
                 followerlist.push(this.props.db.auth().currentUser.uid);
                 this.firebaseRef.child(title).update({ followers: followerlist });
-                this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1 });
+                this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1, order: currentOrder - 1 });
             }else{
                 alert("You have voted")
             }
@@ -123,7 +123,7 @@ class SimpleExpansionPanel extends React.Component {
         this.questionRef = this.classRef.child("questions");
         this.firebaseRef = this.questionRef;
 
-        this.firebaseRef.on('value', dataSnapshot => {
+        this.firebaseRef.orderByChild('order').on('value', dataSnapshot => {
             let questionItems = [];
             dataSnapshot.forEach(childSnapshot => {
                 let questionItem = childSnapshot.val();
@@ -187,7 +187,7 @@ class SimpleExpansionPanel extends React.Component {
                             </Button>
 
                             <Button size="small" color="primary"
-                                    onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount)}>
+                                    onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
                                 Upvote: {items.upvoteCount}
                             </Button>
 

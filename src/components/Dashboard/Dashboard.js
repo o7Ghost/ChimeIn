@@ -150,6 +150,7 @@ class Dashboard extends React.Component {
              UID: '',
                 Question: '',
           	      upvoteCount: 0,
+                  order: 99999999,
                 timestamp: '',
                 followers: []
    }
