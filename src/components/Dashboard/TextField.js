@@ -35,7 +35,7 @@ class TextFields extends React.Component {
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
         const {UID, Question, upvoteCount, order, Answer, timestamp, followers} = this.props.value;
-        event.preventDefault();
+        //event.preventDefault();
         var time = new Date();
         time = time.toJSON().split(".")[0];
         var cID = this.props.db.auth().currentUser.uid;
@@ -54,6 +54,16 @@ class TextFields extends React.Component {
         });
       };
     */
+
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter' && e.shiftKey) {
+            this.pushToFirebase();
+            e.preventDefault();
+            this.setState({Question: '', upvoteCount: 0});
+        }
+    }
+
+
 //, upvoteCount: this.props.value.upvoteCount
     //value= { this.props.value.Question.replace(/_b/g, '\n') }
     render() {
