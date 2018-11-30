@@ -151,11 +151,9 @@ class SimpleExpansionPanel extends React.Component {
 
     render() {
         //  cse 110 -> cse 120
-        if(this.props.curClass !== this.state.curClass) {
-            this.state.curClass = this.props.curClass;
-        }
 
         if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
+            console.log("got in render hello")
             this.refresh()
         }
             const records = this.state.questionItems.map(items =>
