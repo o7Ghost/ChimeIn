@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import classNames from 'classnames';
 import AnswerField from './AnswerField.js';
 import firebase from 'firebase';
+import indigo from '@material-ui/core/colors/indigo'
 
 const styles = theme => ({
     root: {
@@ -56,7 +57,7 @@ class SimpleExpansionPanel extends React.Component {
         this.state = {
             questionItems: [],
             curClass:"",
-            curTab: 0
+            tabNum : 0
         };
 
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -83,45 +84,79 @@ class SimpleExpansionPanel extends React.Component {
 
     handleRemove(title) {
         this.firebaseRef.child(title).remove();
+        console.log("remove clicked")
+        this.refresh()
     }
 
     handleUpvote(title, currentLike) {
-        this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1 });
+        
+        var followerRef = this.firebaseRef.child(title);
+
+        let followerlist = []
+        followerRef.once('value',(snapshot) =>{
+            const question = snapshot.val();
+            console.log(question)
+            if(question != null && question.followers ){
+                followerlist = question.followers;
+            }
+            if(!followerlist.includes(this.props.db.auth().currentUser.uid)){
+                followerlist.push(this.props.db.auth().currentUser.uid);
+                this.firebaseRef.child(title).update({ followers: followerlist });
+                this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1 });
+            }else{
+                alert("You have voted")
+            }
+            
+        })
+        
+    }
+
+    refresh(){
+        
+        console.log("in panel render", this.state.curClass);
+        console.log(this.state.prevClass !== this.state.curClass);
+        this.state.curClass = this.props.curClass;
+        this.state.tabNum = this.props.tabNum;  //#####
+        this.firebaseRef = this.props.db.database().ref("ClassFinal");
+        console.log("in panel render", this.state.curClass);
+        this.classRef = this.firebaseRef.child(this.state.curClass);
+        this.questionRef = this.classRef.child("questions");
+        this.firebaseRef = this.questionRef;
+
+        this.firebaseRef.on('value', dataSnapshot => {
+            let questionItems = [];
+            dataSnapshot.forEach(childSnapshot => {
+                let questionItem = childSnapshot.val();
+                if(this.state.tabNum == 0){
+                    questionItems.push(questionItem);
+                }
+                if(this.state.tabNum == 1){
+
+                    if(questionItem.followers && questionItem.followers.includes(this.props.db.auth().currentUser.uid)){
+                        questionItems.push(questionItem)
+                    }
+                }
+                if(this.state.tabNum == 2){
+                    if(questionItem.Answer){
+                        questionItems.push(questionItem);
+                    }
+                }
+                questionItem['.key'] = childSnapshot.key;
+                    
+            });
+            console.log( "curClass->>>>>>>",this.state.curClass);
+            this.setState({questionItems});
+        })
     }
 
     render() {
-        // '' -> cse 110
-        if( this.state.curClass !== this.props.curClass || this.state.curTab !==this.props.curTab ) {
-            console.log(this.state.prevClass !== this.state.curClass);
+        //  cse 110 -> cse 120
+        if(this.props.curClass !== this.state.curClass) {
             this.state.curClass = this.props.curClass;
-            this.state.curTab = this.props.curTab;  //#####
-            this.firebaseRef = this.props.db.database().ref("ClassFinal");
-            console.log("in panel render", this.state.curClass);
-            this.classRef = this.firebaseRef.child(this.state.curClass);
-            this.questionRef = this.classRef.child("questions");
-            this.firebaseRef = this.questionRef;
-            this.firebaseRef.on('value', dataSnapshot => {
-                let questionItems = [];
-                dataSnapshot.forEach(childSnapshot => {
-                    let questionItem = childSnapshot.val();
-                    if(this.state.curTab == 0){
+        }
 
-                        questionItems.push(questionItem);
-                    }
-                    if(this.state.curTab == 1){
-
-
-                    }
-                    if(this.state.curTab == 2){
-                        if(questionItem.Answer){
-                            questionItems.push(questionItem);
-                        }
-                    }
-                    questionItem['.key'] = childSnapshot.key;
-                    
-                });
-                this.setState({questionItems});
-            });
+        if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
+            this.refresh()
         }
             const records = this.state.questionItems.map(items =>
 
@@ -129,12 +164,12 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel style = {  { border:"#000"} }>
                         <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
                             <Typography>{items.Question}</Typography>
-                        </ExpansionPanelSummary>
+                           
+                        </ExpansionPanelSummary>         
 
-                        <Divider />
                         <ExpansionPanelDetails>
                             <div>
-                                {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
+                                {items.Answer ? items.Answer.map(temp => <Typography color="primary">{temp}</Typography>) : null}
 
                             </div>
                         </ExpansionPanelDetails>

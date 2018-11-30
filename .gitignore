@@ -1,3 +1,5 @@
 node_modules
 .idea
 npmsetup.bat
+src/image/.DS_Store
+
