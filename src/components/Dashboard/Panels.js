@@ -25,6 +25,7 @@ const styles = theme => ({
     secondaryHeading: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
+        marginRight: '2vw',
     },
     icon: {
         verticalAlign: 'bottom',
@@ -150,8 +151,8 @@ class SimpleExpansionPanel extends React.Component {
     }
 
     render() {
-        //  cse 110 -> cse 120
-
+  
+        const { classes } = this.props;
         if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
             console.log("got in render hello")
             this.refresh()
@@ -161,7 +162,10 @@ class SimpleExpansionPanel extends React.Component {
                 <div>
                     <ExpansionPanel style = {  { border:"#000"} }>
                         <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
-                            <Typography>{items.Question}</Typography>
+                        	<Typography className={classes.secondaryHeading}>
+                            UPVOTES: {items.upvoteCount}
+                        </Typography>
+                            <Typography className={classes.heading}>{items.Question}</Typography>
                            
                         </ExpansionPanelSummary>         
 
