@@ -49,6 +49,7 @@ const styles = theme => ({
             width: 400,
             marginLeft: 'auto',
             marginRight: 'auto',
+            marginTop: theme.spacing.unit * 18,
         },
     },
     paper: {
