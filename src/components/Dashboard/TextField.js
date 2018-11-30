@@ -43,6 +43,8 @@ class TextFields extends React.Component {
         if(Question != '') {
             this.firebaseRef.child( cID + "+" + time).set({UID: cID,
                 Question: Question, upvoteCount: upvoteCount, order:order, timestamp: time, followers: this.props.value.followers});
+            var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
+            userRef.set({lastPostTime: time});
         }
 
         this.props.stateChange('');
@@ -73,6 +75,36 @@ class TextFields extends React.Component {
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.questionRef = this.classRef.child("questions");
         this.firebaseRef=this.questionRef;
+
+        var lastPostDate = null;
+        var hour = null;
+        var minute = null;
+        var second = null;
+        var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
+        userRef.on('value', (snapshot) => {
+            var posttime = snapshot.val().lastPostTime;
+            lastPostDate = posttime.split("T")[0];
+            const lastPostTime = posttime.split("T")[1];
+            hour = lastPostTime.split(":")[0];
+            minute = lastPostTime.split(":")[1];
+            var temp = lastPostTime.split(":")[2];
+            second = temp.split("Z")[0];
+            console.log("aaaaaaa" + hour + minute + second);
+        });
+        console.log("xxxxxxxx" + lastPostDate);
+
+        var time = new Date();
+        time = time.toJSON().split(".")[0];
+        var curPostDate = time.split("T")[0];
+        var curhour = time.split(":")[0];
+        var curminute = time.split(":")[1];
+        var cursecond = time.split(":")[2].split("Z")[0];
+
+
+        var timeTooShort = 0;
+        if(cursecond == second) {
+
+        }
 
         const { classes } = this.props;
         return (
