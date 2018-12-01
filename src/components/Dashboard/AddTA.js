@@ -125,7 +125,6 @@ class AddTA extends React.Component {
                         </DialogContentText>
                         <TextField
                             margin="dense"
-                            id="name"
                             label="Course Name"
                             type="text"
                             fullWidth
@@ -133,7 +132,6 @@ class AddTA extends React.Component {
                         />
                         <TextField
                             margin="dense"
-                            id="TAuid"
                             label="TA uid"
                             type="text"
                             fullWidth

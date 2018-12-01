@@ -149,7 +149,6 @@ class AddClass extends React.Component {
                         </DialogContentText>
                         <TextField
                             margin="dense"
-                            id="name"
                             label="Course Name"
                             type="text"
                             fullWidth
@@ -157,7 +156,6 @@ class AddClass extends React.Component {
                         />
                         <TextField
                             margin="dense"
-                            id="name"
                             label="6-Digit Add code"
                             type="text"
                             fullWidth

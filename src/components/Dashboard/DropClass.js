@@ -93,7 +93,6 @@ class DropClass extends React.Component {
                         </DialogContentText>
                         <TextField
                             margin="dense"
-                            id="name"
                             label="Course Name"
                             type="text"
                             fullWidth
