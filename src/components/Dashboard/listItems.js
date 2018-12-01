@@ -39,6 +39,7 @@ export class SideBar extends React.Component {
             firebaseRef: null,
             studentRef: null,
             selectedIndex: null,
+            hideStudent: true
         };
 
         var uid = this.props.db.auth().currentUser.uid;
@@ -83,6 +84,7 @@ export class SideBar extends React.Component {
         });
 
         this.handleChange = this.handleChange.bind(this);
+        this.changeStudent = this.changeStudent.bind(this);
     }
     handleChange(e) {
         const onClickClass =  e['course'];
@@ -94,6 +96,19 @@ export class SideBar extends React.Component {
 
     componentWillUnmount() {
         this.firebaseRef.off();
+    }
+
+    changeStudent(){
+        //set it to be false
+        console.log("expanded student");
+        this.setState({hideStudent: !this.state.hideStudent});
+    }
+
+    getButton(){
+        if (this.state.hideStudent){
+            return "Student +";
+        }
+        return "Student -";
     }
 
     render() {
@@ -142,8 +157,14 @@ export class SideBar extends React.Component {
 
         return (
             <div>
-                <ListSubheader inset>Student</ListSubheader>
-                {StudentClass}
+                <span>
+                    <ListItem onClick={()=>this.changeStudent()} button>
+                        <ListItemText primary={this.getButton()}/>
+                    </ListItem>
+                    {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+                    {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+                </span>
+                {this.state.hideStudent ? null : StudentClass}
 
                 <ListSubheader inset>Tutor</ListSubheader>
                 {TAClass}
