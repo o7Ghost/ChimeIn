@@ -347,8 +347,7 @@ class Dashboard extends React.Component {
           </MuiThemeProvider>
 
           <main className={classes.content}>
-                                <Scrollbars autoHide style={{"height":"100%"}}>
-
+            <Scrollbars autoHide style={{"height":"100%"}}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
             {
@@ -364,9 +363,7 @@ class Dashboard extends React.Component {
             <div>
               {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
             </div>
-
-          </Scrollbars>
-
+            </Scrollbars>
           </main>
 
         </div>
