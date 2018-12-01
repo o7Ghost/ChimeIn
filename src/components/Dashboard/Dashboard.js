@@ -201,6 +201,13 @@ class Dashboard extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  enableNotice = () => {
+    var UserRef = firebase.database().ref("User").child(firebase.auth().currentUser.uid).child("alertTime");
+    UserRef.on('value',(snapshot) => {
+      alert("An alert has been posted!");
+    });
+  }
+
   render() {
     const { classes } = this.props;
     const { auth, anchorEl } = this.state;
@@ -309,6 +316,7 @@ class Dashboard extends React.Component {
               <div className={classes.others}>
                 <AddTA db={firebase} />
               </div>
+              <Button onClick={()=>this.enableNotice()}> Enable notice </Button>
             </Drawer>
           </MuiThemeProvider>
           <main className={classes.content}>
@@ -325,7 +333,7 @@ class Dashboard extends React.Component {
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
+              {this.state.currentClass == 'Dashboard' ? null : <AlertButtons curClass={this.state.currentClass} db = {firebase}/>}
             </div>
 
 

@@ -93,7 +93,7 @@ class AddClass extends React.Component {
         var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
 
 
-        classRef.on('value', (snapshot) => {
+        classRef.once('value', (snapshot) => {
             const classObject = snapshot.val();
             if(classObject==null){
                 alert("Class not registered!");
@@ -104,7 +104,7 @@ class AddClass extends React.Component {
                 var userRef = this.props.db.database().ref("User").child(this.state.uid);
                 var classRef = userRef.child("studentClass").child(this.state.className);
                 classRef.update({className:this.state.className});
-                alert("Success!");
+                alert("Operation Add Class：success!");
             }
             this.handleClose();
         });

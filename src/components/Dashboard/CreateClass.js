@@ -34,6 +34,7 @@ class CreateClass extends React.Component {
             open: false,
             addCode: '',
             className:'',
+            alertTime: '',
             uid: this.props.db.auth().currentUser.uid
         };
 
@@ -62,6 +63,7 @@ class CreateClass extends React.Component {
                 }else{
                     classRef.set({addCode:this.state.addCode,instructor:this.state.uid});
                     var userRef = this.props.db.database().ref("User").child(this.state.uid);
+                    userRef.set({alertTime: this.state.alertTime});
                     console.log(userRef.child("myClass"));
                     //userRef = userRef.child("myClass");
                     let classesList = [];

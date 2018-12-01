@@ -17,12 +17,23 @@ const styles = theme => ({
 });
 
 class OutlinedButtons extends React.Component {
+
  state = {
-    open: false
+    open: false,
   };
 
   handleClick = () => {
     this.setState({ open: true });
+
+    var time = new Date();
+    this.firebaseRef = this.props.db.database().ref("ClassFinal");
+    this.userRef = this.props.db.database().ref("User");
+
+    this.classRef = this.firebaseRef.child(this.props.curClass);
+    this.classRef.once('value', dataSnapshot => {
+    console.log(dataSnapshot.val().instructor)
+    this.userRef.child(dataSnapshot.val().instructor).update({alertTime: time.toJSON()})
+    });
   };
 
   handleClose = (event, reason) => {
