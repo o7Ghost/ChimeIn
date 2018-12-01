@@ -184,7 +184,7 @@ class Dashboard extends React.Component {
   // Hamburger Menu Open and Close behavior
   state = {
         open: true,
-      };
+  };
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -210,8 +210,9 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+    //const { auth, anchorEl } = this.state;
+   // const open = Boolean(anchorEl);
+
 
     return (
       <React.Fragment>
@@ -247,7 +248,7 @@ class Dashboard extends React.Component {
                 Dashboard
               </Typography>
 
-
+            {/*
 
                 {( <div>
                                <IconButton
@@ -277,7 +278,7 @@ class Dashboard extends React.Component {
                   )}
 
 
-
+                */}
 
 
 
