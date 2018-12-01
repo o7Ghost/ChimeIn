@@ -27,7 +27,7 @@ class OutlinedButtons extends React.Component {
   }
 
   handleClick = () => {
-    this.setState({ open: true });
+ 
 
     var time = new Date();
     this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -53,7 +53,8 @@ class OutlinedButtons extends React.Component {
     UserRef.on('value',(snapshot) => {
       var curTime = new Date();
       if(curTime - this.state.loginTime > 2000){
-        alert("An alert has been posted!");
+        this.setState({ open: true });
+       // alert("An alert has been posted!");
       }
     });
   }
