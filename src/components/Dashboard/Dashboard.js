@@ -101,7 +101,7 @@ const styles = theme => ({
     whiteSpace: 'nowrap',
     width: drawerWidth,
     //overflow: 'auto',
-    overflow: 'hidden', // This disables the scroll bar in the hamburger menu so that the scrollbar does not move left or right
+    //overflow: 'hidden', // This disables the scroll bar in the hamburger menu so that the scrollbar does not move left or right
 
 
     //height: '100vh', // You set height to 100% so that if height goes over 100% it automatically shows scroll bar
