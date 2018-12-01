@@ -177,10 +177,9 @@ class SimpleExpansionPanel extends React.Component {
 
                         <ExpansionPanelDetails>
 
-
+                            <div>
                                 {items.Answer ? items.Answer.map(temp => <Typography color="primary">{temp}</Typography>) : null}
-
-                                {items.Answer ? items.Answer.map(temp => <Typography>{temp}</Typography>) : null}
+                            </div>
                         </ExpansionPanelDetails>
 
 
