@@ -226,16 +226,15 @@ class Dashboard extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
+
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
           <MuiThemeProvider theme={themeAppBar}>
             <AppBar
-
               position="absolute"
               className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
             >
-
               <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
                 <IconButton
                   color="inherit"
@@ -341,22 +340,15 @@ class Dashboard extends React.Component {
               </div>
 
 
-
             </Scrollbars>
 
 
-
-
             </Drawer>
-
-
-
-
           </MuiThemeProvider>
 
-
-
           <main className={classes.content}>
+                                <Scrollbars autoHide style={{"height":"100%"}}>
+
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
             {
@@ -373,8 +365,10 @@ class Dashboard extends React.Component {
               {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
             </div>
 
+          </Scrollbars>
 
           </main>
+
         </div>
       </React.Fragment>
 
