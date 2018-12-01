@@ -31,12 +31,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import WelcomePage from './WelcomePage.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {Scrollbars} from 'react-custom-scrollbars';
+
+
 
 const themeDrawer = createMuiTheme({
   palette: {
     type: 'dark',
   },
+
 });
+
+
+
+
+
 
 const themeAppBar = createMuiTheme({
   palette: {
@@ -91,6 +100,16 @@ const styles = theme => ({
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    //overflow: 'auto',
+    overflow: 'hidden', // This disables the scroll bar in the hamburger menu so that the scrollbar does not move left or right
+
+
+    //height: '100vh', // You set height to 100% so that if height goes over 100% it automatically shows scroll bar
+
+
+
+    //overflowY: 'scroll',
+
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -283,7 +302,13 @@ class Dashboard extends React.Component {
             </AppBar>
           </MuiThemeProvider>
 
+
+
           <MuiThemeProvider theme={themeDrawer}>
+
+
+
+
           <Drawer
             variant="permanent"
             classes={{
@@ -291,6 +316,11 @@ class Dashboard extends React.Component {
             }}
             open={this.state.open}
           >
+
+
+          <Scrollbars autoHide style={{"height":"100%"}}>
+
+
             <div className={classes.toolbarIcon}>
               <IconButton onClick={this.handleDrawerClose}>
                 <ChevronLeftIcon />
@@ -309,8 +339,23 @@ class Dashboard extends React.Component {
               <div className={classes.others}>
                 <AddTA db={firebase} />
               </div>
+
+
+
+            </Scrollbars>
+
+
+
+
             </Drawer>
+
+
+
+
           </MuiThemeProvider>
+
+
+
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
