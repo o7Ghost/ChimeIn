@@ -41,6 +41,25 @@ class TextFields extends React.Component {
         var classRef = this.firebaseRef.child(this.props.curClass);
         var questionRef = classRef.child("questions");
         this.firebaseRef=questionRef;
+
+        // cooldown implementation on page opening
+        var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
+        userRef.once('value', (snapshot) => {
+
+            var posttime = '2000-01-01T00:00:59.207Z'
+            snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
+
+            //var posttime = new Date(snapshot.val().lastPostTime);
+            var curTime = new Date();
+
+            var diff = curTime - posttime;
+            //console.log("xxxxooooooo"+ posttime);
+            if(diff < this.statics.cooldowntime && diff > 0) {
+                this.state.buttonDisabled = true;
+                this.state.submitText = 'You can post another question within 60 seconds.';
+                setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -52,6 +71,7 @@ class TextFields extends React.Component {
         const {UID, Question, upvoteCount, order, Answer, timestamp, followers} = this.props.value;
         //event.preventDefault();
         var time = new Date();
+        var timeWithTimezone = time.toJSON();
         time = time.toJSON().split(".")[0];
         var cID = this.props.db.auth().currentUser.uid;
 
@@ -61,10 +81,10 @@ class TextFields extends React.Component {
 
             // update user lastPostTime
             var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
-            userRef.update({lastPostTime: time});
+            userRef.update({lastPostTime: timeWithTimezone});
 
             // after this submission, set button disabled with timeout function, 1s = 1000
-            this.setState({buttonDisabled: true, submitText: 'You can post another question within 60 second.'});
+            this.setState({buttonDisabled: true, submitText: 'You can post another question within 60 seconds.'});
             setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), this.statics.cooldowntime);
         }
         else if(Question == '' && this.state.buttonDisabled == false) {
@@ -89,7 +109,7 @@ class TextFields extends React.Component {
                 this.setState({Question: '', upvoteCount: 0});
             }
             else {
-                this.setState({notification: 'You can post another question within 60 second.', open: true});
+                this.setState({notification: 'You can post another question within 60 seconds.', open: true});
             }
         }
     }
@@ -113,41 +133,6 @@ class TextFields extends React.Component {
         this.questionRef = this.classRef.child("questions");
         this.firebaseRef=this.questionRef;
 
-        var lastPostDate = null;
-        var hour = null;
-        var minute = null;
-        var second = null;
-        var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
-        userRef.on('value', (snapshot) => {
-            var posttime = '2000-01-01T00:00:59.207Z'
-            snapshot.val().lastPostTime ? posttime = snapshot.val().lastPostTime :  posttime = '2000-01-01T00:00:59.207Z'
-            
-            lastPostDate = posttime.split("T")[0];
-            const lastPostTime = posttime.split("T")[1];
-            hour = lastPostTime.split(":")[0];
-            minute = lastPostTime.split(":")[1];
-            var temp = lastPostTime.split(":")[2];
-            second = temp.split("Z")[0];
-            //console.log("aaaaaaa" + hour+minute+second);
-
-            var time = new Date();
-            time = time.toJSON().split(".")[0];
-            var curPostDate = time.split("T")[0];
-            var curhour = time.split(":")[0];
-            var curminute = time.split(":")[1];
-            var cursecond = time.split(":")[2].split("Z")[0];
-
-            var curTime = parseInt(curminute+cursecond);
-            var lastTime = parseInt(minute+second);
-
-            var diff = curTime - lastTime;
-            console.log("oooo"+ diff);
-            if(diff < this.statics.cooldowntime/1000 && diff > 0) {
-                this.state.buttonDisabled = true;
-                this.state.submitText = 'You can post another question within 60 second.';
-                setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff*1000));
-            }
-        });
 
         const { classes } = this.props;
         return (
@@ -177,31 +162,31 @@ class TextFields extends React.Component {
                         horizontal: "right"
                     }}
                     open={this.state.open}
-                    autoHideDuration={6000}
+                    autoHideDuration={4500}
                     onClose={this.handleClose}
                     ContentProps={{
                         "aria-describedby": "message-id"
                     }}
                     message={<span id="message-id">{this.state.notification}</span>}
-                    action={[
-                        <Button
-                            key="undo"
-                            color="secondary"
-                            size="small"
-                            onClick={this.handleClose}
-                        >
-                            Close
-                        </Button>,
-                        <IconButton
-                            key="close"
-                            aria-label="Close"
-                            color="inherit"
-                            className={classes.close}
-                            onClick={this.handleClose}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                    ]}
+                    // action={[
+                    //     <Button
+                    //         key="undo"
+                    //         color="secondary"
+                    //         size="small"
+                    //         onClick={this.handleClose}
+                    //     >
+                    //         Close
+                    //     </Button>,
+                    //     <IconButton
+                    //         key="close"
+                    //         aria-label="Close"
+                    //         color="inherit"
+                    //         className={classes.close}
+                    //         onClick={this.handleClose}
+                    //     >
+                    //         <CloseIcon />
+                    //     </IconButton>
+                    // ]}
                 />
             </div>
         );
