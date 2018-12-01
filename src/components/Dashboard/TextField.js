@@ -64,7 +64,7 @@ class TextFields extends React.Component {
             userRef.update({lastPostTime: time});
 
             // after this submission, set button disabled with timeout function, 1s = 1000
-            this.setState({buttonDisabled: true, submitText: 'Wait!'});
+            this.setState({buttonDisabled: true, submitText: 'You can post another question within 60 second.'});
             setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), this.statics.cooldowntime);
         }
         else if(Question == '' && this.state.buttonDisabled == false) {
@@ -89,7 +89,7 @@ class TextFields extends React.Component {
                 this.setState({Question: '', upvoteCount: 0});
             }
             else {
-                this.setState({notification: 'Please wait at least one minute before you can submit another question.', open: true});
+                this.setState({notification: 'You can post another question within 60 second.', open: true});
             }
         }
     }
@@ -119,7 +119,9 @@ class TextFields extends React.Component {
         var second = null;
         var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
         userRef.on('value', (snapshot) => {
-            var posttime = snapshot.val().lastPostTime;
+            var posttime = '2000-01-01T00:00:59.207Z'
+            snapshot.val().lastPostTime ? posttime = snapshot.val().lastPostTime :  posttime = '2000-01-01T00:00:59.207Z'
+            
             lastPostDate = posttime.split("T")[0];
             const lastPostTime = posttime.split("T")[1];
             hour = lastPostTime.split(":")[0];
@@ -142,7 +144,7 @@ class TextFields extends React.Component {
             console.log("oooo"+ diff);
             if(diff < this.statics.cooldowntime/1000 && diff > 0) {
                 this.state.buttonDisabled = true;
-                this.state.submitText = 'Wait!';
+                this.state.submitText = 'You can post another question within 60 second.';
                 setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff*1000));
             }
         });
