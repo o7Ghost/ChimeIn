@@ -37,15 +37,16 @@ export class SideBar extends React.Component {
             modClassList: [],
             studentClassList: [],
             firebaseRef: null,
-            studentRef: null
+            studentRef: null,
+            selectedIndex: null,
         };
 
-		var uid = this.props.db.auth().currentUser.uid;
+        var uid = this.props.db.auth().currentUser.uid;
         this.firebaseRef = this.props.db.database().ref("User").child(uid);
         var TARef = this.firebaseRef.child('modClass');
-		var StudentRef = this.firebaseRef.child('studentClass');
-		var MyRef = this.firebaseRef.child('myClass');
-		
+        var StudentRef = this.firebaseRef.child('studentClass');
+        var MyRef = this.firebaseRef.child('myClass');
+
         TARef.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
@@ -68,8 +69,8 @@ export class SideBar extends React.Component {
             });
             this.setState({studentClassList: temp2 } );
         });
-		
-		MyRef.on('value', snapshot => {
+
+        MyRef.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
                 console.log("----");
@@ -80,12 +81,14 @@ export class SideBar extends React.Component {
             console.log(temp);
             this.setState({myClassList: temp } );
         });
+
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(e) {
         const onClickClass =  e['course'];
         console.log(this);
         this.props.onClick(onClickClass);
+        this.setState({selectedIndex: onClickClass });
     }
 
 
@@ -94,37 +97,45 @@ export class SideBar extends React.Component {
     }
 
     render() {
-
+        console.log("Rendered listItems");
+        console.log(this.state);
+        this.populateLists();
         const StudentClass = this.state.studentClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}  onClick={()=>this.handleChange({course})}  />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
         const TAClass = this.state.modClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
                        <AssignmentIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={course}  onClick={()=>this.handleChange({course})}  />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
 		
 		const MyClass = this.state.myClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}/>
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
@@ -143,4 +154,47 @@ export class SideBar extends React.Component {
 
         );
     };
+
+    populateLists(){
+        var uid = this.props.db.auth().currentUser.uid;
+        this.firebaseRef = this.props.db.database().ref("User").child(uid);
+        var TARef = this.firebaseRef.child('modClass');
+        var StudentRef = this.firebaseRef.child('studentClass');
+        var MyRef = this.firebaseRef.child('myClass');
+
+        TARef.once('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.state.modClassList = temp;
+        });
+
+        StudentRef.once('value', snapshot => {
+            let temp2 = [];
+            snapshot.forEach(classElem => {
+                let classItem = classElem.val();
+                console.log( classElem.val() );
+                console.log( classItem['className']);
+                temp2.push(classItem['className']);
+            });
+            this.state.studentClassList = temp2;
+        });
+
+        MyRef.once('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.state.myClassList = temp;
+        });
+    }
 };

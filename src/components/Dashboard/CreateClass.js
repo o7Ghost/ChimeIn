@@ -49,10 +49,11 @@ class CreateClass extends React.Component {
         this.setState({ open: false });
     };
 
-    handleCreate = async event => {
+    handleCreate = event => {
         event.preventDefault();
         try{
             console.log("You entered:"+this.state.className+"+"+this.state.addCode);
+
             var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
             classRef.once('value', (snapshot) => {
                 const classObj = snapshot.val();
@@ -61,21 +62,27 @@ class CreateClass extends React.Component {
                 }else{
                     classRef.set({addCode:this.state.addCode,instructor:this.state.uid});
                     var userRef = this.props.db.database().ref("User").child(this.state.uid);
-                    userRef.child("myClass");
+                    console.log(userRef.child("myClass"));
+                    //userRef = userRef.child("myClass");
                     let classesList = [];
-                    userRef.on('value', (snapshot) => {
+                    userRef.once('value', (snapshot) => {
                         const userObj = snapshot.val();
+                        console.log(userObj.myClass);
                         if(userObj.myClass) {
                             classesList = userObj.myClass;
+                            console.log("not null!");
+                        }else{
+                            console.log("null!");
                         }
+                        classesList.push(this.state.className);
+                        console.log(classesList);
+                        userRef.update({myClass:classesList});
+                        alert("Success!");
                     });
-                    classesList.push(this.state.className);
-                    console.log(classesList);
-                    userRef.update({myClass:classesList});
-                    alert("Success!");
                 }
             });
-            this.setState({ open: false });
+            //this.setState({ open: false });
+            this.handleClose();
         } catch (error) {
             alert(error);
         }
@@ -86,7 +93,7 @@ class CreateClass extends React.Component {
         if (e.key === 'Enter') {
             this.handleCreate();
         }
-    }
+    };
 
     render() {
         return (

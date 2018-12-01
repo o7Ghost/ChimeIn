@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
 class App extends Component {
   render() {
     return (
@@ -13,6 +14,7 @@ class App extends Component {
                     </div>
                     <label htmlFor="inputEmail" className="sr-only">Email address</label>
                     <input className="form-control" id="loginEmail" type="email" name="email" placeholder="Email address" required/>
+
 
 
                     <label htmlFor="inputPassword" className="sr-only">Password</label>

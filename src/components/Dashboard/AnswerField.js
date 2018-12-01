@@ -25,7 +25,7 @@ const styles = theme => ({
 class AnswerField extends React.Component {
     constructor(props) {
         super(props);
-        
+        this.state = {answer: ''}
     }
 
     //a method to push to firebase and then clean user input
@@ -42,17 +42,18 @@ class AnswerField extends React.Component {
         let answerA = []
         answerRef.on('value',(snapshot) =>{
             const question = snapshot.val();
+            console.log(question)
             if(question != null && question.Answer ){
                 answerA = question.Answer;
             }
         })
-        answerA.push(this.props.value.Answer);
-        const {Answer} = this.props.value;
+        answerA.push(this.state.answer);
+        const {Answer} = this.state;
         event.preventDefault();
         if(Answer != '') {
           answerRef.update({ Answer: answerA });
         }
-        this.props.stateChange('');
+        this.setState({answer: ''});
     }
     /*
       handleChange = name => event => {
@@ -78,7 +79,8 @@ class AnswerField extends React.Component {
                     alignItems="center"
                 >
 
-                    <TextField value = { this.props.value.Answer }
+
+                    <TextField value = {this.state.answer}
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
                         placeholder="Placeholder"
@@ -87,7 +89,7 @@ class AnswerField extends React.Component {
                         margin="normal"
                         variant="outlined"
                         fullWidth
-                        onChange = {e => this.props.stateChange((e.target.value))}
+                        onChange = {e => this.setState({answer: e.target.value})}
                     />
 
                     <Grid>

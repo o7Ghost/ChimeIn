@@ -58,6 +58,7 @@ class DropClass extends React.Component {
         }
         alert("The class:"+this.state.className+" has been dropped if you have added it before.");
         // check if the there is actually this class entered by user. by using .on and snapshot
+        this.handleClose();
     };
 
     _handleKeyPress = (e) => {
@@ -82,7 +83,7 @@ class DropClass extends React.Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">Add Class</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Drop Class</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
                             Enter the Course name to drop course:
@@ -98,6 +99,7 @@ class DropClass extends React.Component {
                             type="text"
                             fullWidth
                             onChange = {e => this.setState({className: (e.target.value)})}
+                            onKeyPress ={this._handleKeyPress}
                         />
                     </DialogContent>
                     <DialogActions>

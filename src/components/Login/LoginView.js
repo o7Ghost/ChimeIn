@@ -28,7 +28,7 @@ const themePaper = createMuiTheme({
 const styles = theme => ({
     "@global": {
         body: {
-            backgroundImage: 'url(' + Image + ')',
+            backgroundColor: "#ECEFF1",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",
             backgroundSize: "cover",
@@ -44,15 +44,19 @@ const styles = theme => ({
     },
   main: {
     width: 'auto',
+    height: 'auto',
     display: 'block', // Fix IE 11 issue.
+    
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto',
+      marginTop: theme.spacing.unit * 18,
     },
   },
+
   paper: {
     marginTop: theme.spacing.unit * 8,
     display: 'flex',
@@ -83,7 +87,7 @@ const styles = theme => ({
 function LoginView(props) {
   const { classes } = props;
   const onSubmit = props.onSubmit;
-
+  
 
   return (
     <MuiThemeProvider theme={themePaper}>

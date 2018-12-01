@@ -28,7 +28,7 @@ const themePaper = createMuiTheme({
 const styles = theme => ({
     "@global": {
         body: {
-            backgroundImage: 'url(' + Image + ')',
+            backgroundColor: "#ECEFF1",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",
             backgroundSize: "cover",
@@ -51,6 +51,7 @@ const styles = theme => ({
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto',
+      marginTop: theme.spacing.unit * 18,
     },
   },
   paper: {
