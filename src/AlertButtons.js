@@ -17,10 +17,14 @@ const styles = theme => ({
 });
 
 class OutlinedButtons extends React.Component {
-
- state = {
-    open: false,
-  };
+  constructor(props){  
+  super(props);
+   this.state = {
+      open: false,
+      loginTime : new Date()
+    };
+    this.enableNotice();
+  }
 
   handleClick = () => {
     this.setState({ open: true });
@@ -43,6 +47,16 @@ class OutlinedButtons extends React.Component {
 
     this.setState({ open: false });
   };
+
+  enableNotice = () => {
+    var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("alertTime");
+    UserRef.on('value',(snapshot) => {
+      var curTime = new Date();
+      if(curTime - this.state.loginTime > 2000){
+        alert("An alert has been posted!");
+      }
+    });
+  }
 
   render() {
     const { classes } = this.props;

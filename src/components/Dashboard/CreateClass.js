@@ -34,7 +34,7 @@ class CreateClass extends React.Component {
             open: false,
             addCode: '',
             className:'',
-            alertTime: '',
+            alertTime: new Date(),
             uid: this.props.db.auth().currentUser.uid
         };
 

@@ -6,6 +6,7 @@ import SignUpView from "./SignUpView";
 class SignUpContainer extends Component {
     constructor(props) {
         super(props);
+
         var config = {
             apiKey: "AIzaSyDAxqzZLvyW64VLMhvxTxQjMubdntruWE0",
             authDomain: "cse110firebase-498ba.firebaseapp.com",
@@ -19,8 +20,6 @@ class SignUpContainer extends Component {
         }
     }
 
-
-
     handleSignUp = async event => {
         event.preventDefault();
         const { email, password } = event.target.elements;
@@ -28,6 +27,14 @@ class SignUpContainer extends Component {
             const user = await firebase
                 .auth()
                 .createUserWithEmailAndPassword(email.value, password.value);
+            var time = new Date();
+            // var time2 = new Date("2018-11-20T03:55:42.242Z");
+            // console.log(time-time2);
+            var firebaseRef = firebase.database().ref("User");
+            console.log("Signed up at:"+time.toJSON());
+            console.log("uid:"+firebase.auth().currentUser.uid);
+            firebaseRef.child(firebase.auth().currentUser.uid).set({lastPostTime: time.toJSON(), alertTime: time.toJSON()});
+
             this.props.history.push("/");
         } catch (error) {
             alert(error);
