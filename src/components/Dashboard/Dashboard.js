@@ -210,8 +210,8 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    //const { auth, anchorEl } = this.state;
-   // const open = Boolean(anchorEl);
+    const { auth, anchorEl } = this.state;
+    const open = Boolean(anchorEl);
 
 
     return (
@@ -248,7 +248,6 @@ class Dashboard extends React.Component {
                 Dashboard
               </Typography>
 
-            {/*
 
                 {( <div>
                                <IconButton
@@ -277,8 +276,6 @@ class Dashboard extends React.Component {
                              </div>
                   )}
 
-
-                */}
 
 
 
