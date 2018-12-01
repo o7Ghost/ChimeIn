@@ -120,7 +120,6 @@ class CreateClass extends React.Component {
                             For example: name:CSE140  addCode:X1Y2Z3
                         </DialogContentText>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
                             label="Course Name"

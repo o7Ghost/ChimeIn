@@ -92,7 +92,6 @@ class DropClass extends React.Component {
                             For example: CSE30
                         </DialogContentText>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
                             label="Course Name"

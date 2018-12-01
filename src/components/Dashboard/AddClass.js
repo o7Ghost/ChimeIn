@@ -148,7 +148,6 @@ class AddClass extends React.Component {
                             For example: CSE30+A1B2C3
                         </DialogContentText>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
                             label="Course Name"

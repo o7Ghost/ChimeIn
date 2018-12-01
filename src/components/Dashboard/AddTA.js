@@ -124,7 +124,6 @@ class AddTA extends React.Component {
                             For example: name:CSE140  uid:Tv8w5CqbWPhRRRYDPrMr8JaW1ka2
                         </DialogContentText>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
                             label="Course Name"
