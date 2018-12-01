@@ -49,11 +49,44 @@ class OutlinedButtons extends React.Component {
   };
 
   enableNotice = () => {
+    const { classes } = this.props;
     var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("alertTime");
     UserRef.on('value',(snapshot) => {
       var curTime = new Date();
       if(curTime - this.state.loginTime > 2000){
-        alert("An alert has been posted!");
+
+        const snack = <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={<span id="message-id">Note archived</span>}
+          action={[
+            <Button
+              key="undo"
+              color="secondary"
+              size="small"
+              onClick={this.handleClose}
+            >
+              UNDO
+            </Button>,
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
       }
     });
   }
