@@ -11,6 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Image from '../../image/background.jpeg';
+
 
 const themePaper = createMuiTheme({
     palette: {
@@ -20,6 +24,22 @@ const themePaper = createMuiTheme({
 });
 
 const styles = theme => ({
+    "@global": {
+        body: {
+            backgroundColor: "#ECEFF1",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            backgroundSize: "cover",
+            backgroundAttachment: "fixed",
+            height: "100%"
+        },
+        html: {
+            height: "100%"
+        },
+        "#componentWithId": {
+            height: "100%"
+        }
+    },
     main: {
         width: 'auto',
         display: 'block', // Fix IE 11 issue.
@@ -61,7 +81,8 @@ const styles = theme => ({
 class ResetContainer extends Component {
     constructor(props) {
         super(props);
-        const { classes } = props.classes;
+        console.log(props)
+        const { classes } = props;
         var config = {
             apiKey: "AIzaSyDAxqzZLvyW64VLMhvxTxQjMubdntruWE0",
             authDomain: "cse110firebase-498ba.firebaseapp.com",
@@ -89,41 +110,46 @@ class ResetContainer extends Component {
     };
 
     render() {
+        const { classes } = this.props.classes
         return (
             <div>
-                <h1>Reset password</h1>
-                <label>Email</label>
-                <input onChange={e => this.setState({ email: e.target.value })} />
-                <br />
-                <button onClick={this.handleReset.bind(this)}>Reset password</button>
-                <br />
-
                 <MuiThemeProvider theme={themePaper}>
-                    <main className={this.main}>
-                        <CssBaseline />
-                        <Paper className={this.paper}>
-
-                            <Typography component="h1" variant="h5">
-                                Reset Password
-        </Typography>
-
+                    <main className={this.props.classes.main}>
+                        <Paper className={this.props.classes.paper}>
+                            <h1>Reset password</h1>
+                            <form className={this.props.classes.form}>
+                            <FormControl margin="normal" required fullWidth>
+         
                             <InputLabel htmlFor="email">Email Address</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus />
-
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={this.submit}
-                            >
-                                Reset
+                                <Input onChange={e => this.setState({ email: e.target.value })} />
+                                </FormControl>
+                                <br />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={this.props.classes.submit}
+                                    onClick={this.handleReset.bind(this)}
+                                >
+                                    Reset Password
           </Button>
-
+                            </form>
                         </Paper>
-
+                        <div className={this.props.classes.otherLinks}>
+      <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                >
+      <Link to="/login">Back to Login</Link>
+      <Link to="/signUp">Not a Customer? Sign Up Now!</Link>
+      </Grid>
+      </div>
                     </main>
                 </MuiThemeProvider>
+
             </div>
         );
     }

@@ -40,42 +40,7 @@ class AddClass extends React.Component {
         this.firebaseRef = this.props.db.database().ref("User").child(this.state.uid);
         var TARef = this.firebaseRef.child('TAClass');
         var StudentRef = this.firebaseRef.child('studentClass');
-        /*TARef.on('value', snapshot => {
-            let temp = [];
-            console.log( Object.entries(snapshot) );
-            snapshot.forEach(classElem => {
 
-                let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp.push(classItem);
-                // TAClassTemp.push(classItem);
-            });
-            temp.sort(compare);
-            this.setState({TAClass: temp } );
-        });
-
-        StudentRef.on('value', snapshot => {
-            let temp2 = [];
-            console.log( Object.entries(snapshot) );
-            snapshot.forEach(classElem => {
-
-                let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp2.push(classItem);
-                console.log("AAA" + classItem['.key']);
-                // TAClassTemp.push(classItem);
-            });
-
-            // Sort the student class
-            temp2.sort(compare);
-            this.setState({StudentClass: temp2 } );
-        });*/
 
     }
 
@@ -90,22 +55,20 @@ class AddClass extends React.Component {
     handleAdd = () => {
         //this line will create a route to the database, no matter if the database child is exist or not
         console.log("You entered:"+this.state.className+"+"+this.state.addCode);
-        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
+        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className+"+"+this.state.addCode);
 
 
-        classRef.on('value', (snapshot) => {
+        classRef.once('value', (snapshot) => {
             const classObject = snapshot.val();
             if(classObject==null){
-                alert("Class not registered!");
-            }
-            else if(!classObject.addCode || classObject.addCode.localeCompare(this.state.addCode)!=0) {
-                alert("Wrong add code!");
+                alert("Class not registered or wrong add code!");
             }else{
                 var userRef = this.props.db.database().ref("User").child(this.state.uid);
-                var classRef = userRef.child("studentClass").child(this.state.className);
-                classRef.update({className:this.state.className});
-                alert("Success!");
+                var classRef = userRef.child("studentClass").child(this.state.className+"+"+this.state.addCode);
+                classRef.update({className:this.state.className+"+"+this.state.addCode});
+                alert("Operation Add Class：success!");
             }
+            this.handleClose();
         });
 
 

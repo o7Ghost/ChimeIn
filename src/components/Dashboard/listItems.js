@@ -37,86 +37,122 @@ export class SideBar extends React.Component {
             modClassList: [],
             studentClassList: [],
             firebaseRef: null,
-            studentRef: null
+            studentRef: null,
+            selectedIndex: null,
         };
 
         var uid = this.props.db.auth().currentUser.uid;
-        var firebaseRef = this.props.db.database().ref("User").child(uid);
-        var studentRef = firebaseRef.child('studentClass');
-        this.setState({firebaseRef:firebaseRef});
-        this.setState({studentRef:studentRef});
-        firebaseRef.on('value', (snapshot) => {
-            const userObj = snapshot.val();
-            console.log(userObj.lastPostTime);
-            if(userObj.modClass) {
-                this.setState({modClassList :userObj.modClass});
-                // this.state.modClassList.sort(compare);
-            }
-            if(userObj.myClass) {
-                this.setState({myClassList :userObj.myClass});
-                // this.state.myClassList.sort(compare);
-            }
+        this.firebaseRef = this.props.db.database().ref("User").child(uid);
+        var TARef = this.firebaseRef.child('modClass');
+        var StudentRef = this.firebaseRef.child('studentClass');
+        var MyRef = this.firebaseRef.child('myClass');
 
+        TARef.on('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.setState({modClassList: temp } );
         });
-        studentRef.on('value', snapshot => {
+
+        StudentRef.on('value', snapshot => {
             let temp2 = [];
             snapshot.forEach(classElem => {
-
                 let classItem = classElem.val();
-                classItem['.key'] = classElem.key;
-                temp2.push(classItem);
+                console.log( classElem.val() );
+                console.log( classItem['className']);
+                temp2.push(classItem['className']);
             });
-
-            // Sort the student class
-            // temp2.sort(compare);
             this.setState({studentClassList: temp2 } );
         });
 
+        MyRef.on('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.setState({myClassList: temp } );
+        });
+
+        this.handleChange1 = this.handleChange1.bind(this);
+        this.handleChange2 = this.handleChange2.bind(this);
+        this.handleChange3 = this.handleChange3.bind(this);
+    }
+    handleChange1(e) {
+        const onClickClass =  e['course'];
+        console.log(this);
+        this.props.onClick(onClickClass,"student");
+        this.setState({selectedIndex: onClickClass });
+    }
+    handleChange2(e) {
+        const onClickClass =  e['course'];
+        console.log(this);
+        this.props.onClick(onClickClass,"TA");
+        this.setState({selectedIndex: onClickClass });
+    }
+    handleChange3(e) {
+        const onClickClass =  e['course'];
+        console.log(this);
+        this.props.onClick(onClickClass,"instructor");
+        this.setState({selectedIndex: onClickClass });
     }
 
+
+
     componentWillUnmount() {
-        this.state.firebaseRef.off();
-        this.state.studentRef.off();
+        this.firebaseRef.off();
     }
 
     render() {
-
+        console.log("Rendered listItems");
+        console.log(this.state);
+        this.populateLists();
         const StudentClass = this.state.studentClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange1({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course.className}/>
+                    <ListItemText primary={course.split("+")[0]}  />
                 </ListItem>
             </div>
         );
         const TAClass = this.state.modClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange2({course})}>
                     <ListItemIcon>
-                        <AssignmentIcon/>
+                       <AssignmentIcon/>
                     </ListItemIcon>
-
-                    <ListItemText primary={course}/>
+                    <ListItemText primary={course.split("+")[0]}  />
                 </ListItem>
             </div>
         );
-
-        const MyClass = this.state.myClassList.map(course =>
+		const MyClass = this.state.myClassList.map(course =>
             <div>
-                <ListItem button>
+                <ListItem button
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange3({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}/>
+                    <ListItemText primary={course.split("+")[0]}  />
                 </ListItem>
             </div>
         );
-
-
 
         return (
             <div>
@@ -125,11 +161,54 @@ export class SideBar extends React.Component {
 
                 <ListSubheader inset>Tutor</ListSubheader>
                 {TAClass}
-
-                <ListSubheader inset>Instructor</ListSubheader>
-                {MyClass}
+				
+				<ListSubheader inset>Instructor</ListSubheader>
+				{MyClass}
             </div>
 
         );
     };
+
+    populateLists(){
+        var uid = this.props.db.auth().currentUser.uid;
+        this.firebaseRef = this.props.db.database().ref("User").child(uid);
+        var TARef = this.firebaseRef.child('modClass');
+        var StudentRef = this.firebaseRef.child('studentClass');
+        var MyRef = this.firebaseRef.child('myClass');
+
+        TARef.once('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.state.modClassList = temp;
+        });
+
+        StudentRef.once('value', snapshot => {
+            let temp2 = [];
+            snapshot.forEach(classElem => {
+                let classItem = classElem.val();
+                console.log( classElem.val() );
+                console.log( classItem['className']);
+                temp2.push(classItem['className']);
+            });
+            this.state.studentClassList = temp2;
+        });
+
+        MyRef.once('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.state.myClassList = temp;
+        });
+    }
 };
