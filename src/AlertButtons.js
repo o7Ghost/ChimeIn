@@ -97,7 +97,7 @@ class OutlinedButtons extends React.Component {
     UserRef.on('value',(snapshot) => {
       var curTime = new Date();
       if(curTime - this.state.loginTime > 1000){
-        this.setState({ mic: true });
+        this.setState({ mic: true, projector: false, write: false, coolD: false });
       }
     });
   }
@@ -107,7 +107,7 @@ class OutlinedButtons extends React.Component {
     UserRef.on('value',(snapshot) => {
       var curTime = new Date();
       if(curTime - this.state.loginTime > 1000){
-        this.setState({ projector: true });
+        this.setState({ mic: false, projector: true, write: false, coolD: false });
       }
     });
   }
@@ -117,7 +117,7 @@ class OutlinedButtons extends React.Component {
     UserRef.on('value',(snapshot) => {
       var curTime = new Date();
       if(curTime - this.state.loginTime > 1000){
-        this.setState({ write: true });
+        this.setState({ mic: false, projector: false, write: true, coolD: false });
       }
     });
   }
@@ -127,7 +127,7 @@ class OutlinedButtons extends React.Component {
     UserRef.on('value',(snapshot) => {
       var curTime = new Date();
       if(curTime - this.state.loginTime > 1000){
-        this.setState({ coolD: true });
+        this.setState({ mic: false, projector: false, write: false, coolD: true });
       }
     });
   }
