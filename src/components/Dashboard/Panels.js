@@ -187,10 +187,9 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel style = {  { border:"#000"} }>
                         <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
                         	<Typography className={classes.secondaryHeading}>
-                            UPVOTES: {items.upvoteCount}
-                        </Typography>
+                                UPVOTES: {items.upvoteCount}
+                            </Typography>
                             <Typography className={classes.heading}>{items.Question}</Typography>
-                           
                         </ExpansionPanelSummary>         
 
 
@@ -204,7 +203,6 @@ class SimpleExpansionPanel extends React.Component {
 
                             {this.isTA(this.props.db.auth().currentUser.uid) ? <div><ExpansionPanelDetails><AnswerField curClass ={this.props.curClass} Question={items.UID + "+" + items.timestamp} value={this.props.value}
                                          stateChange={this.props.stateChange} db={firebase}/></ExpansionPanelDetails></div> : null}
-
 
                         <Divider/>
 

@@ -97,13 +97,11 @@ function SignIn(props) {
                     Are you ready to Chime In? Select or add a class to start.
             </Typography>
                 <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                    With us you can enroll into class with just class name and add code, raise your question to the professor annonymosly in real time, even start your own class.
+                    With us you can enroll into class with just class name and add code, raise your question to the professor annonymosly in real time, or even start your own class.
             </Typography>
-
 
             </div>
             <div className={classNames(classes.layout, classes.cardGrid)}>
-                {/* End hero unit */}
                 <Grid container spacing={40}>
                     <Grid item key='0' sm={6} md={4} lg={4}>
                         <Card className={classes.card}>
@@ -115,10 +113,10 @@ function SignIn(props) {
 
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    Enroll in a class
+                                    Enroll in classes
                     </Typography>
                                 <Typography>
-                                    This is a media card. You can use this section to describe the content.
+                                    Join a class to be able to ask questions in real time.
                     </Typography>
                             </CardContent>
 
@@ -135,10 +133,10 @@ function SignIn(props) {
                             />
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    Raise your question
+                                    Ask your questions
                     </Typography>
                                 <Typography>
-                                    This is a media card. You can use this section to describe the content.
+                                Annonymosly ask your questions without the fear of professionalism deduction.
                     </Typography>
                             </CardContent>
 
@@ -153,10 +151,10 @@ function SignIn(props) {
                             />
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    Vote on questions
+                                    Upvote questions
                     </Typography>
                                 <Typography>
-                                    This is a media card. You can use this section to describe the content.
+                                    Express your interest in a question by upvoting it.
                     </Typography>
                             </CardContent>
 

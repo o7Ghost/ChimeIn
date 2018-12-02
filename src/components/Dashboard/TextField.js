@@ -27,7 +27,7 @@ class TextFields extends React.Component {
         super(props);
 
         this.statics = {
-            cooldowntime: 60000  // change this field to change cooldown time
+            cooldowntime: 90000  // change this field to change cooldown time
         };
 
         this.state = {
@@ -56,7 +56,7 @@ class TextFields extends React.Component {
             //console.log("xxxxooooooo"+ posttime);
             if(diff < this.statics.cooldowntime && diff > 0) {
                 this.state.buttonDisabled = true;
-                this.state.submitText = 'You can post another question within 60 seconds.';
+                this.state.submitText = 'You can post again in 90 seconds';
                 setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
             }
         });
@@ -84,7 +84,7 @@ class TextFields extends React.Component {
             userRef.update({lastPostTime: timeWithTimezone});
 
             // after this submission, set button disabled with timeout function, 1s = 1000
-            this.setState({buttonDisabled: true, submitText: 'You can post another question within 60 seconds.'});
+            this.setState({buttonDisabled: true, submitText: 'You can post again in 90 seconds'});
             setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), this.statics.cooldowntime);
         }
         else if(Question == '' && this.state.buttonDisabled == false) {
@@ -109,7 +109,7 @@ class TextFields extends React.Component {
                 this.setState({Question: '', upvoteCount: 0});
             }
             else {
-                this.setState({notification: 'You can post another question within 60 seconds.', open: true});
+                this.setState({notification: 'You can post again in 90 seconds', open: true});
             }
         }
     }
@@ -168,25 +168,7 @@ class TextFields extends React.Component {
                         "aria-describedby": "message-id"
                     }}
                     message={<span id="message-id">{this.state.notification}</span>}
-                    // action={[
-                    //     <Button
-                    //         key="undo"
-                    //         color="secondary"
-                    //         size="small"
-                    //         onClick={this.handleClose}
-                    //     >
-                    //         Close
-                    //     </Button>,
-                    //     <IconButton
-                    //         key="close"
-                    //         aria-label="Close"
-                    //         color="inherit"
-                    //         className={classes.close}
-                    //         onClick={this.handleClose}
-                    //     >
-                    //         <CloseIcon />
-                    //     </IconButton>
-                    // ]}
+                 
                 />
             </div>
         );
