@@ -37,7 +37,6 @@ class OutlinedButtons extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-
         <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick}>Mic is off</Button>
         <Snackbar
           anchorOrigin={{

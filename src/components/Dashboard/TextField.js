@@ -152,7 +152,7 @@ class TextFields extends React.Component {
         const { classes } = this.props;
         return (
             <div>
-            <form className={classes.container} noValidate autoComplete="off">
+                <form className={classes.container} noValidate autoComplete="off">
                 <TextField value = { this.props.value.Question}
                            id="outlined-multiline-flexible"
                            label="Type Your Question"
@@ -170,7 +170,6 @@ class TextFields extends React.Component {
                     {this.state.submitText}
                 </Button>
             </form>
-
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",

@@ -34,18 +34,11 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 
-
 const themeDrawer = createMuiTheme({
   palette: {
     type: 'dark',
   },
-
 });
-
-
-
-
-
 
 const themeAppBar = createMuiTheme({
   palette: {
@@ -101,7 +94,7 @@ const styles = theme => ({
     whiteSpace: 'nowrap',
     width: drawerWidth,
     //overflow: 'auto',
-    //overflow: 'hidden', // This disables the scroll bar in the hamburger menu so that the scrollbar does not move left or right
+    //overflowX: 'hidden', // This disables the scroll bar in the hamburger menu so that the scrollbar does not move left or right
 
 
     //height: '100vh', // You set height to 100% so that if height goes over 100% it automatically shows scroll bar
@@ -245,7 +238,6 @@ class Dashboard extends React.Component {
                     this.state.open && classes.menuButtonHidden,
                   )}
                 >
-
                   <MenuIcon />
                 </IconButton>
                 <Typography
@@ -257,8 +249,6 @@ class Dashboard extends React.Component {
                 >
                   {this.state.currentClass}
                 </Typography>
-
-
 
                 {(<div>
                   <IconButton
@@ -286,10 +276,6 @@ class Dashboard extends React.Component {
                   </Menu>
                 </div>
                 )}
-
-
-
-
 
 
                 {/*   <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button> */}
@@ -347,7 +333,8 @@ class Dashboard extends React.Component {
           </MuiThemeProvider>
 
           <main className={classes.content}>
-            <Scrollbars autoHide style={{"height":"100%"}}>
+            <Scrollbars autoHide style={{"height":"100%"}} >
+            <div position='fixed'>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
             {
@@ -359,9 +346,9 @@ class Dashboard extends React.Component {
                 null :
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
             }
-
             <div>
               {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
+            </div>
             </div>
             </Scrollbars>
           </main>
