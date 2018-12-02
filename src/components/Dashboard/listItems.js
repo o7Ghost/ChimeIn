@@ -11,6 +11,17 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Button from '@material-ui/core/Button';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ChildCareIcon from '@material-ui/icons/ChildCare';
+import Typography from '@material-ui/core/Typography';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Divider from '@material-ui/core/Divider';
+
+
+
 
 function compare(a, b) {
     var regex = new RegExp('([0-9]+)|([a-zA-Z]+)','g');
@@ -39,7 +50,9 @@ export class SideBar extends React.Component {
             firebaseRef: null,
             studentRef: null,
             selectedIndex: null,
-            hideStudent: true
+            hideStudent: true,
+            hideTA: true,
+            hideInstructor: true,
         };
 
         var uid = this.props.db.auth().currentUser.uid;
@@ -104,11 +117,35 @@ export class SideBar extends React.Component {
         this.setState({hideStudent: !this.state.hideStudent});
     }
 
-    getButton(){
+    changeTA(){
+        //set it to be false
+        this.setState({hideTA: !this.state.hideTA});
+    }
+
+    changeInstructor(){
+        //set it to be false
+        this.setState({hideInstructor: !this.state.hideInstructor});
+    }
+
+    getStudentButton(){
         if (this.state.hideStudent){
-            return "Student +";
+            return <div> Student <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
         }
-        return "Student -";
+        return <div> Student <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
+    }
+
+    getTAButton(){
+        if (this.state.hideTA){
+            return <div> TA <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
+        }
+        return <div> TA <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
+    }
+
+    getInstructorButton(){
+        if (this.state.hideInstructor){
+            return <div> Instructor <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
+        }
+        return <div> Instructor <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
     }
 
     render() {
@@ -157,20 +194,36 @@ export class SideBar extends React.Component {
 
         return (
             <div>
+
+          
+            {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+            {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+
+
                 <span>
                     <ListItem onClick={()=>this.changeStudent()} button>
-                        <ListItemText primary={this.getButton()}/>
+                        <ListItemText primary={this.getStudentButton()}/>
                     </ListItem>
-                    {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
-                    {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+
                 </span>
                 {this.state.hideStudent ? null : StudentClass}
 
-                <ListSubheader inset>Tutor</ListSubheader>
-                {TAClass}
-				
-				<ListSubheader inset>Instructor</ListSubheader>
-				{MyClass}
+                <span>
+                    <ListItem onClick={()=>this.changeTA()} button>
+                        <ListItemText primary={this.getTAButton()}/>
+                    </ListItem>
+                </span>
+                {this.state.hideTA ? null : TAClass}
+
+                <span>
+                    <ListItem onClick={()=>this.changeInstructor()} button>
+                        <ListItemText primary={this.getInstructorButton()}/>
+                    </ListItem>
+                </span>
+                {this.state.hideInstructor ? null : MyClass}
+
+
+
             </div>
 
         );

@@ -163,21 +163,18 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel style = {  { border:"#000"} }>
                         <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
                         	<Typography className={classes.secondaryHeading}>
-                            UPVOTES: {items.upvoteCount}
-                        </Typography>
+                                UPVOTES: {items.upvoteCount}
+                            </Typography>
                             <Typography className={classes.heading}>{items.Question}</Typography>
-                           
                         </ExpansionPanelSummary>         
 
                         <ExpansionPanelDetails>
                             <div>
                                 {items.Answer ? items.Answer.map(temp => <Typography color="primary">{temp}</Typography>) : null}
-
                             </div>
                         </ExpansionPanelDetails>
 
                         <ExpansionPanelDetails>
-
                             <AnswerField curClass ={this.props.curClass} Question={items.UID + "+" + items.timestamp} value={this.props.value}
                                          stateChange={this.props.stateChange} db={firebase}/>
                         </ExpansionPanelDetails>
