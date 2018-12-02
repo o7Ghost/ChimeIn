@@ -33,7 +33,8 @@ class SignUpContainer extends Component {
             var firebaseRef = firebase.database().ref("User");
             console.log("Signed up at:"+time.toJSON());
             console.log("uid:"+firebase.auth().currentUser.uid);
-            firebaseRef.child(firebase.auth().currentUser.uid).set({lastPostTime: time.toJSON(), alertTime: time.toJSON()});
+            firebaseRef.child(firebase.auth().currentUser.uid).set({lastPostTime: time.toJSON(), micOff: time.toJSON(), 
+            projectorOff: time.toJSON(), writing: time.toJSON(), coolDown: time.toJSON()});
 
             this.props.history.push("/");
         } catch (error) {
