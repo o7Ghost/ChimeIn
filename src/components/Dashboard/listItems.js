@@ -195,10 +195,8 @@ export class SideBar extends React.Component {
         return (
             <div>
 
-          
             {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
             {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
-
 
                 <span>
                     <ListItem onClick={()=>this.changeStudent()} button>
@@ -221,8 +219,6 @@ export class SideBar extends React.Component {
                     </ListItem>
                 </span>
                 {this.state.hideInstructor ? null : MyClass}
-
-
 
             </div>
 

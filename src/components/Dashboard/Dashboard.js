@@ -31,6 +31,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import WelcomePage from './WelcomePage.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
+
 
 const themeDrawer = createMuiTheme({
   palette: {
@@ -152,7 +160,8 @@ class Dashboard extends React.Component {
           	      upvoteCount: 0,
                   order: 99999999,
                 timestamp: '',
-                followers: []
+                followers: [],
+       hideSetting : true,
    }
    this.handler = this.changeQState.bind(this);
       this.handlerA = this.changeAState.bind(this);
@@ -200,6 +209,20 @@ class Dashboard extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+
+      changeSetting(){
+          //set it to be false
+          this.setState({hideSetting: !this.state.hideSetting});
+      }
+
+
+     getSettingButton(){
+          if (this.state.hideSetting){
+              return <div> Course Management <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
+          }
+          return <div> Course Management <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
+      }
 
   render() {
     const { classes } = this.props;
@@ -300,20 +323,33 @@ class Dashboard extends React.Component {
 
             <SideBar onClick={this.changeCurrentClass} currClass = {this.state.currentClass} db = {firebase}/>
 
+            <div>
+                <span>
+                        <ListItem onClick={()=>this.changeSetting()} button>
+                          <ListItemText primary={this.getSettingButton()}/>
+                        </ListItem>
+                </span>
+                {this.state.hideSetting ? null :  <div> <div className={classes.others}>
+                                                               <AddClass db={firebase}/>
+                                                             </div>
+                                                             <div className={classes.others}>
+                                                                 <DropClass db={firebase}/>
+                                                             </div>
+                                                             <div className={classes.others}>
+                                                                 <CreateClass db={firebase}/>
+                                                             </div>
+                                                               <div className={classes.others}>
+                                                                 <AddTA db={firebase} />
+                                                               </div>
+                                                               </div>}
 
-            <div className={classes.others}>
-              <AddClass db={firebase}/>
             </div>
-            <div className={classes.others}>
-                <DropClass db={firebase}/>
-            </div>
-            <div className={classes.others}>
-                <CreateClass db={firebase}/>
-            </div>
-              <div className={classes.others}>
-                <AddTA db={firebase} />
-              </div>
+
+
+
+
             </Drawer>
+
           </MuiThemeProvider>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />

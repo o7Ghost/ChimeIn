@@ -122,14 +122,12 @@ class AddClass extends React.Component {
     render() {
         return (
             <div>
-                <ListSubheader inset>Course Management</ListSubheader>
                 <ListItem button>
                     <ListItemIcon>
                         <AddIcon />
                     </ListItemIcon>
                     <ListItemText primary="Add Class" onClick={this.handleClickOpen} />
                 </ListItem>
-
 
                 <Dialog
                     open={this.state.open}
