@@ -112,6 +112,30 @@ class SimpleExpansionPanel extends React.Component {
         
     }
 
+    isTA(uid){
+        console.log('inside ista');
+        let temp = [];
+        var modClassRef = this.props.db.database().ref("User").child(uid).child('modClass');
+        modClassRef.once('value', snapshot =>{
+            snapshot.forEach(className=>{
+                let temp2 = className.val();
+                console.log("Creating array:" + temp2);
+                temp.push(temp2);
+                console.log("Array contains:" + temp);
+            })
+            //console.log(temp);
+        });
+
+        for (var i = 0; i < temp.length; ++i){
+			console.log("in loop");
+            if (temp[i] == this.props.curClass){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     refresh(){
         
         console.log("in panel render", this.state.curClass);
@@ -169,26 +193,28 @@ class SimpleExpansionPanel extends React.Component {
                            
                         </ExpansionPanelSummary>         
 
-                        <ExpansionPanelDetails>
-                            <div>
-                                {items.Answer ? items.Answer.map(temp => <Typography color="primary">{temp}</Typography>) : null}
 
-                            </div>
-                        </ExpansionPanelDetails>
 
-                        <ExpansionPanelDetails>
+                                {items.Answer ? items.Answer.map(temp => <div><ExpansionPanelDetails><Typography color="primary">{temp}</Typography></ExpansionPanelDetails></div>) : null}
 
-                            <AnswerField curClass ={this.props.curClass} Question={items.UID + "+" + items.timestamp} value={this.props.value}
-                                         stateChange={this.props.stateChange} db={firebase}/>
-                        </ExpansionPanelDetails>
+
+
+
+
+
+                            {this.isTA(this.props.db.auth().currentUser.uid) ? <div><ExpansionPanelDetails><AnswerField curClass ={this.props.curClass} Question={items.UID + "+" + items.timestamp} value={this.props.value}
+                                         stateChange={this.props.stateChange} db={firebase}/></ExpansionPanelDetails></div> : null}
+
 
                         <Divider/>
 
                         <ExpansionPanelActions>
-                            <Button size="small" color="secondary"
+           
+                           {console.log(this.isTA(this.props.db.auth().currentUser.uid))}
+                            { this.props.db.auth().currentUser.uid  == items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary"
                                     onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
                                 Remove
-                            </Button>
+                            </Button> : null}
 
                             <Button size="small" color="primary"
                                     onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
