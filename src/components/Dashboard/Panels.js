@@ -153,15 +153,25 @@ class SimpleExpansionPanel extends React.Component {
             dataSnapshot.forEach(childSnapshot => {
                 let questionItem = childSnapshot.val();
                 if(this.state.tabNum == 0){
-                    questionItems.push(questionItem);
+                    var today = new Date();
+                    var questionDate = new Date(questionItem.timestamp);
+                    today = today.toJSON().split("T")[0];
+                    questionDate = questionDate.toJSON().split("T")[0];
+                    console.log("today: " + today + " " + "question: " + questionDate);
+                    console.log(questionItem.Question);
+                    if(questionDate >= today){
+                        questionItems.push(questionItem);
+                    }
                 }
                 if(this.state.tabNum == 1){
-
+                    questionItems.push(questionItem);
+                }
+                if(this.state.tabNum == 2){
                     if(questionItem.followers && questionItem.followers.includes(this.props.db.auth().currentUser.uid)){
                         questionItems.push(questionItem)
                     }
                 }
-                if(this.state.tabNum == 2){
+                if(this.state.tabNum == 3){
                     if(questionItem.Answer){
                         questionItems.push(questionItem);
                     }

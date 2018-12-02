@@ -96,6 +96,11 @@ class CustomizedTabs extends React.Component {
                 >
                     <Tab
                         disableRipple
+                        classes={{root: classes.tabRoot, selected: classes.tabSelected}}
+                        label="Today"
+                    />
+                    <Tab
+                        disableRipple
                         classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                         label="All"
                     />
