@@ -50,9 +50,9 @@ export class SideBar extends React.Component {
             firebaseRef: null,
             studentRef: null,
             selectedIndex: null,
-            hideStudent: true,
-            hideTA: true,
-            hideInstructor: true,
+            hideStudent: false,
+            hideTA: false,
+            hideInstructor: false,
         };
 
         var uid = this.props.db.auth().currentUser.uid;
