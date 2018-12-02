@@ -2,10 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import CloseIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Checkbox from '@material-ui/core/Checkbox';
+
 
 const styles = theme => ({
+    root: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper,
+    },
     container: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -14,7 +33,7 @@ const styles = theme => ({
     },
     button: {
         margin: '0 0 0 auto',
-    }
+    },
 });
 
 
@@ -22,30 +41,140 @@ class TextFields extends React.Component {
     constructor(props) {
         super(props);
 
+        // 60,000
+        this.statics = {
+            cooldowntime: 60 // change this field to change cooldown time
+        };
+
+        this.state = {
+            buttonDisabled: false,
+            open: false,
+            notification: '',
+            submitText: 'Submit',
+            filterOpen: false,
+            filtered: false,
+            filterQuestion: [],
+            checked: []
+        };
+
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
         var classRef = this.firebaseRef.child(this.props.curClass);
         var questionRef = classRef.child("questions");
-        this.firebaseRef = questionRef;
+        this.questionRef = questionRef;
+
+        // cooldown implementation on page opening
+        var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
+        userRef.once('value', (snapshot) => {
+
+            var posttime = '2000-01-01T00:00:59.207Z'
+            snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
+
+            //var posttime = new Date(snapshot.val().lastPostTime);
+            var curTime = new Date();
+
+            var diff = curTime - posttime;
+            //console.log("xxxxooooooo"+ posttime);
+            if(diff < this.statics.cooldowntime && diff > 0) {
+                this.state.buttonDisabled = true;
+                this.state.submitText = 'You can post another question within 60 seconds.';
+                setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
+            }
+        });
     }
 
     componentWillUnmount() {
         this.firebaseRef.off();
     }
+
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
-        const {UID, Question, upvoteCount, Answer, timestamp} = this.props.value;
-        event.preventDefault();
+        console.log("Current question string1 is " + this.props.value.Question);
+        const {UID, Question, upvoteCount, order, Answer, timestamp, followers} = this.props.value;
+        //event.preventDefault();
         var time = new Date();
+        var timeWithTimezone = time.toJSON();
         time = time.toJSON().split(".")[0];
         var cID = this.props.db.auth().currentUser.uid;
+        let similar = [], postQuestion = true, x = 0;
 
-        if(Question != '') {
-            console.log("current question is " + this.props.value.Question);
-            this.firebaseRef.child( cID + "+" + time).set({UID: cID,
-                Question: Question, upvoteCount: upvoteCount, timestamp: time});
+        if((Question != '' && this.state.buttonDisabled == false) || this.state.filtered == true) {
+            // filter start to work
+            if (this.state.filtered == false)
+                similar = this.postFilter(Question);
+            else {
+                this.setState({ filterOpen: false });
+                this.setState({ filtered: false});
+                let upvoteList = this.state.checked;
+                for (x = 0; x < upvoteList.length; x++) {
+                    if (upvoteList[x] != -1) {
+                        postQuestion = false;
+                        let tmp = this.state.filterQuestion[x][0];
+                        console.log("Hello: " + tmp.Question + " " + tmp['.key'] + " " + tmp.upvoteCount + " " + tmp.order);
+                        this.handleFilterUpvote(tmp['.key'], tmp.upvoteCount, tmp.order);
+                    }
+                }
+                //this.setState({ filterQuestion: similar });
+                //this.setState({ checked: similar});
+            }
+
+            console.log("Current question is " + Question);
+            console.log("Current similar is " + similar.length);
+
+            // no similar question, push to firebase directly
+            if (similar.length == 0 && postQuestion) {
+                this.questionRef.child( cID + "+" + time).set({UID: cID,
+                    Question: Question, upvoteCount: upvoteCount, order:order, timestamp: time, followers: this.props.value.followers});
+
+                // update user lastPostTime
+                var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
+                userRef.update({lastPostTime: timeWithTimezone});
+
+                // after this submission, set button disabled with timeout function, 1s = 1000
+                this.setState({buttonDisabled: true, submitText: 'You can post another question within 60 seconds.'});
+                setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), this.statics.cooldowntime);
+                this.props.stateChange('');
+            }
+            // display similar question
+            else if (similar.length != 0) {
+                this.setState({ filtered: true });
+                this.setState({ filterOpen: true });
+                console.log("Current similar size is " + similar.length);
+                console.log("Current questionFilter size is " + this.state.filterQuestion.length);
+            }
+            else {
+                this.props.stateChange('');
+            }
         }
+        else if(Question == '' && this.state.buttonDisabled == false) {
+            this.state.notification = 'Can not submit blank question';
+            this.state.open = true;
+            this.props.stateChange('');
+        }
+        else
+            this.props.stateChange('');
+    }
 
-        this.props.stateChange('');
+    handleFilterUpvote(title, currentLike, currentOrder) {
+        var followerRef = this.questionRef.child(title);
+
+        let followerlist = [];
+        followerRef.once('value',(snapshot) =>{
+            const question = snapshot.val();
+            console.log(question)
+            if(question != null && question.followers ){
+                followerlist = question.followers;
+            }
+            if(!followerlist.includes(this.props.db.auth().currentUser.uid)){
+                followerlist.push(this.props.db.auth().currentUser.uid);
+                this.questionRef.child(title).update({ followers: followerlist });
+                this.questionRef.child(title).update({ upvoteCount: currentLike + 1, order: currentOrder - 1 });
+            }else{
+                this.state.notification = 'You have voted one or more questions you just selected!';
+                this.state.open = true;
+            }
+
+        })
+
     }
 
     getNoneStopWords(sentence) {
@@ -75,6 +204,9 @@ class TextFields extends React.Component {
             return 0;
 
         let wordArr = str.match(/\w+/g), commonObj = {}, uncommonArr = [], word, i;
+
+        if (wordArr == null)
+            return 0;
 
         for (i = 0; i < common.length; i++) {
             commonObj[ common[i].trim() ] = true;
@@ -112,7 +244,7 @@ class TextFields extends React.Component {
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
         var classRef = this.firebaseRef.child(this.props.curClass);
         var questionRef = classRef.child("questions");
-        let questionItems = [];
+        let questionItems = [], filter = [], filterIndex = [];
 
         questionRef.once('value', dataSnapshot => {
             dataSnapshot.forEach(childSnapshot => {
@@ -122,15 +254,16 @@ class TextFields extends React.Component {
             });
 
             // start to filter
-            let filter = [], validWords = this.getNoneStopWords(input), i, times = 0;
+            let validWords = this.getNoneStopWords(input), i, k, times = 0;
 
-            if (input == "")
-                alert("Please enter a question to filter!");
-            else {
+            if(input != "") {
+                let counter = 0;
                 for (i = 0; i < questionItems.length; i++) {
-                    //console.log(this.state.posts[i].content);
-                    let temp = questionItems[i].Question;
-                    filter.push([temp, this.getNumDuplicate(temp, validWords)]);
+                    let temp = this.getNumDuplicate(questionItems[i].Question, validWords);
+                    if (temp != 0) {
+                        filter.push([questionItems[i], temp, counter]);
+                        counter++;
+                    }
                 }
 
                 filter.sort(function(a, b) {
@@ -138,19 +271,31 @@ class TextFields extends React.Component {
                         return b[1]-a[1];
                 })
 
-                for (i = 0; i < filter.length; i++) {
-                    if (filter[i][1] != "0") {
-                        alert("------FILTER #" + (i+1) + "------\n\n" + filter[i][0]);
-                        times = 1;
-                    }
-                }
+                for (k = 0; k < counter; k++)
+                    filterIndex.push(-1);
 
-                if (times == 0)
+                /*if (filter.length == 0)
                     alert("There is no similar question. Please submit your question!");
+                else {
+                    for (i = 0; i < filter.length; i++)
+                        alert("------FILTER #" + (i+1) + "------\n\n" + filter[i][0].Question);
+                }*/
             }
+            console.log("Inside post filter, filter is " + filter);
+            console.log("Inside post filter, filterIndex is " + filterIndex);
+            this.setState({filterQuestion: filter});
+            this.setState({checked: filterIndex});
+            console.log("Inside post filter, filterQuestion is " + this.state.filterQuestion);
+            console.log("Inside post filter, filterIndex is " + this.state.checked);
         });
 
+        return filter;
     }
+
+    handleFilterClose = () => {
+        this.setState({ filterOpen: false });
+        this.setState({ filtered: false});
+    };
 
     /*
       handleChange = name => event => {
@@ -159,6 +304,48 @@ class TextFields extends React.Component {
         });
       };
     */
+
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter' && e.shiftKey) {
+            e.preventDefault();
+            if(this.state.buttonDisabled == false) {
+                this.pushToFirebase();
+                this.setState({Question: '', upvoteCount: 0});
+            }
+            else {
+                this.setState({notification: 'You can post another question within 60 seconds.', open: true});
+            }
+        }
+    }
+
+    handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
+
+    handleToggle = value => () => {
+        console.log("Current filter question is " + this.state.filterQuestion);
+        console.log("Current checked is " + this.state.checked);
+        console.log("Current value is " + this.value);
+        let tempChecked = this.state.checked;
+        let currentIndex = tempChecked[value];
+
+        if (currentIndex === -1) {
+            tempChecked[value] = 1;
+        } else {
+            tempChecked[value] = -1;
+        }
+
+        console.log("Current checked is " + tempChecked);
+        this.setState({checked: tempChecked});
+        console.log("Current checked is " + this.state.checked);
+        console.log("Current question order is " + this.state.filterQuestion.Question);
+    };
+
+
 //, upvoteCount: this.props.value.upvoteCount
     //value= { this.props.value.Question.replace(/_b/g, '\n') }
     render() {
@@ -168,9 +355,23 @@ class TextFields extends React.Component {
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.questionRef = this.classRef.child("questions");
         this.firebaseRef=this.questionRef;
+        const questions = this.state.filterQuestion.map(items =>
+            <div>
+                <ListItem key={items[2]} role={undefined} dense button onClick={this.handleToggle(items[2])}>
+                    <Checkbox
+                        checked={this.state.checked[items[2]] !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                    />
+                    <ListItemText primary={items[0].Question} />
+                </ListItem>
+            </div>
+        );
+
 
         const { classes } = this.props;
         return (
+            <div>
             <form className={classes.container} noValidate autoComplete="off">
                 <TextField value = { this.props.value.Question}
                            id="outlined-multiline-flexible"
@@ -185,15 +386,69 @@ class TextFields extends React.Component {
                            onKeyPress={this._handleKeyPress}/>
 
                 <Button variant="outlined" id="submitButton" href="#" className={classes.button}
-                        onClick={this.pushToFirebase.bind(this)}>
-                    Submit
-                </Button>
-                <Button variant="outlined" id="filterButton" href="#" className={classes.button}
-                        onClick={() => this.postFilter(this.props.value.Question)}>
-                    Filter
+                        onClick={this.pushToFirebase.bind(this)} disabled={this.state.buttonDisabled}>
+                    {this.state.submitText}
                 </Button>
             </form>
 
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                    }}
+                    open={this.state.open}
+                    autoHideDuration={4500}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        "aria-describedby": "message-id"
+                    }}
+                    message={<span id="message-id">{this.state.notification}</span>}
+                    // action={[
+                    //     <Button
+                    //         key="undo"
+                    //         color="secondary"
+                    //         size="small"
+                    //         onClick={this.handleClose}
+                    //     >
+                    //         Close
+                    //     </Button>,
+                    //     <IconButton
+                    //         key="close"
+                    //         aria-label="Close"
+                    //         color="inherit"
+                    //         className={classes.close}
+                    //         onClick={this.handleClose}
+                    //     >
+                    //         <CloseIcon />
+                    //     </IconButton>
+                    // ]}
+                />
+
+                <Dialog
+                    open={this.state.filterOpen}
+                    onClose={this.handleFilterClose}
+                    scroll="paper"
+                    aria-labelledby="scroll-dialog-title"
+                >
+                    <DialogTitle id="scroll-dialog-title">Auto Filter</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Some similar questions have been found. Please go through them and decide to upvote or post:
+                        </DialogContentText>
+                        <List>
+                            {questions}
+                        </List>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleFilterClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.pushToFirebase.bind(this)} color="primary">
+                            Submit
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
         );
     }
 

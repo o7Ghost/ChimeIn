@@ -72,18 +72,21 @@ const styles = theme => ({
 
 class CustomizedTabs extends React.Component {
     state = {
-        value: 0,
+        value: 0
     };
 
     handleChange = (event, value) => {
-        this.setState({ value });
-        console.log("in Tab",this.props.curClass);
+        //console.log("in Tab",value);
+        //console.log("before ",this.state.value);
+        this.setState({ value: value });
+        //  console.log("after ",this.state.value);
+
     };
 
     render() {
         const { classes } = this.props;
         const { value } = this.state;
-
+        console.log(value,"cur:", this.props.curClass);
         return (
             <div className={classes.root}>
                 <Tabs
@@ -108,12 +111,8 @@ class CustomizedTabs extends React.Component {
                     />
                 </Tabs>
 
-                {value === 0 && <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
-                {value === 1 && <TabContainer><Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
-                {value === 2 && <TabContainer><Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>}
-
+                <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>
                 
-
             </div>
         );
     }

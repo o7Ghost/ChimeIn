@@ -39,14 +39,15 @@ export class SideBar extends React.Component {
             firebaseRef: null,
             studentRef: null,
             selectedIndex: null,
+            hideStudent: true
         };
 
-		var uid = this.props.db.auth().currentUser.uid;
+        var uid = this.props.db.auth().currentUser.uid;
         this.firebaseRef = this.props.db.database().ref("User").child(uid);
         var TARef = this.firebaseRef.child('modClass');
-		var StudentRef = this.firebaseRef.child('studentClass');
-		var MyRef = this.firebaseRef.child('myClass');
-		
+        var StudentRef = this.firebaseRef.child('studentClass');
+        var MyRef = this.firebaseRef.child('myClass');
+
         TARef.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
@@ -69,8 +70,8 @@ export class SideBar extends React.Component {
             });
             this.setState({studentClassList: temp2 } );
         });
-		
-		MyRef.on('value', snapshot => {
+
+        MyRef.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
                 console.log("----");
@@ -81,7 +82,9 @@ export class SideBar extends React.Component {
             console.log(temp);
             this.setState({myClassList: temp } );
         });
+
         this.handleChange = this.handleChange.bind(this);
+        this.changeStudent = this.changeStudent.bind(this);
     }
     handleChange(e) {
         const onClickClass =  e['course'];
@@ -95,8 +98,23 @@ export class SideBar extends React.Component {
         this.firebaseRef.off();
     }
 
-    render() {
+    changeStudent(){
+        //set it to be false
+        console.log("expanded student");
+        this.setState({hideStudent: !this.state.hideStudent});
+    }
 
+    getButton(){
+        if (this.state.hideStudent){
+            return "Student +";
+        }
+        return "Student -";
+    }
+
+    render() {
+        console.log("Rendered listItems");
+        console.log(this.state);
+        this.populateLists();
         const StudentClass = this.state.studentClassList.map(course =>
             <div>
                 <ListItem button
@@ -139,8 +157,14 @@ export class SideBar extends React.Component {
 
         return (
             <div>
-                <ListSubheader inset>Student</ListSubheader>
-                {StudentClass}
+                <span>
+                    <ListItem onClick={()=>this.changeStudent()} button>
+                        <ListItemText primary={this.getButton()}/>
+                    </ListItem>
+                    {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+                    {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+                </span>
+                {this.state.hideStudent ? null : StudentClass}
 
                 <ListSubheader inset>Tutor</ListSubheader>
                 {TAClass}
@@ -151,4 +175,47 @@ export class SideBar extends React.Component {
 
         );
     };
+
+    populateLists(){
+        var uid = this.props.db.auth().currentUser.uid;
+        this.firebaseRef = this.props.db.database().ref("User").child(uid);
+        var TARef = this.firebaseRef.child('modClass');
+        var StudentRef = this.firebaseRef.child('studentClass');
+        var MyRef = this.firebaseRef.child('myClass');
+
+        TARef.once('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.state.modClassList = temp;
+        });
+
+        StudentRef.once('value', snapshot => {
+            let temp2 = [];
+            snapshot.forEach(classElem => {
+                let classItem = classElem.val();
+                console.log( classElem.val() );
+                console.log( classItem['className']);
+                temp2.push(classItem['className']);
+            });
+            this.state.studentClassList = temp2;
+        });
+
+        MyRef.once('value', snapshot => {
+            let temp = [];
+            snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
+                let classItem = classElem.val();
+                temp.push(classItem);
+            });
+            console.log(temp);
+            this.state.myClassList = temp;
+        });
+    }
 };

@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import Image from '../../image/background.jpeg';
+import Image from '../../image/background.jpg';
 
 
 const themePaper = createMuiTheme({
@@ -26,6 +26,7 @@ const themePaper = createMuiTheme({
 const styles = theme => ({
     "@global": {
         body: {
+            backgroundImage: 'url(' + Image + ')',
             backgroundColor: "#ECEFF1",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",
@@ -49,6 +50,7 @@ const styles = theme => ({
             width: 400,
             marginLeft: 'auto',
             marginRight: 'auto',
+            marginTop: theme.spacing.unit * 18,
         },
     },
     paper: {

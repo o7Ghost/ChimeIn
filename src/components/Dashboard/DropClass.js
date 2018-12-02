@@ -99,6 +99,7 @@ class DropClass extends React.Component {
                             type="text"
                             fullWidth
                             onChange = {e => this.setState({className: (e.target.value)})}
+                            onKeyPress ={this._handleKeyPress}
                         />
                     </DialogContent>
                     <DialogActions>

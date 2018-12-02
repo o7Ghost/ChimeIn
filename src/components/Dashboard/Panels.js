@@ -25,6 +25,7 @@ const styles = theme => ({
     secondaryHeading: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
+        marginRight: '2vw',
     },
     icon: {
         verticalAlign: 'bottom',
@@ -56,8 +57,8 @@ class SimpleExpansionPanel extends React.Component {
 
         this.state = {
             questionItems: [],
-            preClass: "",
-            curClass:""
+            curClass:"",
+            tabNum : 0
         };
 
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -84,62 +85,89 @@ class SimpleExpansionPanel extends React.Component {
 
     handleRemove(title) {
         this.firebaseRef.child(title).remove();
+        console.log("remove clicked")
+        this.refresh()
     }
 
-    handleUpvote(title, currentLike) {
-        this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1 });
+    handleUpvote(title, currentLike, currentOrder) {
+        
+        var followerRef = this.firebaseRef.child(title);
+
+        let followerlist = []
+        followerRef.once('value',(snapshot) =>{
+            const question = snapshot.val();
+            console.log(question)
+            if(question != null && question.followers ){
+                followerlist = question.followers;
+            }
+            if(!followerlist.includes(this.props.db.auth().currentUser.uid)){
+                followerlist.push(this.props.db.auth().currentUser.uid);
+                this.firebaseRef.child(title).update({ followers: followerlist });
+                this.firebaseRef.child(title).update({ upvoteCount: currentLike + 1, order: currentOrder - 1 });
+            }else{
+                alert("You have voted")
+            }
+            
+        })
+        
+    }
+
+    refresh(){
+        
+        console.log("in panel render", this.state.curClass);
+        console.log(this.state.prevClass !== this.state.curClass);
+        this.state.curClass = this.props.curClass;
+        this.state.tabNum = this.props.tabNum;  //#####
+        this.firebaseRef = this.props.db.database().ref("ClassFinal");
+        console.log("in panel render", this.state.curClass);
+        this.classRef = this.firebaseRef.child(this.state.curClass);
+        this.questionRef = this.classRef.child("questions");
+        this.firebaseRef = this.questionRef;
+
+        this.firebaseRef.orderByChild('order').on('value', dataSnapshot => {
+            let questionItems = [];
+            dataSnapshot.forEach(childSnapshot => {
+                let questionItem = childSnapshot.val();
+                if(this.state.tabNum == 0){
+                    questionItems.push(questionItem);
+                }
+                if(this.state.tabNum == 1){
+
+                    if(questionItem.followers && questionItem.followers.includes(this.props.db.auth().currentUser.uid)){
+                        questionItems.push(questionItem)
+                    }
+                }
+                if(this.state.tabNum == 2){
+                    if(questionItem.Answer){
+                        questionItems.push(questionItem);
+                    }
+                }
+                questionItem['.key'] = childSnapshot.key;
+                    
+            });
+            console.log( "curClass->>>>>>>",this.state.curClass);
+            this.setState({questionItems});
+        })
     }
 
     render() {
-        //  cse 110 -> cse 120
-
-        if(this.props.curClass !== this.state.curClass) {
-            this.state.curClass = this.props.curClass;
-
-        }
-        console.log("preClass->", this.state.prevClass );
-        console.log( "curClass->",this.state.curClass);
-        // '' -> cse 110
-        if( this.state.prevClass !== this.state.curClass) {
-            this.firebaseRef = this.props.db.database().ref("ClassFinal");
-            console.log("in panel render", this.state.curClass);
-            this.classRef = this.firebaseRef.child(this.state.curClass);
-            this.questionRef = this.classRef.child("questions");
-            this.firebaseRef = this.questionRef;
-            this.firebaseRef.on('value', dataSnapshot => {
-                let questionItems = [];
-                dataSnapshot.forEach(childSnapshot => {
-                    let questionItem = childSnapshot.val();
-                    if(this.props.tabNum == 0){
-                        questionItems.push(questionItem);
-                    }
-                    if(this.props.tabNum == 1){
-
-
-                    }
-                    if(this.props.tabNum == 2){
-                        if(questionItem.Answer){
-                            questionItems.push(questionItem);
-                        }
-                    }
-                    questionItem['.key'] = childSnapshot.key;
-                    
-                });
-                console.log( "curClass->>>>>>>",this.state.curClass);
-                this.state.prevClass = this.state.curClass;
-
-                this.setState({questionItems});
-            });
+  
+        const { classes } = this.props;
+        if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
+            console.log("got in render hello");
+            this.refresh()
         }
             const records = this.state.questionItems.map(items =>
 
                 <div>
-                    <ExpansionPanel>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            <Typography>{items.Question}</Typography>
+                    <ExpansionPanel style = {  { border:"#000"} }>
+                        <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
+                        	<Typography className={classes.secondaryHeading}>
+                            UPVOTES: {items.upvoteCount}
+                        </Typography>
+                            <Typography className={classes.heading}>{items.Question}</Typography>
                            
-                        </ExpansionPanelSummary>
-                        
+                        </ExpansionPanelSummary>         
 
                         <ExpansionPanelDetails>
                             <div>
@@ -163,7 +191,7 @@ class SimpleExpansionPanel extends React.Component {
                             </Button>
 
                             <Button size="small" color="primary"
-                                    onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount)}>
+                                    onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
                                 Upvote: {items.upvoteCount}
                             </Button>
 

@@ -30,7 +30,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import WelcomePage from './WelcomePage.js';
-
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const themeDrawer = createMuiTheme({
@@ -146,16 +145,18 @@ class Dashboard extends React.Component {
     if (!firebase || !firebase.apps.length) {
       firebase.initializeApp(config);
     }
-    this.state = {
-      currentClass: 'Dashboard',
-      UID: '',
-      Question: '',
-      upvoteCount: 0,
+   this.state =  {
+       currentClass: 'Dashboard',
+             UID: '',
+                Question: '',
+          	      upvoteCount: 0,
+                  order: 99999999,
+                timestamp: '',
+                followers: []
+   }
+   this.handler = this.changeQState.bind(this);
+      this.handlerA = this.changeAState.bind(this);
 
-      timestamp: ''
-    }
-    this.handler = this.changeQState.bind(this);
-    this.handlerA = this.changeAState.bind(this);
 
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
@@ -283,28 +284,28 @@ class Dashboard extends React.Component {
           </MuiThemeProvider>
 
           <MuiThemeProvider theme={themeDrawer}>
-            <Drawer
-              variant="permanent"
-              classes={{
-                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-              }}
-              open={this.state.open}
-            >
-              <div className={classes.toolbarIcon}>
-                <IconButton onClick={this.handleDrawerClose}>
-                  <ChevronLeftIcon />
-                </IconButton>
-              </div>
-              <SideBar onClick={this.changeCurrentClass} currClass={this.state.currentClass} db={firebase} />
-              <div className={classes.others}>
-                <AddClass db={firebase} />
-              </div>
-              <div className={classes.others}>
-                <DropClass db={firebase} />
-              </div>
-              <div className={classes.others}>
-                <CreateClass db={firebase} />
-              </div>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+            }}
+            open={this.state.open}
+          >
+            <div className={classes.toolbarIcon}>
+              <IconButton onClick={this.handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+            <SideBar onClick  ={this.changeCurrentClass} currClass = { this.state.currentClass} db = {firebase}/>
+            <div className={classes.others}>
+              <AddClass db={firebase}/>
+            </div>
+            <div className={classes.others}>
+                <DropClass db={firebase}/>
+            </div>
+            <div className={classes.others}>
+                <CreateClass db={firebase}/>
+            </div>
               <div className={classes.others}>
                 <AddTA db={firebase} />
               </div>
