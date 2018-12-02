@@ -17,8 +17,11 @@ const styles = theme => ({
 });
 
 class OutlinedButtons extends React.Component {
-  constructor(props){  
+  constructor(props){
   super(props);
+      this.statics = {
+          alertcooldowntime: 180000  // 180 000 = 3 minutes
+      };
    this.state = {
       mic: false,
       projector: false,
@@ -41,7 +44,12 @@ class OutlinedButtons extends React.Component {
     this.classRef = this.firebaseRef.child(this.props.curClass);
     this.classRef.once('value', dataSnapshot => {
     console.log(dataSnapshot.val().instructor)
-    this.userRef.child(dataSnapshot.val().instructor).update({micOff: time.toJSON()})
+        this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
+            console.log("xxxps" );
+            if((new Date() - new Date(profSnapshot.val().micOff)) > this.statics.alertcooldowntime ) {
+                this.userRef.child(dataSnapshot.val().instructor).update({micOff: time.toJSON()});
+            }
+        });
     });
   };
 
@@ -54,7 +62,12 @@ class OutlinedButtons extends React.Component {
     this.classRef = this.firebaseRef.child(this.props.curClass);
     this.classRef.once('value', dataSnapshot => {
     console.log(dataSnapshot.val().instructor)
-    this.userRef.child(dataSnapshot.val().instructor).update({projectorOff: time.toJSON()})
+        this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
+            console.log("xxxps" );
+            if((new Date() - new Date(profSnapshot.val().projectorOff)) > this.statics.alertcooldowntime ) {
+                this.userRef.child(dataSnapshot.val().instructor).update({projectorOff: time.toJSON()});
+            }
+        });
     });
   };
 
@@ -67,7 +80,12 @@ class OutlinedButtons extends React.Component {
     this.classRef = this.firebaseRef.child(this.props.curClass);
     this.classRef.once('value', dataSnapshot => {
     console.log(dataSnapshot.val().instructor)
-    this.userRef.child(dataSnapshot.val().instructor).update({writing: time.toJSON()})
+        this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
+            console.log("xxxps" );
+            if((new Date() - new Date(profSnapshot.val().writing)) > this.statics.alertcooldowntime ) {
+                this.userRef.child(dataSnapshot.val().instructor).update({writing: time.toJSON()});
+            }
+        });
     });
   };
 
@@ -79,8 +97,14 @@ class OutlinedButtons extends React.Component {
 
     this.classRef = this.firebaseRef.child(this.props.curClass);
     this.classRef.once('value', dataSnapshot => {
-    console.log(dataSnapshot.val().instructor)
-    this.userRef.child(dataSnapshot.val().instructor).update({coolDown: time.toJSON()})
+        console.log(dataSnapshot.val().instructor)
+
+        this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
+            console.log("xxxps" );
+            if((new Date() - new Date(profSnapshot.val().coolDown)) > this.statics.alertcooldowntime ) {
+                this.userRef.child(dataSnapshot.val().instructor).update({coolDown: time.toJSON()});
+            }
+        });
     });
   };
 
@@ -251,7 +275,7 @@ class OutlinedButtons extends React.Component {
           ContentProps={{
             "aria-describedby": "message-id"
           }}
-          message={<span id="message-id"> Can't read your hand writing </span>}
+          message={<span id="message-id"> Please slow down a little bit. Students can't follow up </span>}
           action={[
             <Button
               key="undo"
