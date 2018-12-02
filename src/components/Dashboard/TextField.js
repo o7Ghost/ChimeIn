@@ -257,12 +257,10 @@ class TextFields extends React.Component {
             let validWords = this.getNoneStopWords(input), i, k, times = 0;
 
             if(input != "") {
-                let counter = 0;
                 for (i = 0; i < questionItems.length; i++) {
                     let temp = this.getNumDuplicate(questionItems[i].Question, validWords);
                     if (temp != 0) {
-                        filter.push([questionItems[i], temp, counter]);
-                        counter++;
+                        filter.push([questionItems[i], temp, -1]);
                     }
                 }
 
@@ -271,8 +269,11 @@ class TextFields extends React.Component {
                         return b[1]-a[1];
                 })
 
-                for (k = 0; k < counter; k++)
+                for (k = 0; k < filter.length; k++) {
                     filterIndex.push(-1);
+                    filter[k][2] = k;
+                }
+
 
                 /*if (filter.length == 0)
                     alert("There is no similar question. Please submit your question!");
