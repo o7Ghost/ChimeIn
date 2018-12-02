@@ -20,7 +20,8 @@ class OutlinedButtons extends React.Component {
   constructor(props){
   super(props);
       this.statics = {
-          alertcooldowntime: 180000  // 180 000 = 3 minutes
+          alertcooldowntime: 180000,  // 180 000 = 3 minutes
+          hovertime: 30000  // alert notification hover time
       };
    this.state = {
       mic: false,
@@ -168,7 +169,7 @@ class OutlinedButtons extends React.Component {
             horizontal: "right"
           }}
           open={this.state.mic}
-          autoHideDuration={6000}
+          autoHideDuration={this.statics.hovertime}
           onClose={this.handleClose}
           ContentProps={{
             "aria-describedby": "message-id"
@@ -181,17 +182,8 @@ class OutlinedButtons extends React.Component {
               size="small"
               onClick={this.handleClose}
             >
-              UNDO
+              Sure!
             </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={this.handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
           ]}
         />
 
@@ -202,7 +194,7 @@ class OutlinedButtons extends React.Component {
             horizontal: "right"
           }}
           open={this.state.projector}
-          autoHideDuration={6000}
+          autoHideDuration={this.statics.hovertime}
           onClose={this.handleClose}
           ContentProps={{
             "aria-describedby": "message-id"
@@ -215,17 +207,9 @@ class OutlinedButtons extends React.Component {
               size="small"
               onClick={this.handleClose}
             >
-              UNDO
+                Sure!
             </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={this.handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
+
           ]}
         />
 
@@ -236,7 +220,7 @@ class OutlinedButtons extends React.Component {
             horizontal: "right"
           }}
           open={this.state.write}
-          autoHideDuration={6000}
+          autoHideDuration={this.statics.hovertime}
           onClose={this.handleClose}
           ContentProps={{
             "aria-describedby": "message-id"
@@ -249,17 +233,8 @@ class OutlinedButtons extends React.Component {
               size="small"
               onClick={this.handleClose}
             >
-              UNDO
+              Sure!
             </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={this.handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
           ]}
         />
 
@@ -270,7 +245,7 @@ class OutlinedButtons extends React.Component {
             horizontal: "right"
           }}
           open={this.state.coolD}
-          autoHideDuration={6000}
+          autoHideDuration={this.statics.hovertime}
           onClose={this.handleClose}
           ContentProps={{
             "aria-describedby": "message-id"
@@ -283,17 +258,9 @@ class OutlinedButtons extends React.Component {
               size="small"
               onClick={this.handleClose}
             >
-              UNDO
+                Sure!
             </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={this.handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
+
           ]}
         />
 
