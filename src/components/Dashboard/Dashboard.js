@@ -109,9 +109,9 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 0,
+    width: theme.spacing.unit * 0 + 1,
     [theme.breakpoints.up('sm')]: {
-      width: 0,
+      width: theme.spacing.unit * 0 + 1,
     },
   },
   appBarSpacer: theme.mixins.toolbar,
