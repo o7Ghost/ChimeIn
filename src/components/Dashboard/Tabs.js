@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Panels from './Panels.js';
 import TextField from './TextField.js';
 import firebase from 'firebase';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 
 function TabContainer(props) {
@@ -89,6 +90,7 @@ class CustomizedTabs extends React.Component {
         console.log(value,"cur:", this.props.curClass);
         return (
             <div className={classes.root}>
+            <Scrollbars autoHide style={{"height":"100%"}}>
                 <Tabs
                     value={value}
                     onChange={this.handleChange}
@@ -112,7 +114,7 @@ class CustomizedTabs extends React.Component {
                 </Tabs>
 
                 <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>
-                
+              </Scrollbars>
             </div>
         );
     }

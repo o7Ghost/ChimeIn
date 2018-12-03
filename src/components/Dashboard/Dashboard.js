@@ -36,6 +36,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 
 
@@ -313,6 +314,8 @@ class Dashboard extends React.Component {
             }}
             open={this.state.open}
           >
+          <Scrollbars autoHide style={{"height":"100%"}}>
+
             <div className={classes.toolbarIcon}>
               <IconButton onClick={this.handleDrawerClose}>
                 <ChevronLeftIcon />
@@ -346,11 +349,12 @@ class Dashboard extends React.Component {
 
 
 
-
+            </Scrollbars>
             </Drawer>
 
           </MuiThemeProvider>
           <main className={classes.content}>
+          <Scrollbars autoHide style={{"height":"100%"}}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
             {
@@ -367,7 +371,7 @@ class Dashboard extends React.Component {
               {this.state.currentClass == 'Dashboard' ? null : <div><Typography>Is something wrong?</Typography> <AlertButtons /></div>}
             </div>
 
-
+            </Scrollbars>
           </main>
         </div>
       </React.Fragment>
