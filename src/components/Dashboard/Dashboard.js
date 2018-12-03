@@ -364,7 +364,7 @@ class Dashboard extends React.Component {
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' ? null : <div><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
+              {this.state.currentClass == 'Dashboard' ? null : <div style={{float:"right", marginRight:"-8px", marginTop:"8px"}}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
             </div>
 
 
