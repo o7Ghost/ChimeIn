@@ -251,8 +251,16 @@ class TextFields extends React.Component {
         questionRef.once('value', dataSnapshot => {
             dataSnapshot.forEach(childSnapshot => {
                 let questionItem = childSnapshot.val();
+                var today = new Date();
+                var questionDate = new Date(questionItem.timestamp);
                 questionItem['.key'] = childSnapshot.key;
-                questionItems.push(questionItem);
+                today = today.toJSON().split("T")[0];
+                questionDate = questionDate.toJSON().split("T")[0];
+                console.log("today: " + today + " " + "question: " + questionDate);
+                console.log(questionItem.Question);
+                if(questionDate >= today){
+                    questionItems.push(questionItem);
+                }
             });
 
             // start to filter
@@ -316,7 +324,7 @@ class TextFields extends React.Component {
                 this.setState({Question: '', upvoteCount: 0});
             }
             else {
-                this.setState({notification: 'You can post another question within 60 seconds.', open: true});
+                this.setState({notification: 'You can post again in 90 seconds', open: true});
             }
         }
     }
