@@ -79,7 +79,7 @@ class AddTA extends React.Component {
                                 }else{
                                     TAClass.push(this.state.className);
                                     TARef.update({modClass:TAClass});
-                                    alert("This TA is included!");
+                                    alert("TA successfully added to your course.");
                                 }
                             });
                         }
