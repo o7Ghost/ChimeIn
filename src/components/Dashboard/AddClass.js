@@ -122,7 +122,7 @@ class AddClass extends React.Component {
     render() {
         return (
             <div>
-                <ListItem button>
+                <ListItem button >
                     <ListItemIcon>
                         <AddIcon />
                     </ListItemIcon>

@@ -181,6 +181,7 @@ export class SideBar extends React.Component {
 		const MyClass = this.state.myClassList.map(course =>
             <div>
                 <ListItem button
+                
                           selected={this.state.selectedIndex === {course}['course']}
                           onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
@@ -199,7 +200,7 @@ export class SideBar extends React.Component {
             {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
 
                 <span>
-                    <ListItem onClick={()=>this.changeStudent()} button>
+                    <ListItem onClick={()=>this.changeStudent()} button style={{ paddingRight: '0px' }}>
                         <ListItemText primary={this.getStudentButton()}/>
                     </ListItem>
 
@@ -207,14 +208,14 @@ export class SideBar extends React.Component {
                 {this.state.hideStudent ? null : StudentClass}
 
                 <span>
-                    <ListItem onClick={()=>this.changeTA()} button>
+                    <ListItem onClick={()=>this.changeTA()} button style={{ paddingRight: '0px' }}>
                         <ListItemText primary={this.getTAButton()}/>
                     </ListItem>
                 </span>
                 {this.state.hideTA ? null : TAClass}
 
                 <span>
-                    <ListItem onClick={()=>this.changeInstructor()} button>
+                    <ListItem onClick={()=>this.changeInstructor()} button style={{ paddingRight: '0px' }}>
                         <ListItemText primary={this.getInstructorButton()}/>
                     </ListItem>
                 </span>
