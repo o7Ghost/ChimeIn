@@ -28,7 +28,10 @@ class OutlinedButtons extends React.Component {
             projector: false,
             write: false,
             coolD: false,
-            loginTime : new Date()
+            loginTime : new Date(),
+
+            notificationCleared: false,
+            notificationRejected: false
         };
         this.enableNotice1();
         this.enableNotice2();
@@ -49,6 +52,10 @@ class OutlinedButtons extends React.Component {
                 console.log("xxxps" );
                 if((new Date() - new Date(profSnapshot.val().micOff)) > this.statics.alertcooldowntime ) {
                     this.userRef.child(dataSnapshot.val().instructor).update({micOff: time.toJSON()});
+                    this.setState({notificationCleared: true});
+                }
+                else {
+                    this.setState({notificationRejected: true});
                 }
             });
         });
@@ -67,6 +74,10 @@ class OutlinedButtons extends React.Component {
                 console.log("xxxps" );
                 if((new Date() - new Date(profSnapshot.val().projectorOff)) > this.statics.alertcooldowntime ) {
                     this.userRef.child(dataSnapshot.val().instructor).update({projectorOff: time.toJSON()});
+                    this.setState({notificationCleared: true});
+                }
+                else {
+                    this.setState({notificationRejected: true});
                 }
             });
         });
@@ -85,6 +96,10 @@ class OutlinedButtons extends React.Component {
                 console.log("xxxps" );
                 if((new Date() - new Date(profSnapshot.val().writing)) > this.statics.alertcooldowntime ) {
                     this.userRef.child(dataSnapshot.val().instructor).update({writing: time.toJSON()});
+                    this.setState({notificationCleared: true});
+                }
+                else {
+                    this.setState({notificationRejected: true});
                 }
             });
         });
@@ -104,6 +119,10 @@ class OutlinedButtons extends React.Component {
                 console.log("xxxps" );
                 if((new Date() - new Date(profSnapshot.val().coolDown)) > this.statics.alertcooldowntime ) {
                     this.userRef.child(dataSnapshot.val().instructor).update({coolDown: time.toJSON()});
+                    this.setState({notificationCleared: true});
+                }
+                else {
+                    this.setState({notificationRejected: true});
                 }
             });
         });
@@ -114,7 +133,8 @@ class OutlinedButtons extends React.Component {
             return;
         }
 
-        this.setState({ mic: false, projector: false, write: false, coolD: false });
+        this.setState({ mic: false, projector: false, write: false, coolD: false, notificationCleared: false,
+            notificationRejected: false});
     };
 
     enableNotice1 = () => {
@@ -259,6 +279,58 @@ class OutlinedButtons extends React.Component {
                             onClick={this.handleClose}
                         >
                             Sure!
+                        </Button>,
+
+                    ]}
+                />
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                    }}
+                    open={this.state.notificationCleared}
+                    autoHideDuration={this.statics.hovertime}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        "aria-describedby": "message-id"
+                    }}
+                    message={<span id="message-id"> Your alert has been successfully sent to professor :) </span>}
+                    action={[
+                        <Button
+                            key="undo"
+                            color="secondary"
+                            size="small"
+                            onClick={this.handleClose}
+                        >
+                            Thanks!
+                        </Button>,
+
+                    ]}
+                />
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                    }}
+                    open={this.state.notificationRejected}
+                    autoHideDuration={this.statics.hovertime}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        "aria-describedby": "message-id"
+                    }}
+                    message={<span id="message-id"> You alert failed to send.
+                        Professor has received the same alert within {this.statics.alertcooldowntime/60000} minute.
+                        Please try again later :( </span>}
+                    action={[
+                        <Button
+                            key="undo"
+                            color="secondary"
+                            size="small"
+                            onClick={this.handleClose}
+                        >
+                            Understood!
                         </Button>,
 
                     ]}
