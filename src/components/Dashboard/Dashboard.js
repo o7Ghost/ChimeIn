@@ -161,6 +161,7 @@ class Dashboard extends React.Component {
       timestamp: '',
       followers: [],
       hideSetting: true,
+      userType: ''
     }
     this.handler = this.changeQState.bind(this);
     this.handlerA = this.changeAState.bind(this);
@@ -169,8 +170,30 @@ class Dashboard extends React.Component {
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
   changeCurrentClass(classID) {
+    var uType = '';
+    var uid = firebase.auth().currentUser.uid;
+    var stuRef = firebase.database().ref("User").child(uid).child("studentClass").child(classID);
+    
+    // console.log("sturef: " + stuRef);
+    // stuRef.on('value', snapshot =>{
+    //   console.log("Changing utype" + stuRef);
+    //   snapshot.forEach(child =>{
+    //     let temp = child;
+    //     console.log("found: " + temp);
+    //     if (temp == classID) uType = 'student';
+    //   });
+    // });
+
+    stuRef.once('value', snapshot => {
+      console.log(snapshot.val());
+      if (snapshot.val() != null) uType = 'student';
+    });
+
+    console.log("Changed type to: " + classID + uType);
+
     this.setState({
       currentClass: classID,
+      userType: uType
     });
     console.log("current Class:", classID);
   }
@@ -358,13 +381,13 @@ class Dashboard extends React.Component {
                 <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
             }
             {
-              this.state.currentClass == 'Dashboard' ?
+              this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ?
                 null :
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' ? null : <div style={{float:"right", marginRight:"-8px", marginTop:"8px"}}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
+              {this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ? null : <div style={{float:"right", marginRight:"-8px", marginTop:"8px"}}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
             </div>
 
 
