@@ -32,8 +32,6 @@ class AddTA extends React.Component {
             StudentClass: [],
             TAClass: [],
             open: false,
-            addCode: '',
-            className:'',
             uid: this.props.db.auth().currentUser.uid,
             TAuid : ''
         };
@@ -50,11 +48,10 @@ class AddTA extends React.Component {
         this.setState({ open: false });
     };
 
-    handleAdd = async event => {
+    handleAdd = event => {
         event.preventDefault();
         try{
-            console.log("You entered:"+this.state.className+"for"+this.state.TAuid);
-            var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
+            var classRef = this.props.db.database().ref("ClassFinal").child(this.props.classID);
             classRef.once('value', (snapshot) => {
                 const classObj = snapshot.val();
                 if(!classObj) {
@@ -64,29 +61,34 @@ class AddTA extends React.Component {
                     var myClassRef = userRef.child("myClass");
                     myClassRef.once('value', (snapshot) => {
                         const temp = snapshot.val();
-                        if(!temp || !temp.includes(this.state.className)) {
+                        if(!temp || !temp.includes(this.props.classID)) {
                             alert("You are not the instructor!");
                         }else{
                             var TARef = this.props.db.database().ref("User").child(this.state.TAuid);
                             TARef.once('value', (snapshot2) => {
                                 const temp2 = snapshot2.val();
                                 let TAClass = [];
-                                if(temp2.modClass) {
-                                    TAClass = temp2.modClass;
+                                if(!temp2){
+                                    alert("User with uid:"+this.state.uid+" does not exist!");
                                 }
-                                if(TAClass.includes(this.state.className)){
-                                    alert("This TA has already been included");
-                                }else{
-                                    TAClass.push(this.state.className);
-                                    TARef.update({modClass:TAClass});
-                                    alert("TA successfully added to your course.");
+                                else{
+                                    if(temp2.modClass) {
+                                        TAClass = temp2.modClass;
+                                    }
+                                    if(TAClass.includes(this.props.classID)){
+                                        alert("This TA has already been included");
+                                    }else{
+                                        TAClass.push(this.props.classID);
+                                        TARef.update({modClass:TAClass});
+                                        alert("Operation Add TA success!");
+                                        this.setState({ open: false });
+                                    }
                                 }
                             });
                         }
                     });
                 }
             });
-            this.setState({ open: false });
         } catch (error) {
             alert(error);
         }
@@ -101,6 +103,7 @@ class AddTA extends React.Component {
 
     render() {
         return (
+            this.props.identity != "instructor" ? null :
             <div>
                 <ListItem button>
                     <ListItemIcon>
@@ -118,20 +121,15 @@ class AddTA extends React.Component {
                     <DialogTitle id="form-dialog-title">Add TA into your class</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Add a TA into your class by input class name and TA uid:
+                            Add a TA into your class by input TA uid:
                         </DialogContentText>
                         <DialogContentText>
-                            For example: name:CSE140  uid:Tv8w5CqbWPhRRRYDPrMr8JaW1ka2
+                            For example: uid:Tv8w5CqbWPhRRRYDPrMr8JaW1ka2
                         </DialogContentText>
                         <TextField
+                            autoFocus
                             margin="dense"
-                            label="Course Name"
-                            type="text"
-                            fullWidth
-                            onChange = {e => this.setState({className: (e.target.value)})}
-                        />
-                        <TextField
-                            margin="dense"
+                            id="TAuid"
                             label="TA uid"
                             type="text"
                             fullWidth

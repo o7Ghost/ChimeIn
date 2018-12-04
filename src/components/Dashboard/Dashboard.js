@@ -169,33 +169,12 @@ class Dashboard extends React.Component {
 
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
-  changeCurrentClass(classID) {
-    var uType = '';
-    var uid = firebase.auth().currentUser.uid;
-    var stuRef = firebase.database().ref("User").child(uid).child("studentClass").child(classID);
-    
-    // console.log("sturef: " + stuRef);
-    // stuRef.on('value', snapshot =>{
-    //   console.log("Changing utype" + stuRef);
-    //   snapshot.forEach(child =>{
-    //     let temp = child;
-    //     console.log("found: " + temp);
-    //     if (temp == classID) uType = 'student';
-    //   });
-    // });
-
-    stuRef.once('value', snapshot => {
-      console.log(snapshot.val());
-      if (snapshot.val() != null) uType = 'student';
-    });
-
-    console.log("Changed type to: " + classID + uType);
-
-    this.setState({
-      currentClass: classID,
-      userType: uType
-    });
-    console.log("current Class:", classID);
+  changeCurrentClass(classID,userType) {
+      this.setState({
+          currentClass: classID,
+          userType: userType
+      });
+      console.log("current Class:", classID);
   }
   changeQState(Q) {
     this.setState({ Question: Q })
@@ -351,19 +330,22 @@ class Dashboard extends React.Component {
                     <ListItemText primary={this.getSettingButton()} />
                   </ListItem>
                 </span>
-                {this.state.hideSetting ? null : <div> <div className={classes.others}>
-                  <AddClass db={firebase} />
-                </div>
-                  <div className={classes.others}>
-                    <DropClass db={firebase} />
-                  </div>
-                  <div className={classes.others}>
-                    <CreateClass db={firebase} />
-                  </div>
-                  <div className={classes.others}>
-                    <AddTA db={firebase} />
-                  </div>
-                </div>}
+                {this.state.hideSetting ? null :
+                    <div>
+                        <div className={classes.others}>
+                            <AddClass db={firebase}/>
+                        </div>
+                        <div className={classes.others}>
+                            <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass} identity={this.state.userType}/>
+                        </div>
+                        <div className={classes.others}>
+                            <CreateClass db={firebase}/>
+                        </div>
+                        <div className={classes.others}>
+                            <AddTA db={firebase} classID={this.state.currentClass} identity={this.state.userType}/>
+                        </div>
+                    </div>
+                }
 
               </div>
 

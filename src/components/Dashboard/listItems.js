@@ -11,17 +11,6 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Button from '@material-ui/core/Button';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ChildCareIcon from '@material-ui/icons/ChildCare';
-import Typography from '@material-ui/core/Typography';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Divider from '@material-ui/core/Divider';
-
-
-
 
 function compare(a, b) {
     var regex = new RegExp('([0-9]+)|([a-zA-Z]+)','g');
@@ -50,9 +39,6 @@ export class SideBar extends React.Component {
             firebaseRef: null,
             studentRef: null,
             selectedIndex: null,
-            hideStudent: false,
-            hideTA: false,
-            hideInstructor: false,
         };
 
         var uid = this.props.db.auth().currentUser.uid;
@@ -96,56 +82,33 @@ export class SideBar extends React.Component {
             this.setState({myClassList: temp } );
         });
 
-        this.handleChange = this.handleChange.bind(this);
-        this.changeStudent = this.changeStudent.bind(this);
+        this.handleChange1 = this.handleChange1.bind(this);
+        this.handleChange2 = this.handleChange2.bind(this);
+        this.handleChange3 = this.handleChange3.bind(this);
     }
-    handleChange(e) {
+    handleChange1(e) {
         const onClickClass =  e['course'];
         console.log(this);
-        this.props.onClick(onClickClass);
+        this.props.onClick(onClickClass,"student");
+        this.setState({selectedIndex: onClickClass });
+    }
+    handleChange2(e) {
+        const onClickClass =  e['course'];
+        console.log(this);
+        this.props.onClick(onClickClass,"TA");
+        this.setState({selectedIndex: onClickClass });
+    }
+    handleChange3(e) {
+        const onClickClass =  e['course'];
+        console.log(this);
+        this.props.onClick(onClickClass,"instructor");
         this.setState({selectedIndex: onClickClass });
     }
 
 
+
     componentWillUnmount() {
         this.firebaseRef.off();
-    }
-
-    changeStudent(){
-        //set it to be false
-        console.log("expanded student");
-        this.setState({hideStudent: !this.state.hideStudent});
-    }
-
-    changeTA(){
-        //set it to be false
-        this.setState({hideTA: !this.state.hideTA});
-    }
-
-    changeInstructor(){
-        //set it to be false
-        this.setState({hideInstructor: !this.state.hideInstructor});
-    }
-
-    getStudentButton(){
-        if (this.state.hideStudent){
-            return <div> Student <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-        }
-        return <div> Student <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-    }
-
-    getTAButton(){
-        if (this.state.hideTA){
-            return <div> TA <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-        }
-        return <div> TA <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-    }
-
-    getInstructorButton(){
-        if (this.state.hideInstructor){
-            return <div> Instructor <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-        }
-        return <div> Instructor <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
     }
 
     render() {
@@ -156,12 +119,12 @@ export class SideBar extends React.Component {
             <div>
                 <ListItem button
                           selected={this.state.selectedIndex === {course}['course']}
-                          onClick={()=>this.handleChange({course})}>
+                          onClick={()=>this.handleChange1({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}  />
+                    <ListItemText primary={course.split("+")[0]}  />
                 </ListItem>
             </div>
         );
@@ -169,58 +132,38 @@ export class SideBar extends React.Component {
             <div>
                 <ListItem button
                           selected={this.state.selectedIndex === {course}['course']}
-                          onClick={()=>this.handleChange({course})}>
+                          onClick={()=>this.handleChange2({course})}>
                     <ListItemIcon>
-                       <AssignmentIcon/>
+                        <AssignmentIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={course}  />
+                    <ListItemText primary={course.split("+")[0]}  />
                 </ListItem>
             </div>
         );
-		
-		const MyClass = this.state.myClassList.map(course =>
+        const MyClass = this.state.myClassList.map(course =>
             <div>
                 <ListItem button
-                
                           selected={this.state.selectedIndex === {course}['course']}
-                          onClick={()=>this.handleChange({course})}>
+                          onClick={()=>this.handleChange3({course})}>
                     <ListItemIcon>
                         <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course}  />
+                    <ListItemText primary={course.split("+")[0]}  />
                 </ListItem>
             </div>
         );
 
         return (
             <div>
+                <ListSubheader inset>Student</ListSubheader>
+                {StudentClass}
 
-            {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
-            {/*<button onClick={()=>this.changeStudent()}> {this.getButton()} </button>*/}
+                <ListSubheader inset>Tutor</ListSubheader>
+                {TAClass}
 
-                <span>
-                    <ListItem onClick={()=>this.changeStudent()} button style={{ paddingRight: '0px' }}>
-                        <ListItemText primary={this.getStudentButton()}/>
-                    </ListItem>
-
-                </span>
-                {this.state.hideStudent ? null : StudentClass}
-
-                <span>
-                    <ListItem onClick={()=>this.changeTA()} button style={{ paddingRight: '0px' }}>
-                        <ListItemText primary={this.getTAButton()}/>
-                    </ListItem>
-                </span>
-                {this.state.hideTA ? null : TAClass}
-
-                <span>
-                    <ListItem onClick={()=>this.changeInstructor()} button style={{ paddingRight: '0px' }}>
-                        <ListItemText primary={this.getInstructorButton()}/>
-                    </ListItem>
-                </span>
-                {this.state.hideInstructor ? null : MyClass}
-
+                <ListSubheader inset>Instructor</ListSubheader>
+                {MyClass}
             </div>
 
         );
