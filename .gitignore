@@ -10,3 +10,4 @@ build
 .firebase
 firebase.json
 .firebaserc
+.DS_Store

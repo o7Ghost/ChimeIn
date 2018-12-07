@@ -261,7 +261,7 @@ class Dashboard extends React.Component {
                   noWrap
                   className={classes.title}
                 >
-                  {this.state.currentClass}
+                  {this.state.currentClass.split('+')[0]}
                 </Typography>
 
 
