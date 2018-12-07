@@ -473,6 +473,9 @@ class TextFields extends React.Component {
                         currComponent.state.submitText = 'You can post again in 90 seconds';
                         setTimeout(() => currComponent.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
                     }
+                    else{
+                        currComponent.setState({buttonDisabled: false, submitText: 'Submit'});
+                    }
                 });
             }
         });
