@@ -1,19 +1,15 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DropIcon from '@material-ui/icons/LibraryAdd';
 import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 
 const styles = theme => ({
     root: {
@@ -49,7 +45,7 @@ class DropClass extends React.Component {
     handleDrop = () => {
         //this line will create a route to the database, no matter if the database child is exist or not
         var userRef = this.props.db.database().ref("User").child(this.state.uid);
-        if (this.props.identity == "student") {
+        if (this.props.identity === "student") {
             var classRef = userRef.child("studentClass").child(this.props.classID);
             if (classRef) {
                 classRef.remove();
@@ -58,15 +54,15 @@ class DropClass extends React.Component {
             this.handleClose();
             this.props.change('Dashboard', 'user');
         } else {
-            if (this.props.identity == 'instructor') {
+            if (this.props.identity === 'instructor') {
                 let resultList = [];
                 userRef.once('value', (snapshot) => {
                     const userObj = snapshot.val();
-                    if (userObj.myClass.length == 1) {
+                    if (userObj.myClass.length === 1) {
                         userRef.child("myClass").remove();
                     } else {
                         for (var i = 0; i < userObj.myClass.length; i++) {
-                            if (userObj.myClass[i] != this.props.classID) {
+                            if (userObj.myClass[i] !== this.props.classID) {
                                 resultList.push(userObj.myClass[i]);
                             }
                         }
@@ -80,11 +76,11 @@ class DropClass extends React.Component {
                 let resultList = [];
                 userRef.once('value', (snapshot) => {
                     const userObj = snapshot.val();
-                    if (userObj.modClass.length == 1) {
+                    if (userObj.modClass.length === 1) {
                         userRef.child("modClass").remove();
                     } else {
                         for (var i = 0; i < userObj.modClass.length; i++) {
-                            if (userObj.modClass[i] != this.props.classID) {
+                            if (userObj.modClass[i] !== this.props.classID) {
                                 resultList.push(userObj.modClass[i]);
                             }
                         }
@@ -102,7 +98,7 @@ class DropClass extends React.Component {
     };
     render() {
         return (
-            this.props.classID == "Dashboard" ? null :
+            this.props.classID === "Dashboard" ? null :
 
                 <div>
                     <ListItem button>

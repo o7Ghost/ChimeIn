@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -46,7 +45,7 @@ class AnswerField extends React.Component {
         answerA.push(this.state.answer);
         const { Answer } = this.state;
         event.preventDefault();
-        if (Answer != '') {
+        if (Answer !== '') {
             answerRef.update({ Answer: answerA });
         }
         this.setState({ answer: '' });

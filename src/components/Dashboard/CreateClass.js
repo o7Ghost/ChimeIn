@@ -1,10 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import CreateIcon from '@material-ui/icons/LibraryAdd';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
@@ -52,7 +50,7 @@ class CreateClass extends React.Component {
     handleCreate = event => {
         event.preventDefault();
         try {
-            if (this.state.addCode.length != 6) {
+            if (this.state.addCode.length !== 6) {
                 throw "Invalid addCode";
             }
 
