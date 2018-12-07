@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 class OutlinedButtons extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.statics = {
             alertcooldowntime: 180000,  // 180 000 = 3 minutes
@@ -28,7 +28,7 @@ class OutlinedButtons extends React.Component {
             projector: false,
             write: false,
             coolD: false,
-            loginTime : new Date(),
+            loginTime: new Date(),
 
             notificationCleared: false,
             notificationRejected: false
@@ -47,15 +47,13 @@ class OutlinedButtons extends React.Component {
 
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.classRef.once('value', dataSnapshot => {
-            console.log(dataSnapshot.val().instructor)
             this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
-                console.log("xxxps" );
-                if((new Date() - new Date(profSnapshot.val().micOff)) > this.statics.alertcooldowntime ) {
-                    this.userRef.child(dataSnapshot.val().instructor).update({micOff: time.toJSON()});
-                    this.setState({notificationCleared: true});
+                if ((new Date() - new Date(profSnapshot.val().micOff)) > this.statics.alertcooldowntime) {
+                    this.userRef.child(dataSnapshot.val().instructor).update({ micOff: time.toJSON() });
+                    this.setState({ notificationCleared: true });
                 }
                 else {
-                    this.setState({notificationRejected: true});
+                    this.setState({ notificationRejected: true });
                 }
             });
         });
@@ -69,15 +67,13 @@ class OutlinedButtons extends React.Component {
 
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.classRef.once('value', dataSnapshot => {
-            console.log(dataSnapshot.val().instructor)
             this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
-                console.log("xxxps" );
-                if((new Date() - new Date(profSnapshot.val().projectorOff)) > this.statics.alertcooldowntime ) {
-                    this.userRef.child(dataSnapshot.val().instructor).update({projectorOff: time.toJSON()});
-                    this.setState({notificationCleared: true});
+                if ((new Date() - new Date(profSnapshot.val().projectorOff)) > this.statics.alertcooldowntime) {
+                    this.userRef.child(dataSnapshot.val().instructor).update({ projectorOff: time.toJSON() });
+                    this.setState({ notificationCleared: true });
                 }
                 else {
-                    this.setState({notificationRejected: true});
+                    this.setState({ notificationRejected: true });
                 }
             });
         });
@@ -91,15 +87,13 @@ class OutlinedButtons extends React.Component {
 
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.classRef.once('value', dataSnapshot => {
-            console.log(dataSnapshot.val().instructor)
             this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
-                console.log("xxxps" );
-                if((new Date() - new Date(profSnapshot.val().writing)) > this.statics.alertcooldowntime ) {
-                    this.userRef.child(dataSnapshot.val().instructor).update({writing: time.toJSON()});
-                    this.setState({notificationCleared: true});
+                if ((new Date() - new Date(profSnapshot.val().writing)) > this.statics.alertcooldowntime) {
+                    this.userRef.child(dataSnapshot.val().instructor).update({ writing: time.toJSON() });
+                    this.setState({ notificationCleared: true });
                 }
                 else {
-                    this.setState({notificationRejected: true});
+                    this.setState({ notificationRejected: true });
                 }
             });
         });
@@ -113,16 +107,14 @@ class OutlinedButtons extends React.Component {
 
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.classRef.once('value', dataSnapshot => {
-            console.log(dataSnapshot.val().instructor)
 
             this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
-                console.log("xxxps" );
-                if((new Date() - new Date(profSnapshot.val().coolDown)) > this.statics.alertcooldowntime ) {
-                    this.userRef.child(dataSnapshot.val().instructor).update({coolDown: time.toJSON()});
-                    this.setState({notificationCleared: true});
+                if ((new Date() - new Date(profSnapshot.val().coolDown)) > this.statics.alertcooldowntime) {
+                    this.userRef.child(dataSnapshot.val().instructor).update({ coolDown: time.toJSON() });
+                    this.setState({ notificationCleared: true });
                 }
                 else {
-                    this.setState({notificationRejected: true});
+                    this.setState({ notificationRejected: true });
                 }
             });
         });
@@ -133,15 +125,17 @@ class OutlinedButtons extends React.Component {
             return;
         }
 
-        this.setState({ mic: false, projector: false, write: false, coolD: false, notificationCleared: false,
-            notificationRejected: false});
+        this.setState({
+            mic: false, projector: false, write: false, coolD: false, notificationCleared: false,
+            notificationRejected: false
+        });
     };
 
     enableNotice1 = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("micOff");
-        UserRef.on('value',(snapshot) => {
+        UserRef.on('value', (snapshot) => {
             var curTime = new Date();
-            if(curTime - this.state.loginTime > 1000){
+            if (curTime - this.state.loginTime > 1000) {
                 this.setState({ mic: true, projector: false, write: false, coolD: false });
             }
         });
@@ -149,9 +143,9 @@ class OutlinedButtons extends React.Component {
 
     enableNotice2 = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("projectorOff");
-        UserRef.on('value',(snapshot) => {
+        UserRef.on('value', (snapshot) => {
             var curTime = new Date();
-            if(curTime - this.state.loginTime > 1000){
+            if (curTime - this.state.loginTime > 1000) {
                 this.setState({ mic: false, projector: true, write: false, coolD: false });
             }
         });
@@ -159,9 +153,9 @@ class OutlinedButtons extends React.Component {
 
     enableNotice3 = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("writing");
-        UserRef.on('value',(snapshot) => {
+        UserRef.on('value', (snapshot) => {
             var curTime = new Date();
-            if(curTime - this.state.loginTime > 1000){
+            if (curTime - this.state.loginTime > 1000) {
                 this.setState({ mic: false, projector: false, write: true, coolD: false });
             }
         });
@@ -169,9 +163,9 @@ class OutlinedButtons extends React.Component {
 
     enableNotice4 = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("coolDown");
-        UserRef.on('value',(snapshot) => {
+        UserRef.on('value', (snapshot) => {
             var curTime = new Date();
-            if(curTime - this.state.loginTime > 1000){
+            if (curTime - this.state.loginTime > 1000) {
                 this.setState({ mic: false, projector: false, write: false, coolD: true });
             }
         });
@@ -321,7 +315,7 @@ class OutlinedButtons extends React.Component {
                         "aria-describedby": "message-id"
                     }}
                     message={<span id="message-id"> You alert failed to send.
-                        Professor has received the same alert within {this.statics.alertcooldowntime/60000} minute.
+                        Professor has received the same alert within {this.statics.alertcooldowntime / 60000} minute.
                         Please try again later :( </span>}
                     action={[
                         <Button

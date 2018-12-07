@@ -18,10 +18,15 @@ import blue from '@material-ui/core/colors/blue';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Image from '../../image/background.jpeg';
 
+
+
 const themePaper = createMuiTheme({
   palette: {
     primary: blue,
     secondary: blue,
+  },
+  typography: {
+    useNextVariants: true,
   },
 });
 
@@ -80,7 +85,6 @@ const styles = theme => ({
     display: 'flex',
         flexWrap: 'wrap',
         width: '100%',
-      
   },
 });
 
@@ -88,7 +92,6 @@ function LoginView(props) {
   const { classes } = props;
   const onSubmit = props.onSubmit;
   
-
   return (
     <MuiThemeProvider theme={themePaper}>
     <main className={classes.main}>

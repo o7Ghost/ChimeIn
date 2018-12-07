@@ -1,29 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid'
 import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-//import question from '../../image/question.png'
-//import add from 'https://cl.ly/700ee03b707f/Screen%2520Recording%25202018-11-28%2520at%252012.22%2520AM.gif'
-//import upvote from '../../image/upvote.png'
-
-
-
 
 const styles = theme => ({
     "@global": {
@@ -43,7 +26,7 @@ const styles = theme => ({
         }
     },
     paper: {
-        marginTop: '3vw',
+        marginTop: '0vw',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

@@ -131,7 +131,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
   },
   others: {
-    
+
   }
 
 });
@@ -169,12 +169,12 @@ class Dashboard extends React.Component {
 
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
-  changeCurrentClass(classID,userType) {
-      this.setState({
-          currentClass: classID,
-          userType: userType
-      });
-      console.log("current Class:", classID);
+  changeCurrentClass(classID, userType) {
+    this.setState({
+      currentClass: classID,
+      userType: userType,
+      open: false
+    });
   }
   changeQState(Q) {
     this.setState({ Question: Q })
@@ -331,20 +331,20 @@ class Dashboard extends React.Component {
                   </ListItem>
                 </span>
                 {this.state.hideSetting ? null :
-                    <div>
-                        <div className={classes.others}>
-                            <AddClass db={firebase}/>
-                        </div>
-                        <div className={classes.others}>
-                            <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass} identity={this.state.userType}/>
-                        </div>
-                        <div className={classes.others}>
-                            <CreateClass db={firebase}/>
-                        </div>
-                        <div className={classes.others}>
-                            <AddTA db={firebase} classID={this.state.currentClass} identity={this.state.userType}/>
-                        </div>
+                  <div>
+                    <div className={classes.others}>
+                      <AddClass db={firebase} />
                     </div>
+                    <div className={classes.others}>
+                      <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass} identity={this.state.userType} />
+                    </div>
+                    <div className={classes.others}>
+                      <CreateClass db={firebase} />
+                    </div>
+                    <div className={classes.others}>
+                      <AddTA db={firebase} classID={this.state.currentClass} identity={this.state.userType} />
+                    </div>
+                  </div>
                 }
 
               </div>
@@ -369,7 +369,7 @@ class Dashboard extends React.Component {
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ? null : <div style={{float:"right", marginRight:"-8px", marginTop:"8px"}}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
+              {this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ? null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
             </div>
 
 

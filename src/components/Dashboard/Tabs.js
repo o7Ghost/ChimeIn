@@ -7,18 +7,19 @@ import Typography from '@material-ui/core/Typography';
 import Panels from './Panels.js';
 import TextField from './TextField.js';
 import firebase from 'firebase';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 
 function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
+    return (
+        <Typography component="div" style={{ padding: 8 * 3 }}>
+            {props.children}
+        </Typography>
+    );
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 
@@ -76,17 +77,12 @@ class CustomizedTabs extends React.Component {
     };
 
     handleChange = (event, value) => {
-        //console.log("in Tab",value);
-        //console.log("before ",this.state.value);
         this.setState({ value: value });
-        //  console.log("after ",this.state.value);
-
     };
 
     render() {
         const { classes } = this.props;
         const { value } = this.state;
-        console.log(value,"cur:", this.props.curClass);
         return (
             <div className={classes.root}>
                 <Tabs
@@ -96,7 +92,7 @@ class CustomizedTabs extends React.Component {
                 >
                     <Tab
                         disableRipple
-                        classes={{root: classes.tabRoot, selected: classes.tabSelected}}
+                        classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                         label="Today"
                     />
                     <Tab
@@ -116,8 +112,8 @@ class CustomizedTabs extends React.Component {
                     />
                 </Tabs>
 
-                <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>
-                
+                <TabContainer> <Panels curClass={this.props.curClass} tabNum={this.state.value} value={this.props.value} stateChange={this.props.stateChange} db={firebase} /> </TabContainer>
+
             </div>
         );
     }

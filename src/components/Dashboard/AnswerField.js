@@ -17,7 +17,7 @@ const styles = theme => ({
         width: '70vw',
     },
     button: {
-       
+
     }
 });
 
@@ -25,14 +25,11 @@ const styles = theme => ({
 class AnswerField extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {answer: ''}
+        this.state = { answer: '' }
     }
 
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
-        console.log(this.props.value.Answer)
-        console.log(this.props.Ans)
-
         var firebaseRef = this.props.db.database().ref("ClassFinal");
         var classRef = firebaseRef.child(this.props.curClass);
         var questionRef = classRef.child("questions");
@@ -40,33 +37,24 @@ class AnswerField extends React.Component {
 
 
         let answerA = []
-        answerRef.on('value',(snapshot) =>{
+        answerRef.on('value', (snapshot) => {
             const question = snapshot.val();
-            console.log(question)
-            if(question != null && question.Answer ){
+            if (question != null && question.Answer) {
                 answerA = question.Answer;
             }
         })
         answerA.push(this.state.answer);
-        const {Answer} = this.state;
+        const { Answer } = this.state;
         event.preventDefault();
-        if(Answer != '') {
-          answerRef.update({ Answer: answerA });
+        if (Answer != '') {
+            answerRef.update({ Answer: answerA });
         }
-        this.setState({answer: ''});
+        this.setState({ answer: '' });
     }
-    /*
-      handleChange = name => event => {
-        this.setState({
-          [name]: event.target.value,
-        });
-      };
-    */
 
     render() {
         {
-            //var s = '\n';
-            //console.log(s.charCodeAt(0));
+
         }
 
         const { classes } = this.props;
@@ -79,7 +67,7 @@ class AnswerField extends React.Component {
                     alignItems="center"
                 >
 
-                    <TextField value = {this.state.answer}
+                    <TextField value={this.state.answer}
                         id="outlined-multiline-flexible"
                         label="Type Your Answer"
                         placeholder="Placeholder"
@@ -88,21 +76,21 @@ class AnswerField extends React.Component {
                         margin="normal"
                         variant="outlined"
                         fullWidth
-                        onChange = {e => this.setState({answer: e.target.value})}
+                        onChange={e => this.setState({ answer: e.target.value })}
                     />
 
                     <Grid>
-                    <Button className={classes.button} size="small" color="primary" onClick={this.pushToFirebase.bind(this)}>
-                        Answer
+                        <Button className={classes.button} size="small" color="primary" onClick={this.pushToFirebase.bind(this)}>
+                            Answer
                     </Button>
                     </Grid>
-                    
+
                 </Grid>
-                
-                
+
+
             </form>
 
-           
+
 
         );
     }

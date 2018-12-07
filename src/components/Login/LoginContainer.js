@@ -33,7 +33,7 @@ class LogInContainer extends Component {
             alert(error);
         }
     };
-
+    
     render() {
         return <LogInView onSubmit={this.handleSignUp} />;
     }

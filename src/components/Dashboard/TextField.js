@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import CloseIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -97,16 +93,16 @@ class TextFields extends React.Component {
         var cID = this.props.db.auth().currentUser.uid;
         let similar = [], postQuestion = true, x = 0;
 
-        if((Question != '' && this.state.buttonDisabled == false) || this.state.filtered == true) {
+        if((Question !== '' && this.state.buttonDisabled === false) || this.state.filtered === true) {
             // filter start to work
-            if (this.state.filtered == false)
+            if (this.state.filtered === false)
                 similar = this.postFilter(Question);
             else {
                 this.setState({ filterOpen: false });
                 this.setState({ filtered: false});
                 let upvoteList = this.state.checked;
                 for (x = 0; x < upvoteList.length; x++) {
-                    if (upvoteList[x] != -1) {
+                    if (upvoteList[x] !== -1) {
                         postQuestion = false;
                         let tmp = this.state.filterQuestion[x][0];
                         console.log("Hello: " + tmp.Question + " " + tmp['.key'] + " " + tmp.upvoteCount + " " + tmp.order);
@@ -121,7 +117,7 @@ class TextFields extends React.Component {
             console.log("Current similar is " + similar.length);
 
             // no similar question, push to firebase directly
-            if (similar.length == 0 && postQuestion) {
+            if (similar.length === 0 && postQuestion) {
                 this.questionRef.child( cID + "+" + time).set({UID: cID,
                     Question: Question, upvoteCount: upvoteCount, order:order, timestamp: time, followers: this.props.value.followers});
 
@@ -135,7 +131,7 @@ class TextFields extends React.Component {
                 this.props.stateChange('');
             }
             // display similar question
-            else if (similar.length != 0) {
+            else if (similar.length !== 0) {
                 this.setState({ filtered: true });
                 this.setState({ filterOpen: true });
                 console.log("Current similar size is " + similar.length);
@@ -145,7 +141,7 @@ class TextFields extends React.Component {
                 this.props.stateChange('');
             }
         }
-        else if(Question == '' && this.state.buttonDisabled == false) {
+        else if(Question === '' && this.state.buttonDisabled === false) {
             this.state.notification = 'Can not submit blank question';
             this.state.open = true;
             this.props.stateChange('');
@@ -207,7 +203,7 @@ class TextFields extends React.Component {
 
         let wordArr = str.match(/\w+/g), commonObj = {}, uncommonArr = [], word, i;
 
-        if (wordArr == null)
+        if (wordArr === null)
             return 0;
 
         for (i = 0; i < common.length; i++) {
@@ -256,8 +252,6 @@ class TextFields extends React.Component {
                 questionItem['.key'] = childSnapshot.key;
                 today = today.toJSON().split("T")[0];
                 questionDate = questionDate.toJSON().split("T")[0];
-                console.log("today: " + today + " " + "question: " + questionDate);
-                console.log(questionItem.Question);
                 if(questionDate >= today){
                     questionItems.push(questionItem);
                 }
@@ -266,16 +260,16 @@ class TextFields extends React.Component {
             // start to filter
             let validWords = this.getNoneStopWords(input), i, k, times = 0;
 
-            if(input != "") {
+            if(input !== "") {
                 for (i = 0; i < questionItems.length; i++) {
                     let temp = this.getNumDuplicate(questionItems[i].Question, validWords);
-                    if (temp != 0) {
+                    if (temp !== 0) {
                         filter.push([questionItems[i], temp, -1]);
                     }
                 }
 
                 filter.sort(function(a, b) {
-                    if (a[1] != b[1])
+                    if (a[1] !== b[1])
                         return b[1]-a[1];
                 })
 
@@ -284,21 +278,10 @@ class TextFields extends React.Component {
                     filter[k][2] = k;
                 }
 
-
-                /*if (filter.length == 0)
-                    alert("There is no similar question. Please submit your question!");
-                else {
-                    for (i = 0; i < filter.length; i++)
-                        alert("------FILTER #" + (i+1) + "------\n\n" + filter[i][0].Question);
-                }*/
             }
-            console.log("Inside post filter, filter is " + filter);
-            console.log("Inside post filter, filterIndex is " + filterIndex);
-            this.setState({filterQuestion: filter});
+             this.setState({filterQuestion: filter});
             this.setState({checked: filterIndex});
-            console.log("Inside post filter, filterQuestion is " + this.state.filterQuestion);
-            console.log("Inside post filter, filterIndex is " + this.state.checked);
-        });
+            });
 
         return filter;
     }
@@ -319,7 +302,7 @@ class TextFields extends React.Component {
     _handleKeyPress = (e) => {
         if (e.key === 'Enter' && e.shiftKey) {
             e.preventDefault();
-            if(this.state.buttonDisabled == false) {
+            if(this.state.buttonDisabled === false) {
                 this.pushToFirebase();
                 this.setState({Question: '', upvoteCount: 0});
             }
@@ -361,7 +344,7 @@ class TextFields extends React.Component {
     //value= { this.props.value.Question.replace(/_b/g, '\n') }
     render() {
         {var s = '\n';
-            console.log("in text field", this.props.curClass);}
+            }
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.questionRef = this.classRef.child("questions");

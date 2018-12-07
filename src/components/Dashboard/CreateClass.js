@@ -33,7 +33,7 @@ class CreateClass extends React.Component {
             TAClass: [],
             open: false,
             addCode: '',
-            className:'',
+            className: '',
             uid: this.props.db.auth().currentUser.uid
         };
 
@@ -51,46 +51,36 @@ class CreateClass extends React.Component {
 
     handleCreate = event => {
         event.preventDefault();
-        try{
-            if(this.state.addCode.length!=6){
-                console.log("Invalid addCode!");
+        try {
+            if (this.state.addCode.length != 6) {
                 throw "Invalid addCode";
             }
-            console.log("You entered:"+this.state.className+"+"+this.state.addCode);
 
-            var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className+"+"+this.state.addCode);
+            var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className + "+" + this.state.addCode);
             classRef.once('value', (snapshot) => {
                 const classObj = snapshot.val();
-                if(classObj) {
+                if (classObj) {
                     alert("Class already exist! Change the class name or addCode.");
-                }else{
-                    classRef.set({addCode:this.state.addCode,instructor:this.state.uid,className:this.state.className});
+                } else {
+                    classRef.set({ addCode: this.state.addCode, instructor: this.state.uid, className: this.state.className });
                     var userRef = this.props.db.database().ref("User").child(this.state.uid);
-                    console.log(userRef.child("myClass"));
-                    //userRef = userRef.child("myClass");
                     let classesList = [];
                     userRef.once('value', (snapshot) => {
                         const userObj = snapshot.val();
-                        console.log(userObj.myClass);
-                        if(userObj.myClass) {
+                        if (userObj.myClass) {
                             classesList = userObj.myClass;
-                            console.log("not null!");
-                        }else{
-                            console.log("null!");
+                        } else {
                         }
-                        classesList.push(this.state.className+"+"+this.state.addCode);
-                        console.log(classesList);
-                        userRef.update({myClass:classesList});
+                        classesList.push(this.state.className + "+" + this.state.addCode);
+                        userRef.update({ myClass: classesList });
                         alert("Operation create class Success!");
                     });
                 }
             });
-            //this.setState({ open: false });
             this.handleClose();
         } catch (error) {
             alert(error);
         }
-        // check if the there is actually this class entered by user. by using .on and snapshot
     };
 
     _handleKeyPress = (e) => {
@@ -130,7 +120,7 @@ class CreateClass extends React.Component {
                             label="Course Name"
                             type="text"
                             fullWidth
-                            onChange = {e => this.setState({className: (e.target.value)})}
+                            onChange={e => this.setState({ className: (e.target.value) })}
                         />
                         <TextField
                             margin="dense"
@@ -138,7 +128,7 @@ class CreateClass extends React.Component {
                             label="6-Digit Add code"
                             type="text"
                             fullWidth
-                            onChange = {e => this.setState({addCode: (e.target.value)})}
+                            onChange={e => this.setState({ addCode: (e.target.value) })}
                             onKeyPress={this._handleKeyPress}
                         />
                     </DialogContent>
