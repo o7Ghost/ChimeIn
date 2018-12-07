@@ -458,7 +458,22 @@ class TextFields extends React.Component {
                 currComponent.setState({buttonDisabled: true, submitText: 'This class is currently closed.'});
             }
             else{
-                currComponent.setState({buttonDisabled: false, submitText: 'Submit'});
+                userRef.once('value', (snapshot) => {
+                    var posttime = '2000-01-01T00:00:59.207Z'
+                    snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
+        
+                    //var posttime = new Date(snapshot.val().lastPostTime);
+                    var curTime = new Date();
+        
+                    var diff = curTime - posttime;
+                    //console.log("xxxxooooooo"+ posttime);
+        
+                    if(diff < currComponent.statics.cooldowntime && diff > 0) {
+                        currComponent.state.buttonDisabled = true;
+                        currComponent.state.submitText = 'You can post again in 90 seconds';
+                        setTimeout(() => currComponent.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
+                    }
+                });
             }
         });
 
