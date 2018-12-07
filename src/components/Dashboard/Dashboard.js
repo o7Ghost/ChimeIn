@@ -290,6 +290,7 @@ class Dashboard extends React.Component {
                   >
                     <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
                     <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
+                    <MenuItem id='uidMenuItem'>{this.state.UID}</MenuItem>
                   </Menu>
                 </div>
                 )}
@@ -385,6 +386,10 @@ class Dashboard extends React.Component {
       </React.Fragment>
 
     );
+  }
+
+  componentDidMount(){
+    this.setState({UID: firebase.auth().currentUser.uid});
   }
 }
 
