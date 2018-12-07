@@ -62,6 +62,8 @@ class TextFields extends React.Component {
         var questionRef = classRef.child("questions");
         this.questionRef = questionRef;
 
+        this.checkAllowance();
+
         // cooldown implementation on page opening
         var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
         userRef.once('value', (snapshot) => {
@@ -74,6 +76,7 @@ class TextFields extends React.Component {
 
             var diff = curTime - posttime;
             //console.log("xxxxooooooo"+ posttime);
+
             if(diff < this.statics.cooldowntime && diff > 0) {
                 this.state.buttonDisabled = true;
                 this.state.submitText = 'You can post again in 90 seconds';
@@ -356,6 +359,18 @@ class TextFields extends React.Component {
         console.log("Current question order is " + this.state.filterQuestion.Question);
     };
 
+    checkAllowance(){
+        var allowPostRef = this.firebaseRef.child(this.props.curClass).child("allowPost");
+        allowPostRef.once('value', postSnapshot =>{
+            let allowPost = postSnapshot.val();
+            console.log("Post State: " + allowPost);
+            if (!allowPost){
+                this.state.buttonDisabled = true;
+                this.state.submitText = 'Class is currently closed.';
+            }
+        });
+    }
+
 
 //, upvoteCount: this.props.value.upvoteCount
     //value= { this.props.value.Question.replace(/_b/g, '\n') }
@@ -381,6 +396,7 @@ class TextFields extends React.Component {
 
 
         const { classes } = this.props;
+        {this.checkAllowance()}
         return (
             <div>
                 <form className={classes.container} noValidate autoComplete="off">

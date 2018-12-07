@@ -23,6 +23,7 @@ import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
 import Button from '@material-ui/core/Button';
 import Tabs from './Tabs.js';
+import StartStopButton from './StartStopButton.js';
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
 import blue from '@material-ui/core/colors/blue';
@@ -366,6 +367,12 @@ class Dashboard extends React.Component {
               this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ?
                 null :
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
+            }
+
+            {
+              this.state.userType == 'instructor' ? 
+              <StartStopButton curClass={this.state.currentClass} db={firebase}/> :
+              null
             }
 
             <div>

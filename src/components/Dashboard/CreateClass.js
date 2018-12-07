@@ -34,7 +34,7 @@ class CreateClass extends React.Component {
             open: false,
             addCode: '',
             className:'',
-            uid: this.props.db.auth().currentUser.uid
+            uid: this.props.db.auth().currentUser.uid,
         };
 
         this.firebaseRef = this.props.db.database().ref("User").child(this.state.uid);
@@ -64,7 +64,7 @@ class CreateClass extends React.Component {
                 if(classObj) {
                     alert("Class already exist! Change the class name or addCode.");
                 }else{
-                    classRef.set({addCode:this.state.addCode,instructor:this.state.uid,className:this.state.className});
+                    classRef.set({addCode:this.state.addCode,instructor:this.state.uid,className:this.state.className, allowPost: false});
                     var userRef = this.props.db.database().ref("User").child(this.state.uid);
                     console.log(userRef.child("myClass"));
                     //userRef = userRef.child("myClass");
