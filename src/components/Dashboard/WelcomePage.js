@@ -80,7 +80,8 @@ function SignIn(props) {
                     Are you ready to Chime In? Select or add a class to start.
             </Typography>
                 <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                    With us you can enroll into class with just class name and add code, raise your question to the professor annonymosly in real time, or even start your own class.
+                    With us you can enroll into class with just class name and add code,
+                    raise your question to the professor annonymosly in real time, or even start your own class.
             </Typography>
 
             </div>

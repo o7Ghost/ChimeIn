@@ -116,6 +116,11 @@ class CustomizedTabs extends React.Component {
                 </Tabs>
 
 
+                <TabContainer>
+                    <Panels curClass={this.props.curClass} tabNum={this.state.value} value={this.props.value}
+                            stateChange={this.props.stateChange} db={firebase} />
+                </TabContainer>
+
                 <TabContainer> <Panels curClass={this.props.curClass} tabNum={this.state.value} value={this.props.value} stateChange={this.props.stateChange} db={firebase} /> </TabContainer>
 </Scrollbars>
             </div>

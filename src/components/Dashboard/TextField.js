@@ -118,8 +118,8 @@ class TextFields extends React.Component {
 
             // no similar question, push to firebase directly
             if (similar.length === 0 && postQuestion) {
-                this.questionRef.child( cID + "+" + time).set({UID: cID,
-                    Question: Question, upvoteCount: upvoteCount, order:order, timestamp: time, followers: this.props.value.followers});
+                this.questionRef.child( cID + "+" + time).set({UID: cID, Question: Question, upvoteCount: upvoteCount,
+                    order:order, timestamp: time, followers: this.props.value.followers});
 
                 // update user lastPostTime
                 var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
