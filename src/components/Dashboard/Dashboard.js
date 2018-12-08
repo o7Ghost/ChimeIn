@@ -357,7 +357,7 @@ class Dashboard extends React.Component {
             <div className={classes.toolbar} />
             {
               this.state.currentClass == 'Dashboard' ?
-                <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
+                <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} uType={this.state.userType}/>
             }
             {
               this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ?

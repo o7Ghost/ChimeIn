@@ -64,7 +64,7 @@ class TextFields extends React.Component {
 
         // cooldown implementation on page opening
         var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
-        userRef.once('value', (snapshot) => {
+        userRef.on('value', (snapshot) => {
 
             var posttime = '2000-01-01T00:00:59.207Z'
             snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
@@ -76,11 +76,12 @@ class TextFields extends React.Component {
             //console.log("xxxxooooooo"+ posttime);
 
             if(diff < this.statics.cooldowntime && diff > 0) {
-                this.state.buttonDisabled = true;
-                this.state.submitText = 'You can post again in 90 seconds';
+                this.setState({buttonDisabled : true});
+                this.setState({submitText:'You can post again in 90 seconds'});
                 setTimeout(() => this.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
             }
         });
+
     }
 
     componentWillUnmount() {
@@ -360,6 +361,7 @@ class TextFields extends React.Component {
 //, upvoteCount: this.props.value.upvoteCount
     //value= { this.props.value.Question.replace(/_b/g, '\n') }
     render() {
+
         {var s = '\n';
             console.log("in text field", this.props.curClass);}
         this.firebaseRef = this.props.db.database().ref("ClassFinal");

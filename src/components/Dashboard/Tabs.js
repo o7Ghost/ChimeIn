@@ -29,7 +29,6 @@ const styles = theme => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
-        height: '61vh',
         overflow: 'auto',
     },
     tabsRoot: {
@@ -85,8 +84,9 @@ class CustomizedTabs extends React.Component {
     render() {
         const { classes } = this.props;
         const { value } = this.state;
+        const tabheight = this.props.uType == 'student' ? "61vh" : "80vh";
         return (
-            <div className={classes.root}>
+            <div className={classes.root} style={{height:tabheight}}>
             <Scrollbars autoHide style={{"height":"100%"}}>
                 <Tabs
                     value={value}
@@ -120,7 +120,8 @@ class CustomizedTabs extends React.Component {
                     <Panels curClass={this.props.curClass} tabNum={this.state.value} value={this.props.value}
                             stateChange={this.props.stateChange} db={firebase} />
                 </TabContainer>
-               </Scrollbars>
+
+                </Scrollbars>
             </div>
         );
     }
