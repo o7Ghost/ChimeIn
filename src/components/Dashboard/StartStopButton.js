@@ -30,10 +30,11 @@ class StartStopButton extends React.Component{
     constructor(props){
         super(props);
 
-        this.curClassRef = this.props.db.database().ref("ClassFinal").child(this.props.curClass);
+        this.curClassRef = this.props.db.database().ref("ClassFinal");
 
         this.state = {
-            active: false
+            active: false,
+            curClass: this.props.curClass
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -41,15 +42,15 @@ class StartStopButton extends React.Component{
     }
 
     updateButton = () =>{
-        let dbRef = this.curClassRef.child("allowPost");
+        let dbRef = this.curClassRef.child(this.props.curClass).child("allowPost");
         let curComponent = this;
         dbRef.once('value').then(function(snapshot){
-            curComponent.setState({active: snapshot.val()});
+            curComponent.setState({active: snapshot.val(), curClass: curComponent.props.curClass});
         });
     }
 
     handleClick = () =>{
-        this.curClassRef.update({allowPost: !this.state.active});
+        this.curClassRef.child(this.props.curClass).update({allowPost: !this.state.active});
         this.setState({active: !this.state.active});
     }
 
@@ -72,6 +73,15 @@ class StartStopButton extends React.Component{
 
     componentDidMount(){
         this.updateButton();
+    }
+
+    componentDidUpdate(){
+        console.log("component updated");
+        if (this.props.curClass != this.state.curClass) this.updateButton();
+    }
+
+    componentWillUnmount(){
+        this.curClassRef.child(this.props.curClass).update({allowPost: false});
     }
 }
 

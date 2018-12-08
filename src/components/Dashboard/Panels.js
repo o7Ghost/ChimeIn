@@ -113,7 +113,7 @@ class SimpleExpansionPanel extends React.Component {
     }
 
     isTA(uid){
-        console.log('inside ista');
+        //console.log('inside ista');
         let temp = [];
         var modClassRef = this.props.db.database().ref("User").child(uid).child('modClass');
         modClassRef.once('value', snapshot =>{
@@ -218,7 +218,7 @@ class SimpleExpansionPanel extends React.Component {
 
                         <ExpansionPanelActions>
            
-                           {console.log(this.isTA(this.props.db.auth().currentUser.uid))}
+                           {/*console.log(this.isTA(this.props.db.auth().currentUser.uid))*/}
                             { this.props.db.auth().currentUser.uid  == items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary"
                                     onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
                                 Remove

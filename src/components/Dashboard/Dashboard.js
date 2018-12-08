@@ -175,7 +175,7 @@ class Dashboard extends React.Component {
           currentClass: classID,
           userType: userType
       });
-      console.log("current Class:", classID);
+      console.log("current Class:", this.state.currentClass);
   }
   changeQState(Q) {
     this.setState({ Question: Q })
@@ -325,6 +325,7 @@ class Dashboard extends React.Component {
 
 
               <SideBar onClick={this.changeCurrentClass} currClass={this.state.currentClass} db={firebase} />
+              {console.log(this.state.currentClass)}
 
               <div>
                 <span>
