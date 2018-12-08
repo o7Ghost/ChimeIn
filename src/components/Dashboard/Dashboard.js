@@ -349,9 +349,6 @@ class Dashboard extends React.Component {
 
               </div>
 
-
-
-
             </Drawer>
 
           </MuiThemeProvider>
@@ -364,12 +361,12 @@ class Dashboard extends React.Component {
             }
             {
               this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ?
-                null :
+              null:
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ? null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
+              {this.state.currentClass == 'Dashboard' ? null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}><AlertButtons uType={this.state.userType} curClass={this.state.currentClass} db={firebase} style={{display:"none",}}  /></div> }
             </div>
 
 

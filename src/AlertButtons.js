@@ -175,8 +175,15 @@ class OutlinedButtons extends React.Component {
         const { classes } = this.props;
         return (
             <div>
-
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick1}>Mic is off</Button>
+                {this.props.uType == 'student' ? 
+                <div>
+                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick1}>Mic is off</Button> 
+                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick2}>Projector is off</Button>
+                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick3}> Can't read your hand writing </Button>
+                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick4}> Slow Down </Button>
+                </div>
+                : null}
+                
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -188,7 +195,7 @@ class OutlinedButtons extends React.Component {
                     ContentProps={{
                         "aria-describedby": "message-id"
                     }}
-                    message={<span id="message-id">Mic is off</span>}
+                    message={<span id="message-id">Professor, Your mic is off.</span>}
                     action={[
                         <Button
                             key="undo"
@@ -201,7 +208,7 @@ class OutlinedButtons extends React.Component {
                     ]}
                 />
 
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick2}>Projector is off</Button>
+            
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -227,7 +234,6 @@ class OutlinedButtons extends React.Component {
                     ]}
                 />
 
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick3}> Can't read your hand writing </Button>
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -252,7 +258,7 @@ class OutlinedButtons extends React.Component {
                     ]}
                 />
 
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick4}> Slow Down </Button>
+            
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
