@@ -1,10 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import AddIcon from '@material-ui/icons/LibraryAdd';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
@@ -13,7 +11,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 
 const styles = theme => ({
     root: {
@@ -33,50 +30,13 @@ class AddClass extends React.Component {
             TAClass: [],
             open: false,
             addCode: '',
-            className:'',
+            className: '',
             uid: this.props.db.auth().currentUser.uid
         };
 
         this.firebaseRef = this.props.db.database().ref("User").child(this.state.uid);
         var TARef = this.firebaseRef.child('TAClass');
         var StudentRef = this.firebaseRef.child('studentClass');
-        /*TARef.on('value', snapshot => {
-            let temp = [];
-            console.log( Object.entries(snapshot) );
-            snapshot.forEach(classElem => {
-
-                let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp.push(classItem);
-                // TAClassTemp.push(classItem);
-            });
-            temp.sort(compare);
-            this.setState({TAClass: temp } );
-        });
-
-        StudentRef.on('value', snapshot => {
-            let temp2 = [];
-            console.log( Object.entries(snapshot) );
-            snapshot.forEach(classElem => {
-
-                let classItem = classElem.val();
-
-                console.log( Object.keys(classElem) );
-                console.log(  typeof classItem  );
-                classItem['.key'] = classElem.key;
-                temp2.push(classItem);
-                console.log("AAA" + classItem['.key']);
-                // TAClassTemp.push(classItem);
-            });
-
-            // Sort the student class
-            temp2.sort(compare);
-            this.setState({StudentClass: temp2 } );
-        });*/
-
     }
 
     handleClickOpen = () => {
@@ -89,22 +49,18 @@ class AddClass extends React.Component {
 
     handleAdd = () => {
         //this line will create a route to the database, no matter if the database child is exist or not
-        console.log("You entered:"+this.state.className+"+"+this.state.addCode);
-        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
+        var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className + "+" + this.state.addCode);
 
 
-        classRef.on('value', (snapshot) => {
+        classRef.once('value', (snapshot) => {
             const classObject = snapshot.val();
-            if(classObject==null){
-                alert("Class not registered!");
-            }
-            else if(!classObject.addCode || classObject.addCode.localeCompare(this.state.addCode)!=0) {
-                alert("Wrong add code!");
-            }else{
+            if (classObject == null) {
+                alert("Class not registered or wrong add code!");
+            } else {
                 var userRef = this.props.db.database().ref("User").child(this.state.uid);
-                var classRef = userRef.child("studentClass").child(this.state.className);
-                classRef.update({className:this.state.className});
-                //alert("Success!");
+                var classRef = userRef.child("studentClass").child(this.state.className + "+" + this.state.addCode);
+                classRef.update({ className: this.state.className + "+" + this.state.addCode });
+                alert("Operation Add Class：success!");
             }
             this.handleClose();
         });
@@ -122,14 +78,12 @@ class AddClass extends React.Component {
     render() {
         return (
             <div>
-                <ListSubheader inset>Course Management</ListSubheader>
                 <ListItem button>
                     <ListItemIcon>
                         <AddIcon />
                     </ListItemIcon>
                     <ListItemText primary="Add Class" onClick={this.handleClickOpen} />
                 </ListItem>
-
 
                 <Dialog
                     open={this.state.open}
@@ -154,7 +108,7 @@ class AddClass extends React.Component {
                             label="Course Name"
                             type="text"
                             fullWidth
-                            onChange = {e => this.setState({className: (e.target.value)})}
+                            onChange={e => this.setState({ className: (e.target.value) })}
                         />
                         <TextField
                             margin="dense"
@@ -162,7 +116,7 @@ class AddClass extends React.Component {
                             label="6-Digit Add code"
                             type="text"
                             fullWidth
-                            onChange = {e => this.setState({addCode: (e.target.value)})}
+                            onChange={e => this.setState({ addCode: (e.target.value) })}
                             onKeyPress={this._handleKeyPress}
                         />
                     </DialogContent>

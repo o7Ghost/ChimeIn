@@ -10,6 +10,14 @@ import PrivateRoute from './components/PrivateRoute';
 import * as serviceWorker from './serviceWorker';
 import {HashRouter,Route,Link} from 'react-router-dom';
 import firebase from 'firebase';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const themeV1 = createMuiTheme({
+
+    typography: {
+      useNextVariants: true,
+    },
+  });
 
 class Index extends Component {
     constructor(props) {
@@ -54,6 +62,7 @@ class Index extends Component {
         }
 
         return (
+            <MuiThemeProvider theme={themeV1}>
             <HashRouter>
                 <div>
                     <PrivateRoute exact path="/" component={AppPage} authenticated={this.state.authenticated}/>
@@ -63,6 +72,7 @@ class Index extends Component {
                     <Route exact path="/signup" component={SignUp} />
                 </div>
             </HashRouter >
+            </MuiThemeProvider>
         )
     }
 }
