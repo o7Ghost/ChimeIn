@@ -317,6 +317,8 @@ class Dashboard extends React.Component {
               }}
               open={this.state.open}
             >
+                      <Scrollbars autoHide style={{"height":"100%"}}>
+
               <div className={classes.toolbarIcon}>
                 <IconButton onClick={this.handleDrawerClose}>
                   <ChevronLeftIcon />
@@ -349,12 +351,9 @@ class Dashboard extends React.Component {
                 }
 
               </div>
+             </Scrollbars>
 
-
-
-            </Scrollbars>
             </Drawer>
-
           </MuiThemeProvider>
           <main className={classes.content}>
           <Scrollbars autoHide style={{"height":"100%"}}>

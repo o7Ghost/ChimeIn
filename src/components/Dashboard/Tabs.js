@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Panels from './Panels.js';
 import TextField from './TextField.js';
 import firebase from 'firebase';
-
+import {Scrollbars} from 'react-custom-scrollbars';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 
@@ -117,7 +117,7 @@ class CustomizedTabs extends React.Component {
 
 
                 <TabContainer> <Panels curClass={this.props.curClass} tabNum={this.state.value} value={this.props.value} stateChange={this.props.stateChange} db={firebase} /> </TabContainer>
-
+</Scrollbars>
             </div>
         );
     }
