@@ -6,10 +6,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import { SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
 import AddTA from './AddTA.js';
@@ -17,6 +21,7 @@ import DropClass from './DropClass.js';
 import CreateClass from './CreateClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
+import Button from '@material-ui/core/Button';
 import Tabs from './Tabs.js';
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
@@ -26,14 +31,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import WelcomePage from './WelcomePage.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import {Scrollbars} from 'react-custom-scrollbars';
-import StartStopButton from './StartStopButton.js';
-
-
 
 const themeDrawer = createMuiTheme({
   palette: {
@@ -105,9 +102,9 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 0 + 1,
+    width: theme.spacing.unit * 0,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 0 + 1,
+      width: 0,
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -148,29 +145,25 @@ class Dashboard extends React.Component {
     if (!firebase || !firebase.apps.length) {
       firebase.initializeApp(config);
     }
-    this.state = {
-      currentClass: 'Dashboard',
-      UID: '',
-      Question: '',
-      upvoteCount: 0,
-      order: 99999999,
-      timestamp: '',
-      followers: [],
-      hideSetting: true,
-      userType: ''
-    }
-    this.handler = this.changeQState.bind(this);
-    this.handlerA = this.changeAState.bind(this);
+   this.state =  {
+       currentClass: 'Dashboard',
+             UID: '',
+                Question: '',
+          	      upvoteCount: 0,
+                timestamp: '',
+                followers: []
+   }
+   this.handler = this.changeQState.bind(this);
+      this.handlerA = this.changeAState.bind(this);
 
 
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
-  changeCurrentClass(classID, userType) {
+  changeCurrentClass(classID) {
     this.setState({
       currentClass: classID,
-      userType: userType,
-      open: false
     });
+    console.log("current Class:", classID);
   }
   changeQState(Q) {
     this.setState({ Question: Q })
@@ -206,20 +199,6 @@ class Dashboard extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-
-
-  changeSetting() {
-    //set it to be false
-    this.setState({ hideSetting: !this.state.hideSetting });
-  }
-
-
-  getSettingButton() {
-    if (this.state.hideSetting) {
-      return <div> Course Management <ExpandMoreIcon style={{ verticalAlign: 'bottom', float: 'right' }} /> </div>;
-    }
-    return <div> Course Management <ExpandLessIcon style={{ verticalAlign: 'bottom', float: 'right', }} /> </div>;
-  }
 
   render() {
     const { classes } = this.props;
@@ -257,7 +236,7 @@ class Dashboard extends React.Component {
                   noWrap
                   className={classes.title}
                 >
-                  {this.state.currentClass.split('+')[0]}
+                  {this.state.currentClass}
                 </Typography>
 
 
@@ -285,7 +264,6 @@ class Dashboard extends React.Component {
                   >
                     <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
                     <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
-                    <MenuItem id='uidMenuItem'>{this.state.UID}</MenuItem>
                   </Menu>
                 </div>
                 )}
@@ -305,55 +283,34 @@ class Dashboard extends React.Component {
           </MuiThemeProvider>
 
           <MuiThemeProvider theme={themeDrawer}>
-
-            <Drawer
-              variant="permanent"
-              classes={{
-                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-              }}
-              open={this.state.open}
-            >
-                      <Scrollbars autoHide style={{"height":"100%"}}>
-
-              <div className={classes.toolbarIcon}>
-                <IconButton onClick={this.handleDrawerClose}>
-                  <ChevronLeftIcon />
-                </IconButton>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+            }}
+            open={this.state.open}
+          >
+            <div className={classes.toolbarIcon}>
+              <IconButton onClick={this.handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+            <SideBar onClick  ={this.changeCurrentClass} currClass = { this.state.currentClass} db = {firebase}/>
+            <div className={classes.others}>
+              <AddClass db={firebase}/>
+            </div>
+            <div className={classes.others}>
+                <DropClass db={firebase}/>
+            </div>
+            <div className={classes.others}>
+                <CreateClass db={firebase}/>
+            </div>
+              <div className={classes.others}>
+                <AddTA db={firebase} />
               </div>
-
-              <SideBar onClick={this.changeCurrentClass} currClass={this.state.currentClass} db={firebase} />
-
-              <div>
-                <span>
-                  <ListItem onClick={() => this.changeSetting()} style={{ paddingRight: '0px' }} button >
-                    <ListItemText primary={this.getSettingButton()} />
-                  </ListItem>
-                </span>
-                {this.state.hideSetting ? null :
-                  <div>
-                    <div className={classes.others}>
-                      <AddClass db={firebase} />
-                    </div>
-                    <div className={classes.others}>
-                      <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass}
-                                 identity={this.state.userType} />
-                    </div>
-                    <div className={classes.others}>
-                      <CreateClass db={firebase} />
-                    </div>
-                    <div className={classes.others}>
-                      <AddTA db={firebase} classID={this.state.currentClass} identity={this.state.userType} />
-                    </div>
-                  </div>
-                }
-
-              </div>
-            </Scrollbars>
-
             </Drawer>
           </MuiThemeProvider>
           <main className={classes.content}>
-          <Scrollbars autoHide style={{"height":"100%"}}>
             <div className={classes.appBarSpacer} />
             <div className={classes.toolbar} />
             {
@@ -361,32 +318,21 @@ class Dashboard extends React.Component {
                 <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
             }
             {
-              this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ?
-              null:
+              this.state.currentClass == 'Dashboard' ?
+                null :
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
             }
-            {
-              this.state.userType == 'instructor' ?
-              <StartStopButton curClass={this.state.currentClass} db={firebase}/> :
-              null
-            }
+
             <div>
-              {this.state.currentClass == 'Dashboard' ?
-                  null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}>
-                      <AlertButtons uType={this.state.userType} curClass={this.state.currentClass}
-                                    db={firebase} style={{display:"none",}}  /></div> }
+              {this.state.currentClass == 'Dashboard' ? null : <AlertButtons />}
             </div>
 
-            </Scrollbars>
+
           </main>
         </div>
       </React.Fragment>
 
     );
-  }
-
-  componentDidMount(){
-    this.setState({UID: firebase.auth().currentUser.uid});
   }
 }
 

@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
-const themeV1 = createMuiTheme({
-
-    typography: {
-      useNextVariants: true,
-    },
-  });
 
 class App extends Component {
   render() {
     return (
-        <MuiThemeProvider theme={themeV1}>
         <div className="App">
         <form className="form-signin" method="GET">
                 <div className="form-signin">
@@ -40,7 +31,6 @@ class App extends Component {
                 </div>
             </form>
         </div>
-        </MuiThemeProvider>
     );
   }
 }

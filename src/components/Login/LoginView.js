@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Route, Redirect, Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,14 +16,12 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import blue from '@material-ui/core/colors/blue';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Image from '../../image/background.jpeg';
 
 const themePaper = createMuiTheme({
   palette: {
     primary: blue,
     secondary: blue,
-  },
-  typography: {
-    useNextVariants: true,
   },
 });
 
@@ -46,19 +44,15 @@ const styles = theme => ({
     },
   main: {
     width: 'auto',
-    height: 'auto',
     display: 'block', // Fix IE 11 issue.
-    
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto',
-      marginTop: theme.spacing.unit * 18,
     },
   },
-
   paper: {
     marginTop: theme.spacing.unit * 8,
     display: 'flex',
@@ -82,13 +76,15 @@ const styles = theme => ({
     display: 'flex',
         flexWrap: 'wrap',
         width: '100%',
+      
   },
 });
 
 function LoginView(props) {
   const { classes } = props;
   const onSubmit = props.onSubmit;
-  
+
+
   return (
     <MuiThemeProvider theme={themePaper}>
     <main className={classes.main}>

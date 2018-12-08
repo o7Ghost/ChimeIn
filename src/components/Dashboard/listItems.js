@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 
 function compare(a, b) {
-    var regex = new RegExp('([0-9]+)|([a-zA-Z]+)', 'g');
+    var regex = new RegExp('([0-9]+)|([a-zA-Z]+)','g');
     var splittedArrayA = a['.key'].match(regex);
     var splittedArrayB = b['.key'].match(regex);
 
@@ -22,6 +22,9 @@ function compare(a, b) {
     var textB = splittedArrayB[0];
     var numB = splittedArrayB[1];
 
+    /*if(textA.localeCompare(textB) != 0) {
+        return textA - textB;
+    }*/
     return numA - numB;
 }
 
@@ -47,52 +50,46 @@ export class SideBar extends React.Component {
         TARef.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
                 let classItem = classElem.val();
                 temp.push(classItem);
             });
-            this.setState({ modClassList: temp });
+            console.log(temp);
+            this.setState({modClassList: temp } );
         });
 
         StudentRef.on('value', snapshot => {
             let temp2 = [];
             snapshot.forEach(classElem => {
                 let classItem = classElem.val();
+                console.log( classElem.val() );
+                console.log( classItem['className']);
                 temp2.push(classItem['className']);
             });
-            this.setState({ studentClassList: temp2 });
+            this.setState({studentClassList: temp2 } );
         });
 
         MyRef.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
                 let classItem = classElem.val();
                 temp.push(classItem);
             });
-             this.setState({ myClassList: temp });
+            console.log(temp);
+            this.setState({myClassList: temp } );
         });
 
-        this.handleChange1 = this.handleChange1.bind(this);
-        this.handleChange2 = this.handleChange2.bind(this);
-        this.handleChange3 = this.handleChange3.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
-    handleChange1(e) {
-        const onClickClass = e['course'];
-        this.props.onClick(onClickClass, "student");
-        this.setState({ selectedIndex: onClickClass });
-    }
-    handleChange2(e) {
-        const onClickClass = e['course'];
+    handleChange(e) {
+        const onClickClass =  e['course'];
         console.log(this);
-        this.props.onClick(onClickClass, "TA");
-        this.setState({ selectedIndex: onClickClass });
+        this.props.onClick(onClickClass);
+        this.setState({selectedIndex: onClickClass });
     }
-    handleChange3(e) {
-        const onClickClass = e['course'];
-        console.log(this);
-        this.props.onClick(onClickClass, "instructor");
-        this.setState({ selectedIndex: onClickClass });
-    }
-
 
 
     componentWillUnmount() {
@@ -100,42 +97,45 @@ export class SideBar extends React.Component {
     }
 
     render() {
+        console.log("Rendered listItems");
+        console.log(this.state);
         this.populateLists();
         const StudentClass = this.state.studentClassList.map(course =>
             <div>
                 <ListItem button
-                    selected={this.state.selectedIndex === { course }['course']}
-                    onClick={() => this.handleChange1({ course })}>
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
-                        <AssignmentIcon />
+                        <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course.split("+")[0]} />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
         const TAClass = this.state.modClassList.map(course =>
             <div>
                 <ListItem button
-                    selected={this.state.selectedIndex === { course }['course']}
-                    onClick={() => this.handleChange2({ course })}>
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
-                        <AssignmentIcon />
+                       <AssignmentIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={course.split("+")[0]} />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
-        const MyClass = this.state.myClassList.map(course =>
+		
+		const MyClass = this.state.myClassList.map(course =>
             <div>
                 <ListItem button
-                    selected={this.state.selectedIndex === { course }['course']}
-                    onClick={() => this.handleChange3({ course })}>
+                          selected={this.state.selectedIndex === {course}['course']}
+                          onClick={()=>this.handleChange({course})}>
                     <ListItemIcon>
-                        <AssignmentIcon />
+                        <AssignmentIcon/>
                     </ListItemIcon>
 
-                    <ListItemText primary={course.split("+")[0]} />
+                    <ListItemText primary={course}  />
                 </ListItem>
             </div>
         );
@@ -147,15 +147,15 @@ export class SideBar extends React.Component {
 
                 <ListSubheader inset>Tutor</ListSubheader>
                 {TAClass}
-
-                <ListSubheader inset>Instructor</ListSubheader>
-                {MyClass}
+				
+				<ListSubheader inset>Instructor</ListSubheader>
+				{MyClass}
             </div>
 
         );
     };
 
-    populateLists() {
+    populateLists(){
         var uid = this.props.db.auth().currentUser.uid;
         this.firebaseRef = this.props.db.database().ref("User").child(uid);
         var TARef = this.firebaseRef.child('modClass');
@@ -165,9 +165,12 @@ export class SideBar extends React.Component {
         TARef.once('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
                 let classItem = classElem.val();
                 temp.push(classItem);
             });
+            console.log(temp);
             this.state.modClassList = temp;
         });
 
@@ -175,6 +178,8 @@ export class SideBar extends React.Component {
             let temp2 = [];
             snapshot.forEach(classElem => {
                 let classItem = classElem.val();
+                console.log( classElem.val() );
+                console.log( classItem['className']);
                 temp2.push(classItem['className']);
             });
             this.state.studentClassList = temp2;
@@ -183,9 +188,12 @@ export class SideBar extends React.Component {
         MyRef.once('value', snapshot => {
             let temp = [];
             snapshot.forEach(classElem => {
+                console.log("----");
+                console.log(classElem.val().toString());
                 let classItem = classElem.val();
                 temp.push(classItem);
             });
+            console.log(temp);
             this.state.myClassList = temp;
         });
     }

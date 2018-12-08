@@ -1,8 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import CreateIcon from '@material-ui/icons/LibraryAdd';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
@@ -31,7 +33,7 @@ class CreateClass extends React.Component {
             TAClass: [],
             open: false,
             addCode: '',
-            className: '',
+            className:'',
             uid: this.props.db.auth().currentUser.uid
         };
 
@@ -49,36 +51,42 @@ class CreateClass extends React.Component {
 
     handleCreate = event => {
         event.preventDefault();
-        try {
-            if (this.state.addCode.length !== 6) {
-                throw "Invalid addCode";
-            }
+        try{
+            console.log("You entered:"+this.state.className+"+"+this.state.addCode);
 
-            var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className + "+" + this.state.addCode);
+            var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
             classRef.once('value', (snapshot) => {
                 const classObj = snapshot.val();
-                if (classObj) {
-                    alert("Class already exist! Change the class name or addCode.");
-                } else {
-                    classRef.set({ addCode: this.state.addCode, instructor: this.state.uid, className: this.state.className, allowPost: false});
+                if(classObj) {
+                    alert("Class already exist!");
+                }else{
+                    classRef.set({addCode:this.state.addCode,instructor:this.state.uid});
                     var userRef = this.props.db.database().ref("User").child(this.state.uid);
+                    console.log(userRef.child("myClass"));
+                    //userRef = userRef.child("myClass");
                     let classesList = [];
                     userRef.once('value', (snapshot) => {
                         const userObj = snapshot.val();
-                        if (userObj.myClass) {
+                        console.log(userObj.myClass);
+                        if(userObj.myClass) {
                             classesList = userObj.myClass;
-                        } else {
+                            console.log("not null!");
+                        }else{
+                            console.log("null!");
                         }
-                        classesList.push(this.state.className + "+" + this.state.addCode);
-                        userRef.update({ myClass: classesList });
-                        alert("Operation create class Success!");
+                        classesList.push(this.state.className);
+                        console.log(classesList);
+                        userRef.update({myClass:classesList});
+                        alert("Success!");
                     });
                 }
             });
+            //this.setState({ open: false });
             this.handleClose();
         } catch (error) {
             alert(error);
         }
+        // check if the there is actually this class entered by user. by using .on and snapshot
     };
 
     _handleKeyPress = (e) => {
@@ -118,7 +126,7 @@ class CreateClass extends React.Component {
                             label="Course Name"
                             type="text"
                             fullWidth
-                            onChange={e => this.setState({ className: (e.target.value) })}
+                            onChange = {e => this.setState({className: (e.target.value)})}
                         />
                         <TextField
                             margin="dense"
@@ -126,7 +134,7 @@ class CreateClass extends React.Component {
                             label="6-Digit Add code"
                             type="text"
                             fullWidth
-                            onChange={e => this.setState({ addCode: (e.target.value) })}
+                            onChange = {e => this.setState({addCode: (e.target.value)})}
                             onKeyPress={this._handleKeyPress}
                         />
                     </DialogContent>

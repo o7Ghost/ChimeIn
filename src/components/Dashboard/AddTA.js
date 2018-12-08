@@ -1,8 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import CreateIcon from '@material-ui/icons/LibraryAdd';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
@@ -30,8 +32,10 @@ class AddTA extends React.Component {
             StudentClass: [],
             TAClass: [],
             open: false,
+            addCode: '',
+            className:'',
             uid: this.props.db.auth().currentUser.uid,
-            TAemail : ''
+            TAuid : ''
         };
 
         this.firebaseRef = this.props.db.database().ref("User").child(this.state.uid);
@@ -46,10 +50,11 @@ class AddTA extends React.Component {
         this.setState({ open: false });
     };
 
-    handleAdd = event => {
+    handleAdd = async event => {
         event.preventDefault();
         try{
-            var classRef = this.props.db.database().ref("ClassFinal").child(this.props.classID);
+            console.log("You entered:"+this.state.className+"for"+this.state.TAuid);
+            var classRef = this.props.db.database().ref("ClassFinal").child(this.state.className);
             classRef.once('value', (snapshot) => {
                 const classObj = snapshot.val();
                 if(!classObj) {
@@ -59,46 +64,29 @@ class AddTA extends React.Component {
                     var myClassRef = userRef.child("myClass");
                     myClassRef.once('value', (snapshot) => {
                         const temp = snapshot.val();
-                        if(!temp || !temp.includes(this.props.classID)) {
+                        if(!temp || !temp.includes(this.state.className)) {
                             alert("You are not the instructor!");
                         }else{
-                            var email = this.state.TAemail.replace("@"," ");
-                            email = email.replace("."," ");
-                            var TARef1 = this.props.db.database().ref("UserByEmail").child(email);
-                            TARef1.once('value',(snapshot)=>{
-                                const temp3 = snapshot.val();
-                                if(!temp3){
-                                    alert("User with this email does not exist, please check again.");
-                                }else{
-                                    var TAuid = temp3.uid;
-                                    var TARef = this.props.db.database().ref("User").child(TAuid);
-                                    TARef.once('value', (snapshot2) => {
-                                        const temp2 = snapshot2.val();
-                                        let TAClass = [];
-                                        if(!temp2){
-                                            alert("User with uid:"+this.state.uid+" does not exist!");
-                                        }
-                                        else{
-                                            if(temp2.modClass) {
-                                                TAClass = temp2.modClass;
-                                            }
-                                            if(TAClass.includes(this.props.classID)){
-                                                alert("This TA has already been included");
-                                            }else{
-                                                TAClass.push(this.props.classID);
-                                                TARef.update({modClass:TAClass});
-                                                alert("Operation Add TA success!");
-                                                this.setState({ open: false });
-                                            }
-                                        }
-                                    });
+                            var TARef = this.props.db.database().ref("User").child(this.state.TAuid);
+                            TARef.once('value', (snapshot2) => {
+                                const temp2 = snapshot2.val();
+                                let TAClass = [];
+                                if(temp2.modClass) {
+                                    TAClass = temp2.modClass;
                                 }
-                            })
-
+                                if(TAClass.includes(this.state.className)){
+                                    alert("This TA has already been included");
+                                }else{
+                                    TAClass.push(this.state.className);
+                                    TARef.update({modClass:TAClass});
+                                    alert("This TA is included!");
+                                }
+                            });
                         }
                     });
                 }
             });
+            this.setState({ open: false });
         } catch (error) {
             alert(error);
         }
@@ -113,7 +101,6 @@ class AddTA extends React.Component {
 
     render() {
         return (
-            this.props.identity !== "instructor" ? null :
             <div>
                 <ListItem button>
                     <ListItemIcon>
@@ -131,19 +118,27 @@ class AddTA extends React.Component {
                     <DialogTitle id="form-dialog-title">Add TA into your class</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Add a TA into your class by input TA's email:
+                            Add a TA into your class by input class name and TA uid:
                         </DialogContentText>
                         <DialogContentText>
-                            For example: ziz059@ucsd.edu
+                            For example: name:CSE140  uid:Tv8w5CqbWPhRRRYDPrMr8JaW1ka2
                         </DialogContentText>
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="TA email"
-                            label="TA email"
-                            type="email"
+                            id="name"
+                            label="Course Name"
+                            type="text"
                             fullWidth
-                            onChange = {e => this.setState({TAemail: (e.target.value)})}
+                            onChange = {e => this.setState({className: (e.target.value)})}
+                        />
+                        <TextField
+                            margin="dense"
+                            id="TAuid"
+                            label="TA uid"
+                            type="text"
+                            fullWidth
+                            onChange = {e => this.setState({TAuid: (e.target.value)})}
                             onKeyPress={this._handleKeyPress}
                         />
                     </DialogContent>

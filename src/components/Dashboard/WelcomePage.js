@@ -1,12 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid'
 import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+//import question from '../../image/question.png'
+//import add from 'https://cl.ly/700ee03b707f/Screen%2520Recording%25202018-11-28%2520at%252012.22%2520AM.gif'
+//import upvote from '../../image/upvote.png'
+
+
+
 
 const styles = theme => ({
     "@global": {
@@ -26,7 +43,7 @@ const styles = theme => ({
         }
     },
     paper: {
-        marginTop: '0vw',
+        marginTop: '3vw',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -80,12 +97,13 @@ function SignIn(props) {
                     Are you ready to Chime In? Select or add a class to start.
             </Typography>
                 <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                    With us you can enroll into class with just class name and add code,
-                    raise your question to the professor annonymosly in real time, or even start your own class.
+                    With us you can enroll into class with just class name and add code, raise your question to the professor annonymosly in real time, even start your own class.
             </Typography>
+
 
             </div>
             <div className={classNames(classes.layout, classes.cardGrid)}>
+                {/* End hero unit */}
                 <Grid container spacing={40}>
                     <Grid item key='0' sm={6} md={4} lg={4}>
                         <Card className={classes.card}>
@@ -97,10 +115,10 @@ function SignIn(props) {
 
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    Enroll in classes
+                                    Enroll in a class
                     </Typography>
                                 <Typography>
-                                    Join a class to be able to ask questions in real time.
+                                    This is a media card. You can use this section to describe the content.
                     </Typography>
                             </CardContent>
 
@@ -117,10 +135,10 @@ function SignIn(props) {
                             />
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    Ask your questions
+                                    Raise your question
                     </Typography>
                                 <Typography>
-                                Annonymosly ask your questions without the fear of professionalism deduction.
+                                    This is a media card. You can use this section to describe the content.
                     </Typography>
                             </CardContent>
 
@@ -135,10 +153,10 @@ function SignIn(props) {
                             />
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    Upvote questions
+                                    Vote on questions
                     </Typography>
                                 <Typography>
-                                    Express your interest in a question by upvoting it.
+                                    This is a media card. You can use this section to describe the content.
                     </Typography>
                             </CardContent>
 

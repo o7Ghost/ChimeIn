@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
+import { Route, Redirect, Link } from "react-router-dom";
 import firebase from 'firebase';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from "@material-ui/core";
 import blue from '@material-ui/core/colors/blue';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
+import Image from '../../image/background.jpeg';
 
 
 const themePaper = createMuiTheme({
@@ -46,7 +49,6 @@ const styles = theme => ({
             width: 400,
             marginLeft: 'auto',
             marginRight: 'auto',
-            marginTop: theme.spacing.unit * 18,
         },
     },
     paper: {
@@ -79,6 +81,7 @@ const styles = theme => ({
 class ResetContainer extends Component {
     constructor(props) {
         super(props);
+        console.log(props)
         const { classes } = props;
         var config = {
             apiKey: "AIzaSyDAxqzZLvyW64VLMhvxTxQjMubdntruWE0",
@@ -115,10 +118,10 @@ class ResetContainer extends Component {
                         <Paper className={this.props.classes.paper}>
                             <h1>Reset password</h1>
                             <form className={this.props.classes.form}>
-                                <FormControl margin="normal" required fullWidth>
-
-                                    <InputLabel htmlFor="email">Email Address</InputLabel>
-                                    <Input onChange={e => this.setState({ email: e.target.value })} />
+                            <FormControl margin="normal" required fullWidth>
+         
+                            <InputLabel htmlFor="email">Email Address</InputLabel>
+                                <Input onChange={e => this.setState({ email: e.target.value })} />
                                 </FormControl>
                                 <br />
                                 <Button
@@ -134,16 +137,16 @@ class ResetContainer extends Component {
                             </form>
                         </Paper>
                         <div className={this.props.classes.otherLinks}>
-                            <Grid
-                                container
-                                direction="row"
-                                justify="space-between"
-                                alignItems="center"
-                            >
-                                <Link to="/login">Back to Login</Link>
-                                <Link to="/signUp">Not a Customer? Sign Up Now!</Link>
-                            </Grid>
-                        </div>
+      <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                >
+      <Link to="/login">Back to Login</Link>
+      <Link to="/signUp">Not a Customer? Sign Up Now!</Link>
+      </Grid>
+      </div>
                     </main>
                 </MuiThemeProvider>
 

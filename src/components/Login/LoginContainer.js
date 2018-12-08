@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import LogInView from "./LoginView";
 import { withRouter } from "react-router";
+import { Route, Redirect, Link } from "react-router-dom";
 import firebase from 'firebase';
 
 
@@ -32,7 +33,7 @@ class LogInContainer extends Component {
             alert(error);
         }
     };
-    
+
     render() {
         return <LogInView onSubmit={this.handleSignUp} />;
     }
