@@ -30,6 +30,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import StartStopButton from './StartStopButton.js';
 
 
 
@@ -283,6 +284,7 @@ class Dashboard extends React.Component {
                   >
                     <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
                     <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
+                    <MenuItem id='uidMenuItem'>{this.state.UID}</MenuItem>
                   </Menu>
                 </div>
                 )}
@@ -359,7 +361,11 @@ class Dashboard extends React.Component {
               null:
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
             }
-
+            {
+              this.state.userType == 'instructor' ?
+              <StartStopButton curClass={this.state.currentClass} db={firebase}/> :
+              null
+            }
             <div>
               {this.state.currentClass == 'Dashboard' ?
                   null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}>
@@ -373,6 +379,10 @@ class Dashboard extends React.Component {
       </React.Fragment>
 
     );
+  }
+
+  componentDidMount(){
+    this.setState({UID: firebase.auth().currentUser.uid});
   }
 }
 
