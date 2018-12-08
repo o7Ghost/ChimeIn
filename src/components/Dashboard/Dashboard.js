@@ -110,9 +110,9 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 0,
+    width: theme.spacing.unit * 0 + 1,
     [theme.breakpoints.up('sm')]: {
-      width: 0,
+      width: theme.spacing.unit * 0 + 1,
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -153,27 +153,29 @@ class Dashboard extends React.Component {
     if (!firebase || !firebase.apps.length) {
       firebase.initializeApp(config);
     }
-   this.state =  {
-       currentClass: 'Dashboard',
-             UID: '',
-                Question: '',
-          	      upvoteCount: 0,
-                  order: 99999999,
-                timestamp: '',
-                followers: [],
-       hideSetting : true,
-   }
-   this.handler = this.changeQState.bind(this);
-      this.handlerA = this.changeAState.bind(this);
+    this.state = {
+      currentClass: 'Dashboard',
+      UID: '',
+      Question: '',
+      upvoteCount: 0,
+      order: 99999999,
+      timestamp: '',
+      followers: [],
+      hideSetting: true,
+      userType: ''
+    }
+    this.handler = this.changeQState.bind(this);
+    this.handlerA = this.changeAState.bind(this);
 
 
     this.changeCurrentClass = this.changeCurrentClass.bind(this);
   }
-  changeCurrentClass(classID) {
+  changeCurrentClass(classID, userType) {
     this.setState({
       currentClass: classID,
+      userType: userType,
+      open: false
     });
-    console.log("current Class:", classID);
   }
   changeQState(Q) {
     this.setState({ Question: Q })
@@ -211,18 +213,18 @@ class Dashboard extends React.Component {
   };
 
 
-      changeSetting(){
-          //set it to be false
-          this.setState({hideSetting: !this.state.hideSetting});
-      }
+  changeSetting() {
+    //set it to be false
+    this.setState({ hideSetting: !this.state.hideSetting });
+  }
 
 
-     getSettingButton(){
-          if (this.state.hideSetting){
-              return <div> Course Management <ExpandMoreIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-          }
-          return <div> Course Management <ExpandLessIcon style={{verticalAlign: 'bottom', float: 'right'}}/> </div>;
-      }
+  getSettingButton() {
+    if (this.state.hideSetting) {
+      return <div> Course Management <ExpandMoreIcon style={{ verticalAlign: 'bottom', float: 'right' }} /> </div>;
+    }
+    return <div> Course Management <ExpandLessIcon style={{ verticalAlign: 'bottom', float: 'right', }} /> </div>;
+  }
 
   render() {
     const { classes } = this.props;
@@ -260,7 +262,7 @@ class Dashboard extends React.Component {
                   noWrap
                   className={classes.title}
                 >
-                  {this.state.currentClass}
+                  {this.state.currentClass.split('+')[0]}
                 </Typography>
 
 
@@ -307,45 +309,46 @@ class Dashboard extends React.Component {
           </MuiThemeProvider>
 
           <MuiThemeProvider theme={themeDrawer}>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-            }}
-            open={this.state.open}
-          >
-          <Scrollbars autoHide style={{"height":"100%"}}>
 
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
+            <Drawer
+              variant="permanent"
+              classes={{
+                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+              }}
+              open={this.state.open}
+            >
+              <div className={classes.toolbarIcon}>
+                <IconButton onClick={this.handleDrawerClose}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </div>
 
+              <SideBar onClick={this.changeCurrentClass} currClass={this.state.currentClass} db={firebase} />
 
-            <SideBar onClick={this.changeCurrentClass} currClass = {this.state.currentClass} db = {firebase}/>
-
-            <div>
+              <div>
                 <span>
-                        <ListItem onClick={()=>this.changeSetting()} button>
-                          <ListItemText primary={this.getSettingButton()}/>
-                        </ListItem>
+                  <ListItem onClick={() => this.changeSetting()} style={{ paddingRight: '0px' }} button >
+                    <ListItemText primary={this.getSettingButton()} />
+                  </ListItem>
                 </span>
-                {this.state.hideSetting ? null :  <div> <div className={classes.others}>
-                                                               <AddClass db={firebase}/>
-                                                             </div>
-                                                             <div className={classes.others}>
-                                                                 <DropClass db={firebase}/>
-                                                             </div>
-                                                             <div className={classes.others}>
-                                                                 <CreateClass db={firebase}/>
-                                                             </div>
-                                                               <div className={classes.others}>
-                                                                 <AddTA db={firebase} />
-                                                               </div>
-                                                               </div>}
+                {this.state.hideSetting ? null :
+                  <div>
+                    <div className={classes.others}>
+                      <AddClass db={firebase} />
+                    </div>
+                    <div className={classes.others}>
+                      <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass} identity={this.state.userType} />
+                    </div>
+                    <div className={classes.others}>
+                      <CreateClass db={firebase} />
+                    </div>
+                    <div className={classes.others}>
+                      <AddTA db={firebase} classID={this.state.currentClass} identity={this.state.userType} />
+                    </div>
+                  </div>
+                }
 
-            </div>
+              </div>
 
 
 
@@ -362,13 +365,13 @@ class Dashboard extends React.Component {
                 <WelcomePage /> : <Tabs curClass={this.state.currentClass} value={this.state} stateChange={this.handlerA} />
             }
             {
-              this.state.currentClass == 'Dashboard' ?
+              this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ?
                 null :
                 <TextField curClass={this.state.currentClass} value={this.state} db={firebase} stateChange={this.handler} />
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' ? null : <div><Typography>Is something wrong?</Typography> <AlertButtons /></div>}
+              {this.state.currentClass == 'Dashboard' || this.state.userType != 'student' ? null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}><AlertButtons curClass={this.state.currentClass} db={firebase} /></div>}
             </div>
 
             </Scrollbars>

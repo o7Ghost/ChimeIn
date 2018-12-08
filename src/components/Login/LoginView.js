@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,12 +16,14 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import blue from '@material-ui/core/colors/blue';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Image from '../../image/background.jpeg';
 
 const themePaper = createMuiTheme({
   palette: {
     primary: blue,
     secondary: blue,
+  },
+  typography: {
+    useNextVariants: true,
   },
 });
 
@@ -80,7 +82,6 @@ const styles = theme => ({
     display: 'flex',
         flexWrap: 'wrap',
         width: '100%',
-      
   },
 });
 
@@ -88,7 +89,6 @@ function LoginView(props) {
   const { classes } = props;
   const onSubmit = props.onSubmit;
   
-
   return (
     <MuiThemeProvider theme={themePaper}>
     <main className={classes.main}>

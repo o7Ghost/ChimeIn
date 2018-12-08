@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import './AppPage.css';
-import {TeamMembers} from "./components/TeamMembers";
-import {DisplayData} from './components/DisplayData.js';
 import firebase from 'firebase';
-import {Route, Redirect, Link} from 'react-router-dom';
-import Login from './components/Login/LoginContainer' ;
+import {  Redirect} from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard.js';
 import { createMuiTheme } from '@material-ui/core/styles';
 import purple from '@material-ui/core/colors/blue';
 
 const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-  },
+    palette: {
+        primary: purple,
+    },
 });
 class AppPage extends Component {
     constructor(props) {
@@ -30,26 +27,24 @@ class AppPage extends Component {
         }
 
     }
-    signout(){
+    signout() {
         firebase.auth().signOut();
     }
-  render() {
-        if (!this.props || !this.props.authenticated){
-            console.log("Not login yet!!!!");
-            return(
+    render() {
+        if (!this.props || !this.props.authenticated) {
+            return (
                 <Redirect to="/login" />
             )
         }
         else {
-            console.log("login already!");
             return (
 
-                 <div>
-                <Dashboard />
-                </div> 
+                <div>
+                    <Dashboard />
+                </div>
             )
         }
-  }
+    }
 }
 
 export default AppPage;

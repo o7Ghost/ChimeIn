@@ -7,19 +7,21 @@ import Typography from '@material-ui/core/Typography';
 import Panels from './Panels.js';
 import TextField from './TextField.js';
 import firebase from 'firebase';
-import {Scrollbars} from 'react-custom-scrollbars';
+
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 
 
 function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
+    return (
+        <Typography component="div" style={{ padding: 8 * 3 }}>
+            {props.children}
+        </Typography>
+    );
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 
@@ -27,7 +29,7 @@ const styles = theme => ({
     root: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
-        height: '68vh',
+        height: '61vh',
         overflow: 'auto',
     },
     tabsRoot: {
@@ -77,17 +79,12 @@ class CustomizedTabs extends React.Component {
     };
 
     handleChange = (event, value) => {
-        //console.log("in Tab",value);
-        //console.log("before ",this.state.value);
         this.setState({ value: value });
-        //  console.log("after ",this.state.value);
-
     };
 
     render() {
         const { classes } = this.props;
         const { value } = this.state;
-        console.log(value,"cur:", this.props.curClass);
         return (
             <div className={classes.root}>
             <Scrollbars autoHide style={{"height":"100%"}}>
@@ -96,6 +93,11 @@ class CustomizedTabs extends React.Component {
                     onChange={this.handleChange}
                     classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
                 >
+                    <Tab
+                        disableRipple
+                        classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                        label="Today"
+                    />
                     <Tab
                         disableRipple
                         classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
@@ -113,8 +115,9 @@ class CustomizedTabs extends React.Component {
                     />
                 </Tabs>
 
-                <TabContainer> <Panels curClass ={this.props.curClass} tabNum = {this.state.value} value={this.props.value} stateChange = {this.props.stateChange} db={firebase}/> </TabContainer>
-              </Scrollbars>
+
+                <TabContainer> <Panels curClass={this.props.curClass} tabNum={this.state.value} value={this.props.value} stateChange={this.props.stateChange} db={firebase} /> </TabContainer>
+
             </div>
         );
     }
