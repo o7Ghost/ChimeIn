@@ -33,6 +33,13 @@ class SignUpContainer extends Component {
                 lastPostTime: time.toJSON(), micOff: time.toJSON(),
                 projectorOff: time.toJSON(), writing: time.toJSON(), coolDown: time.toJSON()
             });
+            var firebaseRef2 = firebase.database().ref("UserByEmail");
+            var emailTemp = email.value.replace("@"," ");
+            emailTemp = emailTemp.replace("."," ");
+            firebaseRef2.child(emailTemp).set({
+                uid: firebase.auth().currentUser.uid
+            });
+
 
             this.props.history.push("/");
         } catch (error) {

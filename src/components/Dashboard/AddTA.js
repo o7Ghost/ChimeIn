@@ -31,7 +31,7 @@ class AddTA extends React.Component {
             TAClass: [],
             open: false,
             uid: this.props.db.auth().currentUser.uid,
-            TAuid : ''
+            TAemail : ''
         };
 
         this.firebaseRef = this.props.db.database().ref("User").child(this.state.uid);
@@ -62,27 +62,39 @@ class AddTA extends React.Component {
                         if(!temp || !temp.includes(this.props.classID)) {
                             alert("You are not the instructor!");
                         }else{
-                            var TARef = this.props.db.database().ref("User").child(this.state.TAuid);
-                            TARef.once('value', (snapshot2) => {
-                                const temp2 = snapshot2.val();
-                                let TAClass = [];
-                                if(!temp2){
-                                    alert("User with uid:"+this.state.uid+" does not exist!");
+                            var email = this.state.TAemail.replace("@"," ");
+                            email = email.replace("."," ");
+                            var TARef1 = this.props.db.database().ref("UserByEmail").child(email);
+                            TARef1.once('value',(snapshot)=>{
+                                const temp3 = snapshot.val();
+                                if(!temp3){
+                                    alert("User with this email does not exist, please check again.");
+                                }else{
+                                    var TAuid = temp3.uid;
+                                    var TARef = this.props.db.database().ref("User").child(TAuid);
+                                    TARef.once('value', (snapshot2) => {
+                                        const temp2 = snapshot2.val();
+                                        let TAClass = [];
+                                        if(!temp2){
+                                            alert("User with uid:"+this.state.uid+" does not exist!");
+                                        }
+                                        else{
+                                            if(temp2.modClass) {
+                                                TAClass = temp2.modClass;
+                                            }
+                                            if(TAClass.includes(this.props.classID)){
+                                                alert("This TA has already been included");
+                                            }else{
+                                                TAClass.push(this.props.classID);
+                                                TARef.update({modClass:TAClass});
+                                                alert("Operation Add TA success!");
+                                                this.setState({ open: false });
+                                            }
+                                        }
+                                    });
                                 }
-                                else{
-                                    if(temp2.modClass) {
-                                        TAClass = temp2.modClass;
-                                    }
-                                    if(TAClass.includes(this.props.classID)){
-                                        alert("This TA has already been included");
-                                    }else{
-                                        TAClass.push(this.props.classID);
-                                        TARef.update({modClass:TAClass});
-                                        alert("Operation Add TA success!");
-                                        this.setState({ open: false });
-                                    }
-                                }
-                            });
+                            })
+
                         }
                     });
                 }
@@ -119,19 +131,19 @@ class AddTA extends React.Component {
                     <DialogTitle id="form-dialog-title">Add TA into your class</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Add a TA into your class by input TA uid:
+                            Add a TA into your class by input TA's email:
                         </DialogContentText>
                         <DialogContentText>
-                            For example: uid:Tv8w5CqbWPhRRRYDPrMr8JaW1ka2
+                            For example: ziz059@ucsd.edu
                         </DialogContentText>
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="TAuid"
-                            label="TA uid"
-                            type="text"
+                            id="TA email"
+                            label="TA email"
+                            type="email"
                             fullWidth
-                            onChange = {e => this.setState({TAuid: (e.target.value)})}
+                            onChange = {e => this.setState({TAemail: (e.target.value)})}
                             onKeyPress={this._handleKeyPress}
                         />
                     </DialogContent>
