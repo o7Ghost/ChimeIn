@@ -346,7 +346,7 @@ class Dashboard extends React.Component {
                 }
 
               </div>
-
+            </Scrollbars>
 
             </Drawer>
           </MuiThemeProvider>
