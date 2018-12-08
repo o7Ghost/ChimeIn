@@ -232,7 +232,6 @@ class Dashboard extends React.Component {
         <div className={classes.root}>
           <MuiThemeProvider theme={themeAppBar}>
             <AppBar
-
               position="absolute"
               className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
             >
