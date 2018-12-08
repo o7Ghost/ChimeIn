@@ -6,14 +6,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { SideBar } from './listItems.js';
 import AddClass from './AddClass.js';
 import AddTA from './AddTA.js';
@@ -21,7 +17,6 @@ import DropClass from './DropClass.js';
 import CreateClass from './CreateClass.js';
 import firebase from 'firebase';
 import AlertButtons from '../../AlertButtons.js';
-import Button from '@material-ui/core/Button';
 import Tabs from './Tabs.js';
 import { Link } from 'react-router-dom'
 import TextField from './TextField.js';
@@ -34,7 +29,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 
@@ -336,7 +330,8 @@ class Dashboard extends React.Component {
                       <AddClass db={firebase} />
                     </div>
                     <div className={classes.others}>
-                      <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass} identity={this.state.userType} />
+                      <DropClass change={this.changeCurrentClass} db={firebase} classID={this.state.currentClass}
+                                 identity={this.state.userType} />
                     </div>
                     <div className={classes.others}>
                       <CreateClass db={firebase} />
@@ -366,7 +361,10 @@ class Dashboard extends React.Component {
             }
 
             <div>
-              {this.state.currentClass == 'Dashboard' ? null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}><AlertButtons uType={this.state.userType} curClass={this.state.currentClass} db={firebase} style={{display:"none",}}  /></div> }
+              {this.state.currentClass == 'Dashboard' ?
+                  null : <div style={{ float: "right", marginRight: "-8px", marginTop: "8px" }}>
+                      <AlertButtons uType={this.state.userType} curClass={this.state.currentClass}
+                                    db={firebase} style={{display:"none",}}  /></div> }
             </div>
 
 

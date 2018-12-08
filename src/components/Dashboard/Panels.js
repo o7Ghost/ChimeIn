@@ -206,11 +206,15 @@ class SimpleExpansionPanel extends React.Component {
 
 
 
-
-
-
-                            {this.isTA(this.props.db.auth().currentUser.uid) ? <div><ExpansionPanelDetails><AnswerField curClass ={this.props.curClass} Question={items.UID + "+" + items.timestamp} value={this.props.value}
-                                         stateChange={this.props.stateChange} db={firebase}/></ExpansionPanelDetails></div> : null}
+                            {this.isTA(this.props.db.auth().currentUser.uid) ?
+                                <div><ExpansionPanelDetails>
+                                    <AnswerField curClass ={this.props.curClass}
+                                                 Question={items.UID + "+" + items.timestamp}
+                                                 value={this.props.value}
+                                                 stateChange={this.props.stateChange}
+                                                 db={firebase}/></ExpansionPanelDetails>
+                                </div>
+                                : null}
 
                         <Divider/>
 

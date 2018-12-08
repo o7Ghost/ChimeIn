@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 
 const styles = theme => ({
     button: {
@@ -33,13 +31,13 @@ class OutlinedButtons extends React.Component {
             notificationCleared: false,
             notificationRejected: false
         };
-        this.enableNotice1();
-        this.enableNotice2();
-        this.enableNotice3();
-        this.enableNotice4();
+        this.profMicNotice();
+        this.profProjectorNotice();
+        this.profHandwritingNotice();
+        this.profPaceNotice();
     }
 
-    handleClick1 = () => {
+    handleMicClick = () => {
 
         var time = new Date();
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -59,7 +57,7 @@ class OutlinedButtons extends React.Component {
         });
     };
 
-    handleClick2 = () => {
+    handleProjectorClick = () => {
 
         var time = new Date();
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -79,7 +77,7 @@ class OutlinedButtons extends React.Component {
         });
     };
 
-    handleClick3 = () => {
+    handleWritingClick = () => {
 
         var time = new Date();
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -99,7 +97,7 @@ class OutlinedButtons extends React.Component {
         });
     };
 
-    handleClick4 = () => {
+    handlePaceClick = () => {
 
         var time = new Date();
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -131,7 +129,7 @@ class OutlinedButtons extends React.Component {
         });
     };
 
-    enableNotice1 = () => {
+    profMicNotice = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("micOff");
         UserRef.on('value', (snapshot) => {
             var curTime = new Date();
@@ -141,7 +139,7 @@ class OutlinedButtons extends React.Component {
         });
     }
 
-    enableNotice2 = () => {
+    profProjectorNotice = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("projectorOff");
         UserRef.on('value', (snapshot) => {
             var curTime = new Date();
@@ -151,7 +149,7 @@ class OutlinedButtons extends React.Component {
         });
     }
 
-    enableNotice3 = () => {
+    profHandwritingNotice = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("writing");
         UserRef.on('value', (snapshot) => {
             var curTime = new Date();
@@ -161,7 +159,7 @@ class OutlinedButtons extends React.Component {
         });
     }
 
-    enableNotice4 = () => {
+    profPaceNotice = () => {
         var UserRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid).child("coolDown");
         UserRef.on('value', (snapshot) => {
             var curTime = new Date();
@@ -175,15 +173,21 @@ class OutlinedButtons extends React.Component {
         const { classes } = this.props;
         return (
             <div>
-                {this.props.uType == 'student' ? 
+                {this.props.uType == 'student' ?
+                // rendering of alert buttons
                 <div>
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick1}>Mic is off</Button> 
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick2}>Projector is off</Button>
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick3}> Can't read your hand writing </Button>
-                <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick4}> Slow Down </Button>
+                <Button variant="outlined" color="primary" className={classes.button}
+                        onClick={this.handleMicClick}>Mic is off</Button>
+                <Button variant="outlined" color="primary" className={classes.button}
+                        onClick={this.handleProjectorClick}>Projector is off</Button>
+                <Button variant="outlined" color="primary" className={classes.button}
+                        onClick={this.handleWritingClick}> Can't read your hand writing </Button>
+                <Button variant="outlined" color="primary" className={classes.button}
+                        onClick={this.handlePaceClick}> Slow Down </Button>
                 </div>
                 : null}
-                
+
+
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -195,7 +199,7 @@ class OutlinedButtons extends React.Component {
                     ContentProps={{
                         "aria-describedby": "message-id"
                     }}
-                    message={<span id="message-id">Professor, Your mic is off.</span>}
+                    message={<span id="message-id">Professor, your mic is off.</span>}
                     action={[
                         <Button
                             key="undo"
@@ -207,8 +211,6 @@ class OutlinedButtons extends React.Component {
                         </Button>,
                     ]}
                 />
-
-            
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -220,7 +222,7 @@ class OutlinedButtons extends React.Component {
                     ContentProps={{
                         "aria-describedby": "message-id"
                     }}
-                    message={<span id="message-id">Projector is off</span>}
+                    message={<span id="message-id">Professor, the projector is not displaying correctly.</span>}
                     action={[
                         <Button
                             key="undo"
@@ -233,7 +235,6 @@ class OutlinedButtons extends React.Component {
 
                     ]}
                 />
-
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -245,7 +246,7 @@ class OutlinedButtons extends React.Component {
                     ContentProps={{
                         "aria-describedby": "message-id"
                     }}
-                    message={<span id="message-id"> Can't read your hand writing </span>}
+                    message={<span id="message-id"> Hey Professor, students can't read your hand writing </span>}
                     action={[
                         <Button
                             key="undo"
@@ -257,8 +258,6 @@ class OutlinedButtons extends React.Component {
                         </Button>,
                     ]}
                 />
-
-            
                 <Snackbar
                     anchorOrigin={{
                         vertical: "top",
@@ -283,6 +282,7 @@ class OutlinedButtons extends React.Component {
 
                     ]}
                 />
+
 
                 <Snackbar
                     anchorOrigin={{
