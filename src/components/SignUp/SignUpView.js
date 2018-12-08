@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,7 +16,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import blue from '@material-ui/core/colors/blue';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Image from "../../image/background.jpeg";
+
+
 
 const themePaper = createMuiTheme({
   palette: {
@@ -51,6 +52,7 @@ const styles = theme => ({
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto',
+      marginTop: theme.spacing.unit * 18,
     },
   },
   paper: {
