@@ -105,7 +105,6 @@ class TextFields extends React.Component {
                 }
             }
 
-
             // no similar question, push to firebase directly
             if (similar.length === 0 && postQuestion) {
                 this.questionRef.child( cID + "+" + time).set({UID: cID,

@@ -143,7 +143,9 @@ class SimpleExpansionPanel extends React.Component {
                     var questionDate = new Date(questionItem.timestamp);
                     var todayString = "" + today.getFullYear() + today.getMonth() + today.getDate();
                     var questionDateString = "" + questionDate.getFullYear() + questionDate.getMonth() + questionDate.getDate();
+
                     if(questionDateString === todayString){
+
                         questionItems.push(questionItem);
                     }
                 }
@@ -173,52 +175,56 @@ class SimpleExpansionPanel extends React.Component {
         if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
             this.refresh()
         }
-        const records = this.state.questionItems.map(items =>
 
-            <div>
-                <ExpansionPanel style = {  { border:"#000"} }>
-                    <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
-                        <Typography className={classes.secondaryHeading} style={{color: '#0033cc'}}>
-                            {new Date(items.timestamp).toString().split(' ')[4]}
-                        </Typography>
-                        <Typography className={classes.secondaryHeading}>
-                            UPVOTES: {items.upvoteCount}
-                        </Typography>
-                        <Typography className={classes.heading}>{items.Question}</Typography>
-                    </ExpansionPanelSummary>
-                    {items.Answer ? items.Answer.map(temp => <div><ExpansionPanelDetails><Typography color="primary">{temp}</Typography></ExpansionPanelDetails></div>) : null}
-                    {this.isTA(this.props.db.auth().currentUser.uid) ?
-                        <div><ExpansionPanelDetails>
-                            <AnswerField curClass ={this.props.curClass}
-                                         Question={items.UID + "+" + items.timestamp}
-                                         value={this.props.value}
-                                         stateChange={this.props.stateChange}
-                                         db={firebase}/></ExpansionPanelDetails>
-                        </div>
-                        : null}
+            const records = this.state.questionItems.map(items =>
+                <div>
+                    <ExpansionPanel style = {  { border:"#000"} }>
+                        <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
+                            <Typography className={classes.secondaryHeading} style={{color: '#0033cc'}}>
+                                {new Date(items.timestamp).toString().split(' ')[4]}
+                            </Typography>
+                        	<Typography className={classes.secondaryHeading}>
+                                UPVOTES: {items.upvoteCount}
+                            </Typography>
+                            <Typography className={classes.heading}>{items.Question}</Typography>
+                        </ExpansionPanelSummary>         
+                                {items.Answer ? items.Answer.map(temp => <div><ExpansionPanelDetails><Typography color="primary">{temp}</Typography></ExpansionPanelDetails></div>) : null}
 
-                    <Divider/>
+                            {this.isTA(this.props.db.auth().currentUser.uid) ?
+                                <div><ExpansionPanelDetails>
+                                    <AnswerField curClass ={this.props.curClass}
+                                                 Question={items.UID + "+" + items.timestamp}
+                                                 value={this.props.value}
+                                                 stateChange={this.props.stateChange}
+                                                 db={firebase}/></ExpansionPanelDetails>
+                                </div>
+                                : null}
 
-                    <ExpansionPanelActions>
-                        { this.props.db.auth().currentUser.uid  === items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary" onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
-                            Remove
-                        </Button> : null}
+                        <Divider/>
 
-                        <Button size="small" color="primary"
-                                onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
-                            Upvote: {items.upvoteCount}
-                        </Button>
+                        <ExpansionPanelActions>
+           
+                           {console.log(this.isTA(this.props.db.auth().currentUser.uid))}
+                            { this.props.db.auth().currentUser.uid  === items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary"
+                                    onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
+                                Remove
+                            </Button> : null}
 
-                    </ExpansionPanelActions>
-                </ExpansionPanel>
-            </div>
-        );
+                            <Button size="small" color="primary"
+                                    onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
+                                Upvote: {items.upvoteCount}
+                            </Button>
 
-        return (
-            <div>
-                {records}
-            </div>
-        );
+                        </ExpansionPanelActions>
+                    </ExpansionPanel>
+                </div>
+            );
+
+            return (
+                <div>
+                    {records}
+                </div>
+            );
     }
 }
 
