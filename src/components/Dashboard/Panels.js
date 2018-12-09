@@ -140,10 +140,11 @@ class SimpleExpansionPanel extends React.Component {
                 let questionItem = childSnapshot.val();
                 if(this.state.tabNum === 0){
                     var today = new Date();
-                    var questionDate = new Date(questionItem.timestamp);
+                    var questionDate = new Date(questionItem.timestamp + "Z");
+                    //questionDate.setMilliseconds(questionDate.getTime() + (today.getTimezoneOffset()));
                     var todayString = "" + today.getFullYear() + today.getMonth() + today.getDate();
                     var questionDateString = "" + questionDate.getFullYear() + questionDate.getMonth() + questionDate.getDate();
-
+                    console.log(todayString + questionDateString);
                     if(questionDateString === todayString){
 
                         questionItems.push(questionItem);
