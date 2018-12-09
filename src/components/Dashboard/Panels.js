@@ -86,7 +86,7 @@ class SimpleExpansionPanel extends React.Component {
     }
 
     handleUpvote(title, currentLike, currentOrder) {
-        
+
         var followerRef = this.firebaseRef.child(title);
 
         let followerlist = []
@@ -102,9 +102,9 @@ class SimpleExpansionPanel extends React.Component {
             }else{
                 alert("You have voted")
             }
-            
+
         })
-        
+
     }
 
     isTA(uid){
@@ -141,9 +141,9 @@ class SimpleExpansionPanel extends React.Component {
                 if(this.state.tabNum === 0){
                     var today = new Date();
                     var questionDate = new Date(questionItem.timestamp);
-                    today = today.toJSON().split("T")[0];
-                    questionDate = questionDate.toJSON().split("T")[0];
-                    if(questionDate >= today){
+                    var todayString = "" + today.getFullYear() + today.getMonth() + today.getDate();
+                    var questionDateString = "" + questionDate.getFullYear() + questionDate.getMonth() + questionDate.getDate();
+                    if(questionDateString === todayString){
                         questionItems.push(questionItem);
                     }
                 }
@@ -161,71 +161,64 @@ class SimpleExpansionPanel extends React.Component {
                     }
                 }
                 questionItem['.key'] = childSnapshot.key;
-                    
+
             });
             this.setState({questionItems});
         })
     }
 
     render() {
-  
+
         const { classes } = this.props;
         if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
             this.refresh()
         }
-            const records = this.state.questionItems.map(items =>
+        const records = this.state.questionItems.map(items =>
 
-                <div>
-                    <ExpansionPanel style = {  { border:"#000"} }>
-                        <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
-                            <Typography className={classes.secondaryHeading} style={{color: '#0033cc'}}>
-                                {items.timestamp.split('T')[1]}
-                            </Typography>
-                        	<Typography className={classes.secondaryHeading}>
-                                UPVOTES: {items.upvoteCount}
-                            </Typography>
-                            <Typography className={classes.heading}>{items.Question}</Typography>
-                        </ExpansionPanelSummary>         
+            <div>
+                <ExpansionPanel style = {  { border:"#000"} }>
+                    <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
+                        <Typography className={classes.secondaryHeading} style={{color: '#0033cc'}}>
+                            {new Date(items.timestamp).toString().split(' ')[4]}
+                        </Typography>
+                        <Typography className={classes.secondaryHeading}>
+                            UPVOTES: {items.upvoteCount}
+                        </Typography>
+                        <Typography className={classes.heading}>{items.Question}</Typography>
+                    </ExpansionPanelSummary>
+                    {items.Answer ? items.Answer.map(temp => <div><ExpansionPanelDetails><Typography color="primary">{temp}</Typography></ExpansionPanelDetails></div>) : null}
+                    {this.isTA(this.props.db.auth().currentUser.uid) ?
+                        <div><ExpansionPanelDetails>
+                            <AnswerField curClass ={this.props.curClass}
+                                         Question={items.UID + "+" + items.timestamp}
+                                         value={this.props.value}
+                                         stateChange={this.props.stateChange}
+                                         db={firebase}/></ExpansionPanelDetails>
+                        </div>
+                        : null}
 
+                    <Divider/>
 
+                    <ExpansionPanelActions>
+                        { this.props.db.auth().currentUser.uid  === items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary" onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
+                            Remove
+                        </Button> : null}
 
-                                {items.Answer ? items.Answer.map(temp => <div><ExpansionPanelDetails><Typography color="primary">{temp}</Typography></ExpansionPanelDetails></div>) : null}
+                        <Button size="small" color="primary"
+                                onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
+                            Upvote: {items.upvoteCount}
+                        </Button>
 
+                    </ExpansionPanelActions>
+                </ExpansionPanel>
+            </div>
+        );
 
-
-                            {this.isTA(this.props.db.auth().currentUser.uid) ?
-                                <div><ExpansionPanelDetails>
-                                    <AnswerField curClass ={this.props.curClass}
-                                                 Question={items.UID + "+" + items.timestamp}
-                                                 value={this.props.value}
-                                                 stateChange={this.props.stateChange}
-                                                 db={firebase}/></ExpansionPanelDetails>
-                                </div>
-                                : null}
-
-                        <Divider/>
-
-                        <ExpansionPanelActions>
-                            { this.props.db.auth().currentUser.uid  === items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary"
-                                    onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
-                                Remove
-                            </Button> : null}
-
-                            <Button size="small" color="primary"
-                                    onClick={() => this.handleUpvote(items.UID + "+" + items.timestamp, items.upvoteCount, items.order)}>
-                                Upvote: {items.upvoteCount}
-                            </Button>
-
-                        </ExpansionPanelActions>
-                    </ExpansionPanel>
-                </div>
-            );
-
-            return (
-                <div>
-                    {records}
-                </div>
-            );
+        return (
+            <div>
+                {records}
+            </div>
+        );
     }
 }
 
