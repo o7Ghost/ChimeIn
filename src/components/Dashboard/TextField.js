@@ -48,7 +48,8 @@ class TextFields extends React.Component {
             filterOpen: false,
             filtered: false,
             filterQuestion: [],
-            checked: []
+            checked: [],
+            curClass: this.props.curClass
         };
 
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
@@ -396,6 +397,12 @@ class TextFields extends React.Component {
         this.updateButton();
     }
 
+    componentDidUpdate(){
+        if (this.state.curClass != this.props.curClass){
+            this.updateButton();
+        }
+    }
+
     updateButton = ()=> {
         let currComponent = this;
         var allowPostRef = this.props.db.database().ref("ClassFinal").child(this.props.curClass).child("allowPost");
@@ -403,7 +410,7 @@ class TextFields extends React.Component {
         
         allowPostRef.on('value', snapshot=>{
             if (!snapshot.val()){
-                currComponent.setState({buttonDisabled: true, submitText: 'This class is currently closed.'});
+                currComponent.setState({buttonDisabled: true, submitText: 'This class is currently closed.', curClass: this.props.curClass});
             }
             else{
                 userRef.once('value', (snapshot) => {
@@ -414,10 +421,10 @@ class TextFields extends React.Component {
                     if(diff < currComponent.statics.cooldowntime && diff > 0) {
                         currComponent.state.buttonDisabled = true;
                         currComponent.state.submitText = 'You can post again in 90 seconds';
-                        setTimeout(() => currComponent.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
+                        setTimeout(() => currComponent.setState({ buttonDisabled: false, submitText: 'Submit', curClass: this.props.curClass }), (this.statics.cooldowntime - diff));
                     }
                     else{
-                        currComponent.setState({buttonDisabled: false, submitText: 'Submit'});
+                        currComponent.setState({buttonDisabled: false, submitText: 'Submit', curClass: this.props.curClass });
                     }
                 });
             }
@@ -431,7 +438,7 @@ class TextFields extends React.Component {
             if(diff < currComponent.statics.cooldowntime && diff > 0) {
                 currComponent.state.buttonDisabled = true;
                 currComponent.state.submitText = 'You can post again in 90 seconds';
-                setTimeout(() => currComponent.setState({ buttonDisabled: false, submitText: 'Submit' }), (this.statics.cooldowntime - diff));
+                setTimeout(() => currComponent.setState({ buttonDisabled: false, submitText: 'Submit', curClass: this.props.curClass }), (this.statics.cooldowntime - diff));
             }
         });
     }
