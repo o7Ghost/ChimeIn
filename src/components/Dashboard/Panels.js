@@ -153,11 +153,9 @@ class SimpleExpansionPanel extends React.Component {
                 if(this.state.tabNum === 0){
                     var today = new Date();
                     var questionDate = new Date(questionItem.timestamp);
-                    today = today.toJSON().split("T")[0];
-                    questionDate = questionDate.toJSON().split("T")[0];
-                    console.log("today: " + today + " " + "question: " + questionDate);
-                    console.log(questionItem.Question);
-                    if(questionDate >= today){
+                    var todayString = "" + today.getFullYear() + today.getMonth() + today.getDate();
+                    var questionDateString = "" + questionDate.getFullYear() + questionDate.getMonth() + questionDate.getDate();
+                    if(questionDateString == todayString){
                         questionItems.push(questionItem);
                     }
                 }
@@ -195,7 +193,7 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel style = {  { border:"#000"} }>
                         <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
                             <Typography className={classes.secondaryHeading} style={{color: '#0033cc'}}>
-                                {items.timestamp.split('T')[1]}
+                                {new Date(items.timestamp).toString().split(' ')[4]}
                             </Typography>
                         	<Typography className={classes.secondaryHeading}>
                                 UPVOTES: {items.upvoteCount}
