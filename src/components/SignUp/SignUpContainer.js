@@ -35,7 +35,8 @@ class SignUpContainer extends Component {
             });
             var firebaseRef2 = firebase.database().ref("UserByEmail");
             var emailTemp = email.value.replace("@"," ");
-            emailTemp = emailTemp.replace(/./g," ");
+            emailTemp = emailTemp.replace(/[.]/g, " ");
+            console.log(emailTemp)
             firebaseRef2.child(emailTemp).set({
                 uid: firebase.auth().currentUser.uid
             });
