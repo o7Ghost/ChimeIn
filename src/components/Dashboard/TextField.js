@@ -134,7 +134,7 @@ class TextFields extends React.Component {
             this.props.stateChange('');
         }
         else {
-            this.setState({notification: 'You can post again in 90 seconds', open: true});
+            this.setState({notification: 'You cannot submit question now!', open: true});
             this.props.stateChange('');
         }
     }
@@ -282,7 +282,7 @@ class TextFields extends React.Component {
                 this.setState({Question: '', upvoteCount: 0});
             }
             else {
-                this.setState({notification: 'You can post again in 90 seconds', open: true});
+                this.setState({notification: 'You cannot submit question now!', open: true});
             }
         }
     }
