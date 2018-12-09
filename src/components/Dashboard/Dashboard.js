@@ -157,7 +157,8 @@ class Dashboard extends React.Component {
       timestamp: '',
       followers: [],
       hideSetting: true,
-      userType: ''
+      userType: '',
+        email:''
     }
     this.handler = this.changeQState.bind(this);
     this.handlerA = this.changeAState.bind(this);
@@ -284,7 +285,7 @@ class Dashboard extends React.Component {
                      >
                         <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
                         <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
-                       <MenuItem id='uidMenuItem'>{this.state.UID}</MenuItem>
+                       <MenuItem id='uidMenuItem'>{this.state.email}</MenuItem>
                      </Menu>
                 </div>
                 )}
@@ -375,7 +376,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({UID: firebase.auth().currentUser.uid});
+    this.setState({UID: firebase.auth().currentUser.uid, email:firebase.auth().currentUser.email});
   }
 }
 
