@@ -182,7 +182,7 @@ class SimpleExpansionPanel extends React.Component {
                     <ExpansionPanel style = {  { border:"#000"} }>
                         <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon/>}>
                             <Typography className={classes.secondaryHeading} style={{color: '#0033cc'}}>
-                                {new Date(items.timestamp + "Z").toString().split(' ')[4]}
+                                {new Date(items.timestamp + "Z").toString().split('GMT')[0]}
                             </Typography>
                         	<Typography className={classes.secondaryHeading}>
                                 UPVOTES: {items.upvoteCount}
