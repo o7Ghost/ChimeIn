@@ -37,7 +37,7 @@ class TextFields extends React.Component {
     constructor(props) {
         super(props);
         this.statics = {
-            cooldowntime: 100 // change this field to change cooldown time
+            cooldowntime: 90000 // change this field to change cooldown time
         };
 
         this.state = {
