@@ -84,7 +84,7 @@ class CustomizedTabs extends React.Component {
     render() {
         const { classes } = this.props;
         const { value } = this.state;
-        const tabheight = this.props.uType == 'student' ? "61vh" : "80vh";
+        const tabheight = this.props.uType == 'student' ? "61vh" : "78vh";
         return (
             <div className={classes.root} style={{height:tabheight}}>
             <Scrollbars autoHide style={{"height":"100%"}}>
