@@ -233,7 +233,7 @@ class TextFields extends React.Component {
             dataSnapshot.forEach(childSnapshot => {
                 let questionItem = childSnapshot.val();
                 var today = new Date();
-                var questionDate = new Date(questionItem.timestamp + "Z");
+                var questionDate = new Date(questionItem.timestamp);
                 questionItem['.key'] = childSnapshot.key;
                 today = today.toJSON().split("T")[0];
                 questionDate = questionDate.toJSON().split("T")[0];
