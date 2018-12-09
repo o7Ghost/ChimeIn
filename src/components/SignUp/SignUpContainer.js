@@ -32,8 +32,7 @@ class SignUpContainer extends Component {
             firebaseRef.child(firebase.auth().currentUser.uid).set({
                 lastPostTime: new Date('2000-01-01T00:00:59.207Z').toJSON(), micOff: new Date('2000-01-01T00:00:59.207Z').toJSON(),
                 projectorOff: new Date('2000-01-01T00:00:59.207Z').toJSON(), writing: new Date('2000-01-01T00:00:59.207Z').toJSON(),
-                coolDown: new Date('2000-01-01T00:00:59.207Z').toJSON(),
-                email: email.value
+                coolDown: new Date('2000-01-01T00:00:59.207Z').toJSON()
             });
             var firebaseRef2 = firebase.database().ref("UserByEmail");
             var emailTemp = email.value.replace("@"," ");
