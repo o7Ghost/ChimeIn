@@ -85,8 +85,6 @@ class OutlinedButtons extends React.Component {
 
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.classRef.once('value', dataSnapshot => {
-            console.log('huhu')
-            console.log(dataSnapshot.val().instructor)
             this.userRef.child(dataSnapshot.val().instructor).once('value', profSnapshot => {
                 if ((new Date() - new Date(profSnapshot.val().writing)) > this.statics.alertcooldowntime) {
                     this.userRef.child(dataSnapshot.val().instructor).update({ writing: time.toJSON() });

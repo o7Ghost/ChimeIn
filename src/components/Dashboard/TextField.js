@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import CloseIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -36,6 +40,8 @@ const styles = theme => ({
 class TextFields extends React.Component {
     constructor(props) {
         super(props);
+
+        // 90,000
         this.statics = {
             cooldowntime: 90000 // change this field to change cooldown time
         };
@@ -53,7 +59,8 @@ class TextFields extends React.Component {
 
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
         var classRef = this.firebaseRef.child(this.props.curClass);
-        this.questionRef = classRef.child("questions");;
+        var questionRef = classRef.child("questions");
+        this.questionRef = questionRef;
 
         // cooldown implementation on page opening
         var userRef = this.props.db.database().ref("User").child(this.props.db.auth().currentUser.uid);
@@ -62,9 +69,11 @@ class TextFields extends React.Component {
             var posttime = '2000-01-01T00:00:59.207Z'
             snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
 
+            //var posttime = new Date(snapshot.val().lastPostTime);
             var curTime = new Date();
 
             var diff = curTime - posttime;
+            //console.log("xxxxooooooo"+ posttime);
 
             if(diff < this.statics.cooldowntime && diff > 0) {
                 this.setState({buttonDisabled : true});
@@ -81,33 +90,40 @@ class TextFields extends React.Component {
 
     //a method to push to firebase and then clean user input
     pushToFirebase(event) {
+        console.log("Current question string1 is " + this.props.value.Question);
         const {UID, Question, upvoteCount, order, Answer, timestamp, followers} = this.props.value;
+        //event.preventDefault();
         var time = new Date();
         var timeWithTimezone = time.toJSON();
         time = time.toJSON().split(".")[0];
         var cID = this.props.db.auth().currentUser.uid;
         let similar = [], postQuestion = true, x = 0;
 
-        if((Question !== '' && this.state.buttonDisabled === false) || this.state.filtered === true) {
+        if((Question != '' && this.state.buttonDisabled == false) || this.state.filtered == true) {
             // filter start to work
-            if (this.state.filtered === false)
+            if (this.state.filtered == false)
                 similar = this.postFilter(Question);
             else {
                 this.setState({ filterOpen: false });
                 this.setState({ filtered: false});
                 let upvoteList = this.state.checked;
                 for (x = 0; x < upvoteList.length; x++) {
-                    if (upvoteList[x] !== -1) {
+                    if (upvoteList[x] != -1) {
                         postQuestion = false;
                         let tmp = this.state.filterQuestion[x][0];
+                        console.log("Hello: " + tmp.Question + " " + tmp['.key'] + " " + tmp.upvoteCount + " " + tmp.order);
                         this.handleFilterUpvote(tmp['.key'], tmp.upvoteCount, tmp.order);
                     }
                 }
+                //this.setState({ filterQuestion: similar });
+                //this.setState({ checked: similar});
             }
 
+            console.log("Current question is " + Question);
+            console.log("Current similar is " + similar.length);
 
             // no similar question, push to firebase directly
-            if (similar.length === 0 && postQuestion) {
+            if (similar.length == 0 && postQuestion) {
                 this.questionRef.child( cID + "+" + time).set({UID: cID,
                     Question: Question, upvoteCount: upvoteCount, order:order, timestamp: time, followers: this.props.value.followers});
 
@@ -121,15 +137,17 @@ class TextFields extends React.Component {
                 this.props.stateChange('');
             }
             // display similar question
-            else if (similar.length !== 0) {
+            else if (similar.length != 0) {
                 this.setState({ filtered: true });
                 this.setState({ filterOpen: true });
+                console.log("Current similar size is " + similar.length);
+                console.log("Current questionFilter size is " + this.state.filterQuestion.length);
             }
             else {
                 this.props.stateChange('');
             }
         }
-        else if(Question === '' && this.state.buttonDisabled === false) {
+        else if(Question == '' && this.state.buttonDisabled == false) {
             this.state.notification = 'Can not submit blank question';
             this.state.open = true;
             this.props.stateChange('');
@@ -142,9 +160,11 @@ class TextFields extends React.Component {
 
     handleFilterUpvote(title, currentLike, currentOrder) {
         var followerRef = this.questionRef.child(title);
+
         let followerlist = [];
         followerRef.once('value',(snapshot) =>{
             const question = snapshot.val();
+            console.log(question)
             if(question != null && question.followers ){
                 followerlist = question.followers;
             }
@@ -238,6 +258,8 @@ class TextFields extends React.Component {
                 questionItem['.key'] = childSnapshot.key;
                 today = today.toJSON().split("T")[0];
                 questionDate = questionDate.toJSON().split("T")[0];
+                console.log("today: " + today + " " + "question: " + questionDate);
+                console.log(questionItem.Question);
                 if(questionDate >= today){
                     questionItems.push(questionItem);
                 }
@@ -246,16 +268,16 @@ class TextFields extends React.Component {
             // start to filter
             let validWords = this.getNoneStopWords(input), i, k, times = 0;
 
-            if(input !== "") {
+            if(input != "") {
                 for (i = 0; i < questionItems.length; i++) {
                     let temp = this.getNumDuplicate(questionItems[i].Question, validWords);
-                    if (temp !== 0) {
+                    if (temp != 0) {
                         filter.push([questionItems[i], temp, -1]);
                     }
                 }
 
                 filter.sort(function(a, b) {
-                    if (a[1] !== b[1])
+                    if (a[1] != b[1])
                         return b[1]-a[1];
                 })
 
@@ -263,9 +285,21 @@ class TextFields extends React.Component {
                     filterIndex.push(-1);
                     filter[k][2] = k;
                 }
+
+
+                /*if (filter.length == 0)
+                    alert("There is no similar question. Please submit your question!");
+                else {
+                    for (i = 0; i < filter.length; i++)
+                        alert("------FILTER #" + (i+1) + "------\n\n" + filter[i][0].Question);
+                }*/
             }
+            console.log("Inside post filter, filter is " + filter);
+            console.log("Inside post filter, filterIndex is " + filterIndex);
             this.setState({filterQuestion: filter});
             this.setState({checked: filterIndex});
+            console.log("Inside post filter, filterQuestion is " + this.state.filterQuestion);
+            console.log("Inside post filter, filterIndex is " + this.state.checked);
         });
 
         return filter;
@@ -275,6 +309,15 @@ class TextFields extends React.Component {
         this.setState({ filterOpen: false });
         this.setState({ filtered: false});
     };
+
+    /*
+      handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+      };
+    */
+
     _handleKeyPress = (e) => {
         if (e.key === 'Enter' && e.shiftKey) {
             e.preventDefault();
@@ -297,6 +340,9 @@ class TextFields extends React.Component {
     };
 
     handleToggle = value => () => {
+        console.log("Current filter question is " + this.state.filterQuestion);
+        console.log("Current checked is " + this.state.checked);
+        console.log("Current value is " + this.value);
         let tempChecked = this.state.checked;
         let currentIndex = tempChecked[value];
 
@@ -305,12 +351,19 @@ class TextFields extends React.Component {
         } else {
             tempChecked[value] = -1;
         }
+
+        console.log("Current checked is " + tempChecked);
         this.setState({checked: tempChecked});
+        console.log("Current checked is " + this.state.checked);
+        console.log("Current question order is " + this.state.filterQuestion.Question);
     };
 
+//, upvoteCount: this.props.value.upvoteCount
+    //value= { this.props.value.Question.replace(/_b/g, '\n') }
     render() {
 
-        {var s = '\n';}
+        {var s = '\n';
+            console.log("in text field", this.props.curClass);}
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.questionRef = this.classRef.child("questions");
@@ -410,8 +463,13 @@ class TextFields extends React.Component {
                 userRef.once('value', (snapshot) => {
                     var posttime = '2000-01-01T00:00:59.207Z'
                     snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
+        
+                    //var posttime = new Date(snapshot.val().lastPostTime);
                     var curTime = new Date();
+        
                     var diff = curTime - posttime;
+                    //console.log("xxxxooooooo"+ posttime);
+        
                     if(diff < currComponent.statics.cooldowntime && diff > 0) {
                         currComponent.state.buttonDisabled = true;
                         currComponent.state.submitText = 'You can post again in 90 seconds';
@@ -427,8 +485,13 @@ class TextFields extends React.Component {
         userRef.once('value', (snapshot) => {
             var posttime = '2000-01-01T00:00:59.207Z'
             snapshot.val().lastPostTime ? posttime = new Date(snapshot.val().lastPostTime) :  posttime = '2000-01-01T00:00:59.207Z'
+
+            //var posttime = new Date(snapshot.val().lastPostTime);
             var curTime = new Date();
+
             var diff = curTime - posttime;
+            //console.log("xxxxooooooo"+ posttime);
+
             if(diff < currComponent.statics.cooldowntime && diff > 0) {
                 currComponent.state.buttonDisabled = true;
                 currComponent.state.submitText = 'You can post again in 90 seconds';
