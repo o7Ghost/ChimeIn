@@ -76,13 +76,11 @@ export class SideBar extends React.Component {
     }
     handleChange2(e) {
         const onClickClass = e['course'];
-        console.log(this);
         this.props.onClick(onClickClass, "TA");
         this.setState({ selectedIndex: onClickClass });
     }
     handleChange3(e) {
         const onClickClass = e['course'];
-        console.log(this);
         this.props.onClick(onClickClass, "instructor");
         this.setState({ selectedIndex: onClickClass });
     }

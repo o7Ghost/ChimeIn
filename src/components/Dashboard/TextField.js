@@ -37,7 +37,7 @@ class TextFields extends React.Component {
     constructor(props) {
         super(props);
         this.statics = {
-            cooldowntime: 90000 // change this field to change cooldown time
+            cooldowntime: 100 // change this field to change cooldown time
         };
 
         this.state = {
@@ -233,7 +233,7 @@ class TextFields extends React.Component {
             dataSnapshot.forEach(childSnapshot => {
                 let questionItem = childSnapshot.val();
                 var today = new Date();
-                var questionDate = new Date(questionItem.timestamp);
+                var questionDate = new Date(questionItem.timestamp + "Z");
                 questionItem['.key'] = childSnapshot.key;
                 today = today.toJSON().split("T")[0];
                 questionDate = questionDate.toJSON().split("T")[0];

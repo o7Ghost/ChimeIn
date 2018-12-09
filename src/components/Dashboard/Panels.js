@@ -144,7 +144,6 @@ class SimpleExpansionPanel extends React.Component {
                     //questionDate.setMilliseconds(questionDate.getTime() + (today.getTimezoneOffset()));
                     var todayString = "" + today.getFullYear() + today.getMonth() + today.getDate();
                     var questionDateString = "" + questionDate.getFullYear() + questionDate.getMonth() + questionDate.getDate();
-                    console.log(todayString + questionDateString);
                     if(questionDateString === todayString){
 
                         questionItems.push(questionItem);
@@ -204,8 +203,7 @@ class SimpleExpansionPanel extends React.Component {
                         <Divider/>
 
                         <ExpansionPanelActions>
-           
-                           {console.log(this.isTA(this.props.db.auth().currentUser.uid))}
+
                             { this.props.db.auth().currentUser.uid  === items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary"
                                     onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
                                 Remove
