@@ -60,7 +60,6 @@ class SimpleExpansionPanel extends React.Component {
         };
 
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
-        console.log("in panel constructor",this.props.curClass);
         this.classRef = this.firebaseRef.child(this.props.curClass);
         this.questionRef = this.classRef.child("questions");
         this.firebaseRef=this.questionRef;
@@ -83,7 +82,6 @@ class SimpleExpansionPanel extends React.Component {
 
     handleRemove(title) {
         this.firebaseRef.child(title).remove();
-        console.log("remove clicked")
         this.refresh()
     }
 
@@ -94,7 +92,6 @@ class SimpleExpansionPanel extends React.Component {
         let followerlist = []
         followerRef.once('value',(snapshot) =>{
             const question = snapshot.val();
-            console.log(question)
             if(question != null && question.followers ){
                 followerlist = question.followers;
             }
@@ -111,21 +108,16 @@ class SimpleExpansionPanel extends React.Component {
     }
 
     isTA(uid){
-        console.log('inside ista');
         let temp = [];
         var modClassRef = this.props.db.database().ref("User").child(uid).child('modClass');
         modClassRef.once('value', snapshot =>{
             snapshot.forEach(className=>{
                 let temp2 = className.val();
-                console.log("Creating array:" + temp2);
                 temp.push(temp2);
-                console.log("Array contains:" + temp);
             })
-            //console.log(temp);
         });
 
         for (var i = 0; i < temp.length; ++i){
-			console.log("in loop");
             if (temp[i] === this.props.curClass){
                 return true;
             }
@@ -135,13 +127,9 @@ class SimpleExpansionPanel extends React.Component {
     }
 
     refresh(){
-        
-        console.log("in panel render", this.state.curClass);
-        console.log(this.state.prevClass !== this.state.curClass);
         this.state.curClass = this.props.curClass;
-        this.state.tabNum = this.props.tabNum;  //#####
+        this.state.tabNum = this.props.tabNum;
         this.firebaseRef = this.props.db.database().ref("ClassFinal");
-        console.log("in panel render", this.state.curClass);
         this.classRef = this.firebaseRef.child(this.state.curClass);
         this.questionRef = this.classRef.child("questions");
         this.firebaseRef = this.questionRef;
@@ -155,8 +143,6 @@ class SimpleExpansionPanel extends React.Component {
                     var questionDate = new Date(questionItem.timestamp);
                     today = today.toJSON().split("T")[0];
                     questionDate = questionDate.toJSON().split("T")[0];
-                    console.log("today: " + today + " " + "question: " + questionDate);
-                    console.log(questionItem.Question);
                     if(questionDate >= today){
                         questionItems.push(questionItem);
                     }
@@ -177,7 +163,6 @@ class SimpleExpansionPanel extends React.Component {
                 questionItem['.key'] = childSnapshot.key;
                     
             });
-            console.log( "curClass->>>>>>>",this.state.curClass);
             this.setState({questionItems});
         })
     }
@@ -186,7 +171,6 @@ class SimpleExpansionPanel extends React.Component {
   
         const { classes } = this.props;
         if( this.state.curClass !== this.props.curClass || this.state.tabNum !==this.props.tabNum ) {
-            console.log("got in render hello");
             this.refresh()
         }
             const records = this.state.questionItems.map(items =>
@@ -222,8 +206,6 @@ class SimpleExpansionPanel extends React.Component {
                         <Divider/>
 
                         <ExpansionPanelActions>
-           
-                           {console.log(this.isTA(this.props.db.auth().currentUser.uid))}
                             { this.props.db.auth().currentUser.uid  === items.UID  || this.isTA(this.props.db.auth().currentUser.uid) ? <Button size="small" color="secondary"
                                     onClick={() => this.handleRemove(items.UID + "+" + items.timestamp)}>
                                 Remove
