@@ -76,7 +76,6 @@ class StartStopButton extends React.Component{
     }
 
     componentDidUpdate(){
-        console.log("component updated");
         if (this.props.curClass != this.state.curClass) this.updateButton();
     }
 

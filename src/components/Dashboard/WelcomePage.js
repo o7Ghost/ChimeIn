@@ -69,10 +69,8 @@ function SignIn(props) {
 
     return (
         <main>
-
             {/* Hero unit */}
             <div className={classes.paper}>
-
                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                     Welcome!
             </Typography>
@@ -107,8 +105,6 @@ function SignIn(props) {
                         </Card>
                     </Grid>
                     <Grid item key='1' sm={6} md={4} lg={4}>
-
-
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}

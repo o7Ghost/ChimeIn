@@ -262,42 +262,32 @@ class Dashboard extends React.Component {
 
 
                 {(<div>
-                  <IconButton
+                    <IconButton
                     onClick={this.handleMenu}
                     color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={this.handleClose}
-                  >
-                    <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
-                    <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
-                    <MenuItem id='uidMenuItem'>{this.state.UID}</MenuItem>
-                  </Menu>
+                     >
+                        <AccountCircle />
+                       </IconButton>
+                       <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                        }}
+                       open={open}
+                      onClose={this.handleClose}
+                     >
+                        <MenuItem to="/login" component={Link} onClick={this.signout}>Log Out</MenuItem>
+                        <MenuItem to="/reset" component={Link} onClick={this.reset}>Reset Password</MenuItem>
+                       <MenuItem id='uidMenuItem'>{this.state.UID}</MenuItem>
+                     </Menu>
                 </div>
                 )}
-
-
-
-
-
-
-                {/*   <Button color="inherit" component={Link} to="/login" onClick={this.signout}>Log Out</Button> */}
-                {/*   <Button color="inherit" component={Link} to="/reset" onClick={this.signout}>Reset Password</Button> */}
-
-
               </Toolbar>
 
             </AppBar>
