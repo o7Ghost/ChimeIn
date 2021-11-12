@@ -45,5 +45,4 @@ For testing purposes, we have included the following Login credentials as premad
 
 # Technical Support
 - Ethan Ma - Project Manager: (626)321-3848
-- Qiao(Joe) Lu - Software Architect: (626)975-2644
 - Jack Hyeonwoo Kim - UI/UX Specialist : (714)209-3849
